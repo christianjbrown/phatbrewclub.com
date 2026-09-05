@@ -56,7 +56,9 @@ export default async function FunctionsPage({ params }: { params: Promise<{ venu
                   // eslint-disable-next-line @next/next/no-img-element
                   <img
                     src={hero}
-                    srcSet={mediaSrcSet(venue.heroImage, ['thumbnail', 'card', 'hero'])}
+                    // 520px slot. Offering 'hero' made a 2x screen take 1600, three
+                    // times the slot, for a photograph beside an enquiry form.
+                    srcSet={mediaSrcSet(venue.heroImage, ['thumbnail', 'small', 'card'])}
                     sizes="(min-width: 900px) 520px, 100vw"
                     alt={venue.heroImage?.alt ?? venue.name}
                     loading="lazy"

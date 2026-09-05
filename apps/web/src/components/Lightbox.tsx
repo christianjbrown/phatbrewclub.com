@@ -15,14 +15,20 @@ import type { Shot } from '@/lib/shots'
 export const Lightbox = ({ shots }: { shots: Shot[] }) => {
   const ref = useRef<HTMLDialogElement>(null)
   const [current, setCurrent] = useState(0)
+  // The comment above was a claim, not a fact: `current` started at 0, so the
+  // dialog always rendered the first shot and the browser fetched its full-size
+  // image on page load whether or not anyone opened the lightbox. Nothing is
+  // rendered into the dialog until it has actually been opened once.
+  const [opened, setOpened] = useState(false)
 
   const open = useCallback((i: number) => {
     setCurrent(i)
+    setOpened(true)
     ref.current?.showModal()
   }, [])
 
   if (!shots.length) return null
-  const shot = shots[current]
+  const shot = opened ? shots[current] : null
 
   return (
     <>
