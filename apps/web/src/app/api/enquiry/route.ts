@@ -18,11 +18,20 @@ export async function POST(req: Request) {
     .filter(([, v]) => v)
     .map(([k, v]) => `${k}: ${v}`)
 
-  const transport = createTransport({
-    host: process.env.SMTP_HOST ?? 'localhost',
-    port: Number(process.env.SMTP_PORT ?? 1026),
-    secure: false,
-  })
+  // Resend in production, Mailpit locally. Same nodemailer interface either
+  // way, so the rest of this handler does not care which is in use.
+  const transport = process.env.RESEND_API_KEY
+    ? createTransport({
+        host: 'smtp.resend.com',
+        port: 465,
+        secure: true,
+        auth: { user: 'resend', pass: process.env.RESEND_API_KEY },
+      })
+    : createTransport({
+        host: process.env.SMTP_HOST ?? 'localhost',
+        port: Number(process.env.SMTP_PORT ?? 1026),
+        secure: false,
+      })
 
   await transport.sendMail({
     from: process.env.MAIL_FROM ?? 'website@phatbrewclub.local',

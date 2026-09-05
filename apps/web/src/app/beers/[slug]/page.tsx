@@ -72,7 +72,17 @@ export default async function BeerPage({ params }: { params: Promise<{ slug: str
                   ) : (
                     <Link className="btn" href="/shop">Visit the shop</Link>
                   )}
-                  {beer.untappdUrl ? <a className="btn btn-o" href={beer.untappdUrl}>On Untappd</a> : null}
+                  {beer.untappdUrl ? (
+                    <a
+                      className="btn btn-o"
+                      href={beer.untappdUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      View on Untappd
+                      <span className="sr-only"> (opens in a new tab)</span>
+                    </a>
+                  ) : null}
                 </p>
               </div>
             </div>

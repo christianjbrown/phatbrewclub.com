@@ -8,6 +8,7 @@ import { richText } from './lexical.js'
 import { AWARDS, POSTS } from './content.js'
 import BEER_PRODUCTS from './beer-products.json' with { type: 'json' }
 import NEWS from './news.json' with { type: 'json' }
+import UNTAPPD_LINKS from './untappd-links.json' with { type: 'json' }
 
 const dirname = path.dirname(fileURLToPath(import.meta.url))
 const IMG = path.resolve(dirname, '../../../../mocks/img')
@@ -141,6 +142,22 @@ const run = async () => {
     enriched++
   }
   console.log(`  enriched  ${enriched} beers with product data`)
+
+  // 4c. Link each beer to its Untappd page where one exists. Links only —
+  //     no descriptions, ratings or other content is taken from Untappd.
+  //     Eleven of the eighteen have no Untappd page and simply get no link.
+  let linked = 0
+  for (const link of UNTAPPD_LINKS as { slug: string; untappdUrl: string }[]) {
+    const found = await payload.find({ collection: 'beers', where: { slug: { equals: link.slug } }, limit: 1 })
+    if (!found.totalDocs) continue
+    await payload.update({
+      collection: 'beers',
+      id: found.docs[0]!.id,
+      data: { untappdUrl: link.untappdUrl } as never,
+    })
+    linked++
+  }
+  console.log(`  untappd   ${linked} beers linked`)
 
   // 5. Tap lists — first six beers per venue, with one keg blown at West Perth
   for (const [slug, venueId] of venueIds) {

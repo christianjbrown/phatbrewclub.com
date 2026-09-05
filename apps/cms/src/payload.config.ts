@@ -3,6 +3,7 @@ import { fileURLToPath } from 'url'
 
 import { postgresAdapter } from '@payloadcms/db-postgres'
 import { lexicalEditor } from '@payloadcms/richtext-lexical'
+import { gcsStorage } from '@payloadcms/storage-gcs'
 import { s3Storage } from '@payloadcms/storage-s3'
 import { buildConfig } from 'payload'
 import sharp from 'sharp'
@@ -46,43 +47,53 @@ export default buildConfig({
     // Empty unless COMMERCE_ENABLED=true. See src/commerce.ts.
     ...commercePlugins(),
     /**
-     * Media goes to object storage rather than the container filesystem.
-     * Locally that is MinIO; in production the same code path points at a
-     * GCS bucket through its S3-compatible API, so nothing changes but env.
+     * Media goes to object storage rather than the container filesystem, which
+     * is ephemeral on Cloud Run.
+     *
+     * Production uses GCS, authenticating as the Cloud Run service account
+     * through ADC, so there are no long-lived keys anywhere. Locally the same
+     * uploads go to MinIO through the S3 adapter. Both emit direct object URLs
+     * rather than proxying every image through this app, which was measurably
+     * the largest-contentful-paint bottleneck when it did.
      */
-    s3Storage({
-      collections: {
-        media: {
-          /**
-           * Serve media straight from object storage instead of proxying every
-           * request through this app. Proxying meant each image travelled
-           * browser -> ingress -> CMS -> MinIO and back, which was measurably
-           * the largest-contentful-paint bottleneck. In production the same
-           * setting points at the GCS bucket behind a CDN.
-           *
-           * The trade-off is that objects are public: fine for venue photos and
-           * can artwork, and the bucket is already anonymous-read. Anything
-           * genuinely private would need this left on.
-           */
-          disablePayloadAccessControl: true,
-          generateFileURL: ({ filename, prefix }) => {
-            const base = (process.env.MEDIA_PUBLIC_URL ?? '').replace(/\/$/, '')
-            const bucket = process.env.S3_BUCKET ?? 'phatbrew-media'
-            const key = [prefix, filename].filter(Boolean).join('/')
-            return base ? `${base}/${bucket}/${key}` : `/${bucket}/${key}`
-          },
-        },
-      },
-      bucket: process.env.S3_BUCKET || 'phatbrew-media',
-      config: {
-        endpoint: process.env.S3_ENDPOINT,
-        region: process.env.S3_REGION || 'us-east-1',
-        forcePathStyle: true,
-        credentials: {
-          accessKeyId: process.env.S3_ACCESS_KEY_ID || '',
-          secretAccessKey: process.env.S3_SECRET_ACCESS_KEY || '',
-        },
-      },
-    }),
+    ...(process.env.GCS_BUCKET
+      ? [
+          gcsStorage({
+            collections: {
+              media: {
+                disablePayloadAccessControl: true,
+              },
+            },
+            bucket: process.env.GCS_BUCKET,
+            options: {
+              projectId: process.env.GCS_PROJECT_ID,
+            },
+          }),
+        ]
+      : [
+          s3Storage({
+            collections: {
+              media: {
+                disablePayloadAccessControl: true,
+                generateFileURL: ({ filename, prefix }) => {
+                  const base = (process.env.MEDIA_PUBLIC_URL ?? '').replace(/\/$/, '')
+                  const bucket = process.env.S3_BUCKET ?? 'phatbrew-media'
+                  const key = [prefix, filename].filter(Boolean).join('/')
+                  return base ? `${base}/${bucket}/${key}` : `/${bucket}/${key}`
+                },
+              },
+            },
+            bucket: process.env.S3_BUCKET || 'phatbrew-media',
+            config: {
+              endpoint: process.env.S3_ENDPOINT,
+              region: process.env.S3_REGION || 'us-east-1',
+              forcePathStyle: true,
+              credentials: {
+                accessKeyId: process.env.S3_ACCESS_KEY_ID || '',
+                secretAccessKey: process.env.S3_SECRET_ACCESS_KEY || '',
+              },
+            },
+          }),
+        ]),
   ],
 })

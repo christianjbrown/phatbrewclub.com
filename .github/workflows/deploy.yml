@@ -1,0 +1,95 @@
+name: Deploy
+
+on:
+  push:
+    branches: [main]
+    paths-ignore: ['**.md', 'docs/**', '.gitignore']
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  id-token: write
+
+concurrency:
+  group: deploy-${{ github.ref }}
+  cancel-in-progress: false
+
+env:
+  PROJECT: phatbrewclub-2026
+  REGION: asia-southeast1
+  REGISTRY: asia-southeast1-docker.pkg.dev/phatbrewclub-2026/phatbrewclub
+
+jobs:
+  deploy:
+    name: build, migrate, deploy
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: google-github-actions/auth@v3
+        with:
+          workload_identity_provider: ${{ vars.GCP_WIF_PROVIDER }}
+          service_account: ${{ vars.GCP_DEPLOYER_SERVICE_ACCOUNT }}
+
+      - uses: google-github-actions/setup-gcloud@v2
+
+      - name: Configure Docker for Artifact Registry
+        run: gcloud auth configure-docker ${{ env.REGION }}-docker.pkg.dev --quiet
+
+      - name: Build and push cms
+        run: |
+          docker build -t "$REGISTRY/cms:$GITHUB_SHA" -t "$REGISTRY/cms:latest" apps/cms
+          docker push "$REGISTRY/cms:$GITHUB_SHA"
+          docker push "$REGISTRY/cms:latest"
+
+      - name: Build and push web
+        run: |
+          docker build -t "$REGISTRY/web:$GITHUB_SHA" -t "$REGISTRY/web:latest" apps/web
+          docker push "$REGISTRY/web:$GITHUB_SHA"
+          docker push "$REGISTRY/web:latest"
+
+      # Migrations and the sync run the CMS sources plus dev dependencies, which
+      # the slim runtime image deliberately does not carry.
+      - name: Build and push tooling image
+        run: |
+          docker build -f apps/cms/Dockerfile.migrate -t "$REGISTRY/tooling:$GITHUB_SHA" -t "$REGISTRY/tooling:latest" .
+          docker push "$REGISTRY/tooling:$GITHUB_SHA"
+          docker push "$REGISTRY/tooling:latest"
+
+      # Schema first. If this fails the deploy stops, rather than rolling out a
+      # service that will 500 on every request against a missing table.
+      - name: Migrate
+        run: |
+          gcloud run jobs update migrate \
+            --image "$REGISTRY/tooling:$GITHUB_SHA" \
+            --region "$REGION" --project "$PROJECT" --quiet
+          gcloud run jobs execute migrate \
+            --region "$REGION" --project "$PROJECT" --wait
+
+      - name: Point the other jobs at the same build
+        run: |
+          for JOB in seed sync; do
+            gcloud run jobs update "$JOB" \
+              --image "$REGISTRY/tooling:$GITHUB_SHA" \
+              --region "$REGION" --project "$PROJECT" --quiet
+          done
+
+      - name: Deploy cms
+        run: |
+          gcloud run deploy cms \
+            --image "$REGISTRY/cms:$GITHUB_SHA" \
+            --region "$REGION" --project "$PROJECT" --quiet
+
+      - name: Deploy web
+        run: |
+          gcloud run deploy web \
+            --image "$REGISTRY/web:$GITHUB_SHA" \
+            --region "$REGION" --project "$PROJECT" --quiet
+
+      - name: Smoke check
+        run: |
+          for URL in https://pbc.christianbrown.uk https://cms.pbc.christianbrown.uk/admin/login; do
+            CODE=$(curl -s -o /dev/null -w '%{http_code}' --max-time 45 "$URL" || echo 000)
+            echo "$URL -> $CODE"
+            case "$CODE" in 2*|3*) ;; *) echo "unexpected status"; exit 1;; esac
+          done
