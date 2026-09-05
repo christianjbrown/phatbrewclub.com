@@ -3,7 +3,7 @@ import type { Metadata } from 'next'
 import { Footer, Header } from '@/components/Chrome'
 import { EventCard, HoursTable, OpenBadge, TapRows } from '@/components/Bits'
 import { JsonLd, tapMenuSchema, venueSchema } from '@/lib/jsonld'
-import { getEvents, getTapList, getVenue, getVenues, mediaUrl } from '@/lib/payload'
+import { getEvents, getTapList, getVenue, getVenues, mediaSize, mediaSrcSet } from '@/lib/payload'
 
 export const generateMetadata = async ({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> => {
   const { slug } = await params
@@ -21,7 +21,7 @@ export default async function VenuePage({ params }: { params: Promise<{ slug: st
   if (!venue) notFound()
 
   const [venues, tapList, events] = await Promise.all([getVenues(), getTapList(venue.id), getEvents(50)])
-  const hero = mediaUrl(venue.heroImage)
+  const hero = mediaSize(venue.heroImage, 'hero')
   const mine = events.filter(
     (e) => new Date(e.startsAt) >= new Date() && (e.venues ?? []).some((v) => v.slug === venue.slug),
   )
@@ -33,7 +33,19 @@ export default async function VenuePage({ params }: { params: Promise<{ slug: st
         <JsonLd data={venueSchema(venue)} />
         {tapList ? <JsonLd data={tapMenuSchema(venue, tapList)} /> : null}
 
-        <div className="hero" style={{ minHeight: 420, ...(hero ? { backgroundImage: `url(${hero})` } : {}) }}>
+        <div className="hero" style={{ minHeight: 420 }}>
+          {hero ? (
+            // eslint-disable-next-line @next/next/no-img-element
+            <img
+              className="hero-img"
+              src={hero}
+              srcSet={mediaSrcSet(venue.heroImage, ['card', 'hero'])}
+              sizes="100vw"
+              alt=""
+              fetchPriority="high"
+              decoding="async"
+            />
+          ) : null}
           <div className="wrap">
             <p className="eyebrow">{venue.shortName.toUpperCase()}</p>
             <h1>{venue.name}</h1>

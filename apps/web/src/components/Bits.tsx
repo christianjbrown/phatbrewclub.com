@@ -1,6 +1,6 @@
 import Link from 'next/link'
 import type { Beer, PhatEvent, TapList, Venue } from '@/lib/types'
-import { mediaUrl } from '@/lib/payload'
+import { mediaSize } from '@/lib/payload'
 import { DAY_LABEL, eventDay, eventMonth, eventTime, formatHuman, openState } from '@/lib/time'
 
 export const OpenBadge = ({ venue }: { venue: Venue }) => {
@@ -38,7 +38,7 @@ export const HoursTable = ({ venue }: { venue: Venue }) => {
 }
 
 export const BeerCard = ({ beer }: { beer: Beer }) => {
-  const img = mediaUrl(beer.canArtwork)
+  const img = mediaSize(beer.canArtwork, 'square')
   return (
     <article className="card beer">
       {img ? (

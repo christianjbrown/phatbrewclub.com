@@ -73,8 +73,42 @@ export const safeList = async <T>(fn: () => Promise<T[]>): Promise<T[]> => {
   }
 }
 
-/** Media URLs come back relative to the CMS; make them absolute for next/image. */
+const absolute = (url: string) => (url.startsWith('http') ? url : `${CMS_PUBLIC}${url}`)
+
+/** Media URLs come back relative to the CMS; make them absolute. */
 export const mediaUrl = (m?: { url?: string } | null): string | null => {
   if (!m?.url) return null
-  return m.url.startsWith('http') ? m.url : `${CMS_PUBLIC}${m.url}`
+  return absolute(m.url)
+}
+
+type Sized = {
+  url?: string
+  sizes?: Record<string, { url?: string | null; width?: number | null } | undefined>
+}
+
+/**
+ * A srcset across whatever derivatives exist, so a phone downloads an 800px
+ * hero rather than the 1600px one. Without this the mobile LCP is dominated by
+ * an image three times larger than the screen it lands on.
+ */
+export const mediaSrcSet = (m: Sized | null | undefined, sizes: string[]): string | undefined => {
+  if (!m?.sizes) return undefined
+  const parts = sizes
+    .map((key) => m.sizes?.[key])
+    .filter((v): v is { url?: string | null; width?: number | null } => Boolean(v?.url && v?.width))
+    .map((v) => `${absolute(v.url!)} ${v.width}w`)
+  return parts.length > 1 ? parts.join(', ') : undefined
+}
+
+/**
+ * Payload generates thumbnail/card/hero/square variants on upload. Serving the
+ * original into a small box is exactly the mistake the old site made — its logo
+ * was requested at 2400px to render at 140px. Ask for the size you are actually
+ * going to display, and fall back to the original only if it is missing.
+ */
+export const mediaSize = (m: Sized | null | undefined, size: 'thumbnail' | 'card' | 'hero' | 'square'): string | null => {
+  if (!m) return null
+  const variant = m.sizes?.[size]?.url
+  if (variant) return absolute(variant)
+  return m.url ? absolute(m.url) : null
 }

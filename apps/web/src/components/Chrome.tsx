@@ -52,7 +52,7 @@ export const Footer = ({ venues }: { venues: Venue[] }) => (
       <div className="grid g4">
         {venues.map((v) => (
           <div key={v.id}>
-            <h4>{v.shortName.toUpperCase()}</h4>
+            <h2 className="fh">{v.shortName.toUpperCase()}</h2>
             <p style={{ fontSize: 15, color: 'var(--muted)', margin: '0 0 8px' }}>
               {v.address.street}, {v.address.suburb} {v.address.state} {v.address.postcode}
             </p>
@@ -62,14 +62,14 @@ export const Footer = ({ venues }: { venues: Venue[] }) => (
           </div>
         ))}
         <div>
-          <h4>EXPLORE</h4>
+          <h2 className="fh">EXPLORE</h2>
           <Link href="/beers">Beers</Link><br />
           <Link href="/whats-on">What&apos;s on</Link><br />
           <Link href="/shop">Shop</Link><br />
           <Link href="/about">About</Link>
         </div>
         <div>
-          <h4>ENQUIRIES</h4>
+          <h2 className="fh">ENQUIRIES</h2>
           <Link href="/functions/west-perth">Functions</Link><br />
           <Link href="/contact">Contact</Link>
         </div>

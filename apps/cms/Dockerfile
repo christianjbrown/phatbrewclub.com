@@ -33,15 +33,3 @@ COPY --from=builder --chown=app:app /app/scripts ./scripts
 USER app
 EXPOSE 3000
 CMD ["node", "server.js"]
-
-# Migrations run as a Job before the CMS starts. They need the Payload CLI,
-# dev dependencies and the TypeScript sources, none of which belong in the
-# runtime image — so they get their own stage instead of bloating it.
-FROM node:22-alpine AS migrator
-WORKDIR /app
-RUN apk add --no-cache libc6-compat
-COPY package.json package-lock.json* ./
-RUN npm install --no-audit --no-fund
-COPY . .
-ENV NODE_ENV=production NEXT_TELEMETRY_DISABLED=1
-CMD ["npm", "run", "migrate"]

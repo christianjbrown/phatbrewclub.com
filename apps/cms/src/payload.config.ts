@@ -51,7 +51,28 @@ export default buildConfig({
      * GCS bucket through its S3-compatible API, so nothing changes but env.
      */
     s3Storage({
-      collections: { media: true },
+      collections: {
+        media: {
+          /**
+           * Serve media straight from object storage instead of proxying every
+           * request through this app. Proxying meant each image travelled
+           * browser -> ingress -> CMS -> MinIO and back, which was measurably
+           * the largest-contentful-paint bottleneck. In production the same
+           * setting points at the GCS bucket behind a CDN.
+           *
+           * The trade-off is that objects are public: fine for venue photos and
+           * can artwork, and the bucket is already anonymous-read. Anything
+           * genuinely private would need this left on.
+           */
+          disablePayloadAccessControl: true,
+          generateFileURL: ({ filename, prefix }) => {
+            const base = (process.env.MEDIA_PUBLIC_URL ?? '').replace(/\/$/, '')
+            const bucket = process.env.S3_BUCKET ?? 'phatbrew-media'
+            const key = [prefix, filename].filter(Boolean).join('/')
+            return base ? `${base}/${bucket}/${key}` : `/${bucket}/${key}`
+          },
+        },
+      },
       bucket: process.env.S3_BUCKET || 'phatbrew-media',
       config: {
         endpoint: process.env.S3_ENDPOINT,

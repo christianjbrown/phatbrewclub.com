@@ -2,14 +2,14 @@ import Link from 'next/link'
 import { Footer, Header } from '@/components/Chrome'
 import { BeerCard, EventCard, OpenBadge, TapRows } from '@/components/Bits'
 import { JsonLd, organisationSchema, venueSchema } from '@/lib/jsonld'
-import { getBeers, getEvents, getTapList, getVenues, mediaUrl } from '@/lib/payload'
+import { getBeers, getEvents, getTapList, getVenues, mediaSize, mediaSrcSet } from '@/lib/payload'
 
 export default async function Home() {
   const venues = await getVenues()
   const [beers, events] = await Promise.all([getBeers('core'), getEvents(20)])
   const wp = venues.find((v) => v.slug === 'west-perth')
   const tapList = wp ? await getTapList(wp.id) : null
-  const hero = mediaUrl(venues.find((v) => v.slug === 'hillarys')?.heroImage)
+  const hero = mediaSize(venues.find((v) => v.slug === 'hillarys')?.heroImage, 'hero')
   const upcoming = events.filter((e) => new Date(e.startsAt) >= new Date()).slice(0, 4)
 
   return (
@@ -19,7 +19,21 @@ export default async function Home() {
         <JsonLd data={organisationSchema(venues)} />
         {venues.map((v) => <JsonLd key={v.id} data={venueSchema(v)} />)}
 
-        <div className="hero" style={hero ? { backgroundImage: `url(${hero})` } : undefined}>
+        <div className="hero">
+          {hero ? (
+            /* A real element rather than a CSS background: background images are
+               discovered only after CSS resolves, which pushed LCP out by seconds. */
+            // eslint-disable-next-line @next/next/no-img-element
+            <img
+              className="hero-img"
+              src={hero}
+              srcSet={mediaSrcSet(venues.find((v) => v.slug === 'hillarys')?.heroImage, ['card', 'hero'])}
+              sizes="100vw"
+              alt=""
+              fetchPriority="high"
+              decoding="async"
+            />
+          ) : null}
           <div className="wrap">
             <p className="eyebrow">WEST PERTH · HILLARYS</p>
             <h1>
@@ -40,7 +54,7 @@ export default async function Home() {
             <h2>Two venues, one club</h2>
             <div className="grid g2">
               {venues.map((v) => {
-                const img = mediaUrl(v.heroImage)
+                const img = mediaSize(v.heroImage, 'card')
                 return (
                   <article className="card" key={v.id}>
                     {img ? (

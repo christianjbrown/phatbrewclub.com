@@ -2,7 +2,7 @@ import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import type { Metadata } from 'next'
 import { Footer, Header } from '@/components/Chrome'
-import { getVenue, getVenues, mediaUrl } from '@/lib/payload'
+import { getVenue, getVenues, mediaSize } from '@/lib/payload'
 
 export const generateMetadata = async ({ params }: { params: Promise<{ venue: string }> }): Promise<Metadata> => {
   const { venue } = await params
@@ -22,7 +22,7 @@ export default async function FunctionsPage({ params }: { params: Promise<{ venu
   const venue = await getVenue(slug)
   if (!venue) notFound()
   const venues = await getVenues()
-  const hero = mediaUrl(venue.heroImage)
+  const hero = mediaSize(venue.heroImage, 'card')
 
   return (
     <>

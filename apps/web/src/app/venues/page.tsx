@@ -3,7 +3,7 @@ import type { Metadata } from 'next'
 import { Footer, Header } from '@/components/Chrome'
 import { OpenBadge } from '@/components/Bits'
 import { JsonLd, venueSchema } from '@/lib/jsonld'
-import { getVenues, mediaUrl } from '@/lib/payload'
+import { getVenues, mediaSize } from '@/lib/payload'
 
 export const metadata: Metadata = {
   title: 'Our venues',
@@ -22,7 +22,7 @@ export default async function VenuesPage() {
             <h1>Two venues, one club</h1>
             <p className="lede">Both brewing, both pouring, both open seven days.</p>
             {venues.map((v) => {
-              const img = mediaUrl(v.heroImage)
+              const img = mediaSize(v.heroImage, 'card')
               return (
                 <article className="card" style={{ marginBottom: 22 }} key={v.id}>
                   <div className="grid" style={{ gridTemplateColumns: 'minmax(0,1fr) minmax(0,1.4fr)', gap: 0 }}>

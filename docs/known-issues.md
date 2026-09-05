@@ -41,3 +41,44 @@ server-side, not hotlink.
 
 The existing hero streams at 852x480 and is stretched full-bleed on desktop. It
 needs a higher-resolution master or a re-shoot; the mocks use a still frame.
+
+
+## Performance: 89, one point under the budget
+
+Lighthouse budget is 90; the median of three warm runs is 89 on the homepage.
+Reported as-is rather than by moving the budget.
+
+Measured against the old site, on the same tool:
+
+| | Old (Square Online) | New |
+|---|---|---|
+| Performance | not scored (see note) | 89 |
+| Accessibility | multiple AA failures | 100 |
+| SEO | 100 | 100 |
+| CLS | 0.539 | 0.061 |
+| Requests | 227 | 35 |
+| Transfer | 2.34 MB | 0.58 MB |
+
+Three real gains came out of chasing this, each a genuine defect at the time:
+
+1. The hero was a CSS `background-image`. Browsers only discover those after
+   CSS resolves, so LCP sat at 5.5s. As a real `<img>` with `fetchpriority=high`
+   it dropped to 3.4s.
+2. The `hero` derivative was configured at 1920x1080 but the sources are 1600px
+   wide, and Payload does not upscale — so the variant was silently never
+   generated and every caller fell back to the full-size original. Now 1600x900.
+3. Mobile was downloading the 1600px hero. A `srcset` across the existing
+   derivatives took the homepage from 79 to 88.
+
+What is left, in order of likely gain:
+
+- **Google Fonts is render-blocking.** FCP is 2.3s under simulated slow 4G and
+  the font stylesheet is the main external dependency on the critical path.
+  Self-hosting Rubik as a woff2 with `font-display: swap` is the obvious next
+  step and should clear 90 on its own.
+- **Images are JPEG/PNG.** Payload can emit AVIF/WebP; roughly 30-50% smaller
+  at the same quality.
+- Note the old site cannot be given a fair Lighthouse performance score for
+  comparison, because it loads an autoplaying video and about forty Instagram
+  images from third-party CDNs. Its CLS, request count and transfer size are
+  directly measured and are the honest comparison.

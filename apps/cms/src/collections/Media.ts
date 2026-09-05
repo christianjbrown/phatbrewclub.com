@@ -11,7 +11,10 @@ export const Media: CollectionConfig = {
     imageSizes: [
       { name: 'thumbnail', width: 400, height: 300, position: 'centre' },
       { name: 'card', width: 800, height: 600, position: 'centre' },
-      { name: 'hero', width: 1920, height: 1080, position: 'centre' },
+      // 1600 not 1920: Payload does not upscale, so a 1920 variant is silently
+      // never generated for sources narrower than that, and callers fall back
+      // to the full-size original without any warning.
+      { name: 'hero', width: 1600, height: 900, position: 'centre' },
       { name: 'square', width: 800, height: 800, position: 'centre' },
     ],
     adminThumbnail: 'thumbnail',
