@@ -1,3 +1,4 @@
+import { existsSync } from 'fs'
 import path from 'path'
 import { fileURLToPath } from 'url'
 import { getPayload } from 'payload'
@@ -33,6 +34,12 @@ const run = async () => {
   const media = new Map<string, number | string>()
   const upload = async (file: string, alt: string) => {
     if (media.has(file)) return media.get(file)!
+    // Artwork lives outside the container image when this runs as a k8s Job.
+    // Records are still worth creating without it, so a missing file is not fatal.
+    if (!existsSync(path.join(IMG, file))) {
+      console.log(`  media     ${file} not present, creating record without artwork`)
+      return undefined
+    }
     const found = await payload.find({
       collection: 'media',
       where: { filename: { equals: file } },

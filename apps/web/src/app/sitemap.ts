@@ -1,10 +1,14 @@
 import type { MetadataRoute } from 'next'
-import { getBeers, getEvents, getVenues } from '@/lib/payload'
+import { getBeers, getEvents, getVenues, safeList } from '@/lib/payload'
 
 const SITE = process.env.NEXT_PUBLIC_SITE_URL ?? 'http://localhost:3000'
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const [venues, beers, events] = await Promise.all([getVenues(), getBeers(), getEvents(100)])
+  const [venues, beers, events] = await Promise.all([
+    safeList(getVenues),
+    safeList(() => getBeers()),
+    safeList(() => getEvents(100)),
+  ])
   const now = new Date()
 
   const statics = ['', '/venues', '/beers', '/whats-on', '/about', '/contact', '/shop', '/functions']

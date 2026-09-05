@@ -14,7 +14,9 @@
     "migrate:create": "cross-env NODE_OPTIONS=--no-deprecation payload migrate:create",
     "seed": "node --env-file=.env --no-deprecation --import=tsx/esm src/seed/index.ts",
     "payload": "cross-env NODE_OPTIONS=--no-deprecation payload",
-    "lint": "cross-env NODE_OPTIONS=--no-deprecation eslint ."
+    "lint": "cross-env NODE_OPTIONS=--no-deprecation eslint .",
+    "typecheck": "tsc --noEmit && tsc --noEmit -p tsconfig.seed.json",
+    "seed:ci": "node --no-deprecation --import=tsx/esm src/seed/index.ts"
   },
   "dependencies": {
     "@payloadcms/db-postgres": "3.88.0",

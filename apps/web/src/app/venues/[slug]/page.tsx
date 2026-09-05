@@ -5,9 +5,6 @@ import { EventCard, HoursTable, OpenBadge, TapRows } from '@/components/Bits'
 import { JsonLd, tapMenuSchema, venueSchema } from '@/lib/jsonld'
 import { getEvents, getTapList, getVenue, getVenues, mediaUrl } from '@/lib/payload'
 
-export const generateStaticParams = async () =>
-  (await getVenues()).map((v) => ({ slug: v.slug }))
-
 export const generateMetadata = async ({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> => {
   const { slug } = await params
   const v = await getVenue(slug)

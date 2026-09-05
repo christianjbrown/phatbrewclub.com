@@ -3,6 +3,18 @@ import './globals.css'
 
 const SITE = process.env.NEXT_PUBLIC_SITE_URL ?? 'http://localhost:3000'
 
+/**
+ * Rendered per request rather than prerendered at build.
+ *
+ * The CMS is a separate service, so it is deliberately not reachable during the
+ * container build — and in production a momentary CMS blip must not fail a
+ * deploy. Caching still happens, one layer down: every CMS read is a tagged
+ * `fetch` with a 300s window, and the publish webhook clears those tags, so an
+ * edit still appears immediately. HTML caching is the CDN's job, which is the
+ * layer the old site had switched off entirely (`cache-control: no-cache`).
+ */
+export const dynamic = 'force-dynamic'
+
 export const metadata: Metadata = {
   metadataBase: new URL(SITE),
   title: {

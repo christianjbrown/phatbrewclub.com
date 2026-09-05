@@ -1,0 +1,19 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "strict": true,
+    "noEmit": true,
+    "skipLibCheck": true
+  },
+  "include": [
+    "src/seed/**/*.ts",
+    "src/payload.config.ts",
+    "src/collections/**/*.ts",
+    "src/globals/**/*.ts",
+    "src/fields/**/*.ts",
+    "src/access/**/*.ts"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
+}

@@ -5,8 +5,6 @@ import { JsonLd, eventSchema } from '@/lib/jsonld'
 import { getEvent, getEvents, getVenues, mediaUrl } from '@/lib/payload'
 import { eventTime, eventWeekday, formatDate } from '@/lib/time'
 
-export const generateStaticParams = async () => (await getEvents(100)).map((e) => ({ slug: e.slug }))
-
 export const generateMetadata = async ({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> => {
   const { slug } = await params
   const e = await getEvent(slug)

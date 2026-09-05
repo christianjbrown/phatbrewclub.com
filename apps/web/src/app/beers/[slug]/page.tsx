@@ -5,8 +5,6 @@ import { Footer, Header } from '@/components/Chrome'
 import { JsonLd, beerSchema } from '@/lib/jsonld'
 import { getBeer, getBeers, getTapList, getVenues, mediaUrl } from '@/lib/payload'
 
-export const generateStaticParams = async () => (await getBeers()).map((b) => ({ slug: b.slug }))
-
 export const generateMetadata = async ({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> => {
   const { slug } = await params
   const b = await getBeer(slug)

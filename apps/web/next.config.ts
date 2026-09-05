@@ -5,6 +5,7 @@ const mediaUrl = process.env.NEXT_PUBLIC_MEDIA_URL ?? 'http://localhost:9000'
 
 const config: NextConfig = {
   reactStrictMode: true,
+  output: 'standalone',
   images: {
     remotePatterns: [cmsUrl, mediaUrl].map((u) => {
       const { protocol, hostname, port } = new URL(u)

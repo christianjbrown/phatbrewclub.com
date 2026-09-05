@@ -4,9 +4,6 @@ import type { Metadata } from 'next'
 import { Footer, Header } from '@/components/Chrome'
 import { getVenue, getVenues, mediaUrl } from '@/lib/payload'
 
-export const generateStaticParams = async () =>
-  (await getVenues()).map((v) => ({ venue: v.slug }))
-
 export const generateMetadata = async ({ params }: { params: Promise<{ venue: string }> }): Promise<Metadata> => {
   const { venue } = await params
   const v = await getVenue(venue)
