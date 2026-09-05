@@ -490,47 +490,71 @@ const run = async () => {
 
   // 7. Pages. The homebrew comp is a block-built page rather than a hard-coded
   //    route, so the brewery can update it — and retire it — without a deploy.
+  //    When 2027 is announced it should be a new page in the CMS, not a code
+  //    change; nothing here invents a 2027 date, because none has been
+  //    published.
+  const compBanner = await upload(
+    'homebrew-2026-banner.png',
+    'The Great Aussie Home Brew Comp 2026 banner, with the Golden Gnome award',
+  )
+  const compGnome = await upload(
+    'homebrew-2026-gnome.jpg',
+    'The Golden Gnome award for the 2026 Great Aussie Home Brew Comp',
+  )
+
   const compBlocks = [
     {
       blockType: 'hero',
-      eyebrow: '2026 · ENTRIES CLOSED',
-      heading: 'The Great Aussie Homebrew Comp',
+      eyebrow: '2026 · INAUGURAL · ENTRIES CLOSED',
+      heading: 'The Great Aussie Home Brew Comp',
       lede:
-        'Entries closed on 10 May and the awards night was 23 May. The 2027 competition opens in April.',
-      actions: [{ label: 'Tell me when 2027 opens', url: '/contact' }],
+        'Brew it. Back it. Pour it. The inaugural West Aussie home brew competition, judged by working commercial brewers, with the Grand Champion brewed and poured across Perth and the South West.',
+      ...(compBanner ? { image: compBanner } : {}),
+      actions: [{ label: 'Talk to us about next year', url: '/contact' }],
     },
     {
       blockType: 'richText',
-      heading: 'Turn your homebrew into something real',
+      heading: 'Why enter',
       body: richText(
-        'Most competitions give you a score. This one gives you a pathway: every entry is judged by working commercial brewers, and the winning beer gets brewed and poured across Perth and the South West.',
-        { h: 'How it runs', tag: 'h3' },
-        'Register your beer online, drop it off at any of the three breweries during the drop-off window, and let the judges do the rest. Entry is free.',
-        { h: 'The 2026 dates', tag: 'h3' },
-        'Entries opened 6 April and closed 10 May. Drop-off was 12 May at all three breweries. Judging took place on Saturday 16 May at Phat Brew Club, with the awards night at 6pm on Saturday 23 May.',
+        'Most competitions give you a score. This one gives you a pathway. Every entry is judged by experienced commercial brewers across Phat Brew Club, Margaret River Beer Co. and Campus Brewing, with detailed, constructive feedback. Then the best beers go further.',
+        { h: 'What you get', tag: 'h3' },
+        'Professional judging from working brewers, detailed feedback on every entry, a commercial brewing opportunity for the Grand Champion, a showcase across Perth and South West venues, and sponsor-backed prizes. Entry is free.',
+        { h: 'Categories and awards', tag: 'h3' },
+        'The Grand Champion is brewed commercially and released in cans and kegs, featured across WA venues. Category winners are picked for Best Lager, Best IPA, Best Sour and Best Other, alongside regional winners for North, South and South West.',
+        { h: 'How the 2026 comp ran', tag: 'h3' },
+        'Entries opened on 6 April and closed on 10 May. Drop-off was 12 May at all three breweries, judging was Saturday 16 May at Phat Brew Club, and the awards night was 6pm on Saturday 23 May.',
+        { h: 'Powered by WA brewers and suppliers', tag: 'h3' },
+        'Phat Brew Club, Margaret River Beer Co. and Campus Brewing, supported by Bintani, Lallemand, HPA and Yakima Chief Hops. Brewers and suppliers working together to give home brewers a route from garage to glass.',
       ),
     },
+    ...(compGnome
+      ? [{
+          blockType: 'gallery',
+          heading: 'The Golden Gnome',
+          images: [compGnome, ...(compBanner ? [compBanner] : [])],
+        }]
+      : []),
     {
       blockType: 'faq',
       heading: 'Questions',
       questions: [
-        { question: 'Who can enter?', answer: richText('Any homebrewer. You do not need to have entered a competition before, and there is no membership requirement.') },
+        { question: 'Who can enter?', answer: richText('Any home brewer. You do not need to have entered a competition before, and there is no membership requirement.') },
         { question: 'Does it cost anything?', answer: richText('No. Entry is free.') },
-        { question: 'How many beers can I submit?', answer: richText('Check the entry form when registrations reopen in April, as the limit can change year to year.') },
-        { question: 'What happens if I win?', answer: richText('The winning beer is brewed commercially and poured across Perth and the South West, with the brewer credited.') },
-        { question: 'When do entries open for 2027?', answer: richText('April 2027. Get in touch and we will let you know the moment the form goes live.') },
+        { question: 'Who judges it?', answer: richText('Working commercial brewers from Phat Brew Club, Margaret River Beer Co. and Campus Brewing. Every entry gets written feedback.') },
+        { question: 'What happens if I win?', answer: richText('The Grand Champion beer is brewed commercially and released in cans and kegs across Perth and the South West, with the brewer credited.') },
+        { question: 'Is there another one coming?', answer: richText('The 2026 competition was the inaugural one. Nothing has been announced for next year yet — get in touch and we will let you know when it is.') },
       ],
     },
   ]
 
   const compData = {
-    title: 'The Great Aussie Homebrew Comp',
+    title: 'The Great Aussie Home Brew Comp',
     slug: 'homebrew-comp',
     layout: compBlocks,
     seo: {
-      title: 'The Great Aussie Homebrew Comp',
+      title: 'The Great Aussie Home Brew Comp',
       description:
-        'Phat Brew Club\'s homebrew competition. Judged by commercial brewers, with the winning beer brewed and poured across WA.',
+        "Phat Brew Club's home brew competition, judged by commercial brewers, with the winning beer brewed and poured across WA.",
     },
     _status: 'published' as const,
   }
