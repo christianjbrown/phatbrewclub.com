@@ -2,7 +2,7 @@ import { notFound } from 'next/navigation'
 import type { Metadata } from 'next'
 import { Footer, Header } from '@/components/Chrome'
 import { JsonLd, eventSchema } from '@/lib/jsonld'
-import { getEvent, getEvents, getVenues, mediaSize, mediaSrcSet } from '@/lib/payload'
+import { getEvent, getEvents, getVenues, mediaDims, mediaSize, mediaSrcSet } from '@/lib/payload'
 import { eventTime, eventWeekday, formatDate } from '@/lib/time'
 
 export const generateMetadata = async ({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> => {
@@ -25,6 +25,7 @@ export default async function EventPage({ params }: { params: Promise<{ slug: st
   if (!event) notFound()
   const venues = await getVenues()
   const poster = mediaSize(event.heroImage, 'card')
+  const posterDims = mediaDims(event.heroImage, 'card')
 
   return (
     <>
@@ -46,8 +47,8 @@ export default async function EventPage({ params }: { params: Promise<{ slug: st
                   srcSet={mediaSrcSet(event.heroImage, ['thumbnail', 'card'])}
                   sizes="(min-width: 900px) 380px, 90vw"
                   alt={event.heroImage?.alt ?? `${event.title} poster`}
-                  width={800}
-                  height={600}
+                  width={posterDims?.width}
+                  height={posterDims?.height}
                 />
               ) : null}
               <div>

@@ -70,14 +70,22 @@ const run = async () => {
    * the objects from storage and nulls the references. Everything below
    * re-attaches media by filename, so the relationships come back.
    *
-   * Only stale documents are deleted, which matters because the job has a 900s
-   * timeout and two retries: a blanket purge that ran out of time would purge
-   * again on the retry and never converge. Regenerated files are already WebP,
-   * so a resumed run skips them and finishes the remainder.
+   * SEED_PURGE_MEDIA=true deletes only what looks stale, which matters because
+   * the job has a 900s timeout and two retries: a blanket purge that ran out of
+   * time would purge again on the retry and never converge.
+   *
+   * SEED_PURGE_MEDIA=all deletes everything, for changes to the shape of a
+   * derivative rather than its format, which "stale" cannot detect. That does
+   * carry the retry risk above, so it is opt-in and run deliberately.
    */
-  if (process.env.SEED_PURGE_MEDIA === 'true') {
+  const purgeMode = process.env.SEED_PURGE_MEDIA
+  if (purgeMode === 'true' || purgeMode === 'all') {
     const all = await payload.find({ collection: 'media', limit: 0, pagination: false })
-    const isStale = (doc: { mimeType?: string | null; sizes?: Record<string, { url?: string | null }> }) => {
+    type Doc = {
+      mimeType?: string | null
+      sizes?: Record<string, { url?: string | null; width?: number | null; height?: number | null }>
+    }
+    const isStale = (doc: Doc) => {
       // PDFs have no derivatives to regenerate.
       if (!doc.mimeType?.startsWith('image/')) return false
       const generated = Object.values(doc.sizes ?? {}).filter((v) => v?.url)
@@ -87,11 +95,14 @@ const run = async () => {
     }
     let purged = 0
     for (const doc of all.docs) {
-      if (!isStale(doc as never)) continue
+      // 'all' regenerates everything. Needed when the change is to the shape of
+      // a derivative rather than its format — sizes that used to crop to
+      // 800x600 are already WebP, so nothing about them looks stale.
+      if (purgeMode !== 'all' && !isStale(doc as Doc)) continue
       await payload.delete({ collection: 'media', id: doc.id })
       purged++
     }
-    console.log(`  purged    ${purged} stale of ${all.docs.length} media documents`)
+    console.log(`  purged    ${purged} of ${all.docs.length} media documents (mode: ${purgeMode})`)
   }
 
   // 2. Media — uploads go through the S3 adapter into MinIO

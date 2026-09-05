@@ -16,14 +16,24 @@ export const Media: CollectionConfig = {
       format: 'webp',
       options: { quality: 82 },
     },
+    /**
+     * Width only, so every derivative is a pure resize.
+     *
+     * These used to give a width AND a height with position 'centre', which
+     * makes sharp crop to fit. That quietly destroyed content: the event and
+     * news artwork is portrait — the Hillarys quiz poster is 989x1400 — and
+     * squaring it into 800x600 threw away the half of the poster carrying the
+     * day, the time and the host. A thumbnail may be smaller than the original;
+     * it may not say less than the original.
+     *
+     * Keeping the source ratio also means every candidate in a srcset now
+     * matches, so mediaSrcSet no longer has to discard mismatched sizes.
+     */
     imageSizes: [
-      // Portrait, because the can decals are 1200x1500 and a landscape crop
-      // cuts the top and bottom off the artwork.
-      { name: 'can', width: 440, height: 550, position: 'centre', formatOptions: { format: 'webp', options: { quality: 82 } } },
-      { name: 'thumbnail', width: 400, height: 300, position: 'centre', formatOptions: { format: 'webp', options: { quality: 80 } } },
-      { name: 'card', width: 800, height: 600, position: 'centre', formatOptions: { format: 'webp', options: { quality: 80 } } },
-      { name: 'hero', width: 1600, height: 900, position: 'centre', formatOptions: { format: 'webp', options: { quality: 78 } } },
-      { name: 'square', width: 800, height: 800, position: 'centre', formatOptions: { format: 'webp', options: { quality: 80 } } },
+      { name: 'thumbnail', width: 400, formatOptions: { format: 'webp', options: { quality: 80 } } },
+      { name: 'can', width: 440, formatOptions: { format: 'webp', options: { quality: 82 } } },
+      { name: 'card', width: 800, formatOptions: { format: 'webp', options: { quality: 80 } } },
+      { name: 'hero', width: 1600, formatOptions: { format: 'webp', options: { quality: 78 } } },
     ],
     adminThumbnail: 'thumbnail',
     mimeTypes: ['image/*', 'application/pdf'],

@@ -1,7 +1,7 @@
 import Link from 'next/link'
 import type { Metadata } from 'next'
 import { Footer, Header } from '@/components/Chrome'
-import { getPosts, getVenues, mediaSize } from '@/lib/payload'
+import { getPosts, getVenues, mediaDims, mediaSize, mediaSrcSet } from '@/lib/payload'
 import { formatDate } from '@/lib/time'
 
 export const metadata: Metadata = {
@@ -22,11 +22,20 @@ export default async function NewsPage() {
             <div className="grid g3" style={{ marginTop: 28 }}>
               {posts.map((p) => {
                 const img = mediaSize(p.heroImage, 'card')
+                const dims = mediaDims(p.heroImage, 'card')
                 return (
                   <article className="card" key={p.id}>
                     {img ? (
                       // eslint-disable-next-line @next/next/no-img-element
-                      <img src={img} alt={p.heroImage?.alt ?? ''} loading="lazy" width={700} height={440} />
+                      <img
+                        src={img}
+                        srcSet={mediaSrcSet(p.heroImage, ['thumbnail', 'card'])}
+                        sizes="(min-width: 900px) 360px, 90vw"
+                        alt={p.heroImage?.alt ?? ''}
+                        loading="lazy"
+                        width={dims?.width}
+                        height={dims?.height}
+                      />
                     ) : null}
                     <div className="pad">
                       {p.publishedAt ? (

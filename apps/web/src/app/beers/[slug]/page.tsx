@@ -5,7 +5,7 @@ import { Footer, Header } from '@/components/Chrome'
 import { JsonLd, beerSchema } from '@/lib/jsonld'
 import { Lightbox } from '@/components/Lightbox'
 import { toShots } from '@/lib/shots'
-import { getBeer, getBeers, getTapList, getVenues, mediaSize, mediaSrcSet, mediaUrl } from '@/lib/payload'
+import { getBeer, getBeers, getTapList, getVenues, mediaDims, mediaSize, mediaSrcSet } from '@/lib/payload'
 
 export const generateMetadata = async ({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> => {
   const { slug } = await params
@@ -28,7 +28,7 @@ export default async function BeerPage({ params }: { params: Promise<{ slug: str
   const pouring = lists.filter(({ list }) =>
     (list?.taps ?? []).some((t) => !t.kegBlown && String(t.beer?.id) === String(beer.id)),
   )
-  const art = mediaSize(beer.canArtwork, 'square')
+  const art = mediaSize(beer.canArtwork, 'card')
 
   return (
     <>
@@ -101,9 +101,12 @@ export default async function BeerPage({ params }: { params: Promise<{ slug: str
                 shots={toShots(
                   beer.gallery,
                   (m) => mediaSize(m, 'card'),
-                  // The full-size original, not a derivative: the hero crop is
-                  // landscape and these product shots are portrait.
-                  (m) => mediaUrl(m),
+                  // The largest derivative rather than the original. This used
+                  // to send the untouched upload because the hero size cropped
+                  // to landscape and these product shots are portrait; sizes
+                  // are pure resizes now, so 'hero' keeps the shape and saves
+                  // shipping a multi-megabyte JPEG into a lightbox.
+                  (m) => mediaSize(m, 'hero'),
                   `${beer.name} product photograph`,
                 )}
               />

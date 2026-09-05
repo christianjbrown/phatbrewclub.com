@@ -108,7 +108,28 @@ type Sized = {
 }
 
 /** Largest first, so a fallback walks down rather than off the edge. */
-const SIZE_ORDER = ['hero', 'square', 'card', 'can', 'thumbnail'] as const
+const SIZE_ORDER = ['hero', 'card', 'can', 'thumbnail'] as const
+
+/**
+ * The dimensions a derivative actually has.
+ *
+ * Hard-coding width and height on an <img> reserves space during load, which is
+ * worth having — but only if the numbers are true. The cards claimed 700x440
+ * and 800x600 for artwork that is portrait, so the browser reserved a landscape
+ * box and the CSS then cropped the picture to fill it. Ask the CMS instead.
+ */
+export const mediaDims = (
+  m: Sized | null | undefined,
+  size: 'thumbnail' | 'card' | 'hero' | 'can',
+): { width: number; height: number } | undefined => {
+  if (!m) return undefined
+  const from = SIZE_ORDER.indexOf(size)
+  for (const key of [size, ...SIZE_ORDER.slice(from + 1)]) {
+    const s = m.sizes?.[key]
+    if (s?.url && s.width && s.height) return { width: s.width, height: s.height }
+  }
+  return undefined
+}
 
 /**
  * Payload generates derivatives on upload but skips any target larger than the
@@ -121,7 +142,7 @@ const SIZE_ORDER = ['hero', 'square', 'card', 'can', 'thumbnail'] as const
  */
 export const mediaSize = (
   m: Sized | null | undefined,
-  size: 'thumbnail' | 'card' | 'hero' | 'square' | 'can',
+  size: 'thumbnail' | 'card' | 'hero' | 'can',
 ): string | null => {
   if (!m) return null
 

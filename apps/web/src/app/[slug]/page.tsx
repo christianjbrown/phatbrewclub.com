@@ -4,7 +4,7 @@ import { Footer, Header } from '@/components/Chrome'
 import { BeerCard, EventCard, OpenBadge, TapRows } from '@/components/Bits'
 import { RichText } from '@/components/RichText'
 import {
-  getBeers, getEvents, getPage, getTapList, getVenues, mediaSize, mediaSrcSet,
+  getBeers, getEvents, getPage, getTapList, getVenues, mediaDims, mediaSize, mediaSrcSet,
 } from '@/lib/payload'
 import type { Block } from '@/lib/types'
 
@@ -170,6 +170,7 @@ const renderBlock = async (block: Block, key: string) => {
             <div className="grid g3">
               {(block.images ?? []).map((img) => {
                 const src = mediaSize(img, 'card')
+                const d = mediaDims(img, 'card')
                 if (!src) return null
                 return (
                   // eslint-disable-next-line @next/next/no-img-element
@@ -180,8 +181,8 @@ const renderBlock = async (block: Block, key: string) => {
                     sizes="(min-width: 900px) 360px, 90vw"
                     alt={img.alt ?? ''}
                     loading="lazy"
-                    width={800}
-                    height={600}
+                    width={d?.width}
+                    height={d?.height}
                     style={{ borderRadius: 14, width: '100%', aspectRatio: '4/3', objectFit: 'cover' }}
                   />
                 )

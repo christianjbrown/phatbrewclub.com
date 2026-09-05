@@ -1,6 +1,6 @@
 import Link from 'next/link'
 import type { Beer, PhatEvent, TapList, Venue } from '@/lib/types'
-import { mediaSize, mediaSrcSet } from '@/lib/payload'
+import { mediaDims, mediaSize, mediaSrcSet } from '@/lib/payload'
 import { DAY_LABEL, eventDay, eventMonth, eventTime, formatHuman, openState } from '@/lib/time'
 
 export const OpenBadge = ({ venue }: { venue: Venue }) => {
@@ -113,6 +113,7 @@ export const EventCard = ({ event, as: Heading = 'h3' }: { event: PhatEvent; as?
   // The brewery designs a poster for each of these. Lead with it rather than
   // shrinking it to a thumbnail beside the text.
   const poster = mediaSize(event.heroImage, 'card')
+  const posterDims = mediaDims(event.heroImage, 'card')
 
   return (
     <article className={`evc${past ? ' past' : ''}`}>
@@ -125,8 +126,8 @@ export const EventCard = ({ event, as: Heading = 'h3' }: { event: PhatEvent; as?
             sizes="(min-width: 900px) 360px, 90vw"
             alt={event.heroImage?.alt ?? `${event.title} poster`}
             loading="lazy"
-            width={800}
-            height={600}
+            width={posterDims?.width}
+            height={posterDims?.height}
           />
           <span className={`evc-date${hillarysOnly ? ' hil' : ''}`}>
             <span>{eventMonth(event.startsAt)}</span>

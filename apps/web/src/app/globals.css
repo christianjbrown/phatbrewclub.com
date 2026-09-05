@@ -78,7 +78,11 @@ section{padding:56px 0;border-top:1px solid #171717}
 .g3.fill{grid-template-columns:repeat(auto-fill,minmax(260px,1fr))}
 .card{background:var(--card);border:1px solid var(--line);border-radius:14px;overflow:hidden}
 .card .pad{padding:20px}
-.card img{width:100%;aspect-ratio:16/10;object-fit:cover}
+/* Images are never cropped to fit a box. Derivatives are pure resizes (see the
+   Media collection) and the layout follows the picture's own shape, because the
+   event and news artwork is portrait and a landscape crop cut the day, time and
+   host straight off the poster. */
+.card img{width:100%;height:auto;display:block}
 
 .beer img{aspect-ratio:4/5;object-fit:contain;background:#0a0a0a;padding:14px}
 .spec{display:flex;gap:8px;margin-top:12px}
@@ -180,7 +184,7 @@ footer .news-signup button:hover{filter:brightness(1.08)}
 .map iframe{width:100%;height:300px;border:1px solid var(--line);border-radius:14px;display:block;background:#111}
 .map-actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
 .map-actions .btn{margin:0;font-size:14px;min-height:42px;padding:0 16px}
-.ev-img{width:104px;height:78px;object-fit:cover;border-radius:8px;flex-shrink:0}
+.ev-img{width:104px;height:auto;max-height:104px;object-fit:contain;border-radius:8px;flex-shrink:0;background:#0d0d0d}
 @media(max-width:600px){.ev-img{display:none}}
 a.card-link{display:block;color:inherit;text-decoration:none;transition:border-color .15s,transform .15s}
 a.card-link:hover{border-color:var(--orange)}
@@ -188,7 +192,7 @@ a.card-link:hover h3{color:var(--orange)}
 a.card-link:focus-visible{outline:3px solid var(--orange);outline-offset:2px}
 .ev-title{font:700 20px/1.25 Rubik;margin:0 0 4px}
 .shot{padding:0;border:0;background:none;cursor:zoom-in;border-radius:14px;overflow:hidden;display:block;width:100%}
-.shot img{width:100%;aspect-ratio:4/3;object-fit:cover;display:block;border-radius:14px;transition:transform .2s}
+.shot img{width:100%;height:auto;display:block;border-radius:14px;transition:transform .2s}
 .shot:hover img{transform:scale(1.03)}
 .shot:focus-visible{outline:3px solid var(--orange);outline-offset:3px}
 .lb{border:0;background:transparent;padding:0;max-width:min(92vw,900px);max-height:92vh}
@@ -202,7 +206,7 @@ a.card-link:focus-visible{outline:3px solid var(--orange);outline-offset:2px}
 @media(max-width:860px){.event-detail{grid-template-columns:1fr;gap:22px}.event-detail .poster{max-width:420px}}
 .evc{background:var(--card);border:1px solid var(--line);border-radius:14px;overflow:hidden;display:flex;flex-direction:column}
 .evc-art{position:relative;display:block}
-.evc-art img{width:100%;aspect-ratio:4/3;object-fit:cover;display:block}
+.evc-art img{width:100%;height:auto;display:block}
 .evc-date{position:absolute;top:12px;left:12px;background:var(--orange);color:#000;border-radius:10px;width:58px;padding:8px 0;text-align:center;box-shadow:0 4px 14px rgba(0,0,0,.4)}
 .evc-date span{display:block;font:700 11px Rubik;letter-spacing:.07em}
 .evc-date b{display:block;font:800 22px/1 Rubik}
@@ -228,7 +232,7 @@ a.card-link:focus-visible{outline:3px solid var(--orange);outline-offset:2px}
    instead of stretching two beanies across the whole page. */
 .shop-grid{grid-template-columns:repeat(auto-fill,minmax(260px,1fr))}
 .shop-card{background:#101010;border:1px solid #1e1e1e;border-radius:12px;overflow:hidden;display:flex;flex-direction:column}
-.shop-card img{width:100%;height:auto;aspect-ratio:4/3;object-fit:cover;display:block;background:#161616}
+.shop-card img{width:100%;height:auto;display:block;background:#161616}
 .shop-card-body{padding:16px 18px 18px;display:flex;flex-direction:column;flex:1}
 .shop-card h2{font:700 17px Rubik;margin:0 0 6px;letter-spacing:.01em}
 .shop-desc{color:var(--muted);font-size:14px;margin:0 0 10px}
