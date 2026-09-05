@@ -1,0 +1,52 @@
+[
+  {
+    "operationName": "venueMetaImage",
+    "query": "query venueMetaImage($venueSlug: String!) {\n  guestVenue(slug: $venueSlug) {\n    id\n    ogImage(transform: \n\"og\") {\n      id\n      originalImagePath\n      originalImageUrl\n      __typename\n    }\n    image: ogImage {\n      id\n      originalImageUrl\n      __typename\n    }\n    __typename\n  }\n}",
+    "variables": {
+      "venueSlug": "phatbrewclub"
+    }
+  },
+  {
+    "operationName": "currentUser",
+    "query": "query currentUser {\n  currentUser {\n    ...UserParts\n    __typename\n  }\n}\nfragment UserParts on User {\n  id\n  name\n  email\n  receiptEmail\n  isOver18\n  mobile\n  savePaymentDetails\n  __typename\n}",
+    "variables": {}
+  },
+  {
+    "operationName": "cartTableInfo",
+    "query": "query cartTableInfo($venueSlug: String!, $orderingType: OrderingType!, $tableNumber: String, $tableArea: String, $googlePlaceId: String) {\n  getCart(\n    slug: $venueSlug\n    orderingType: $orderingType\n    tableNumber: $tableNumber\n    tableArea: $tableArea\n    googlePlaceId: $googlePlaceId\n  ) {\n    tableNumber\n    tableArea\n    orderingWindowStartDate\n    __typename\n  }\n}",
+    "variables": {
+      "orderingType": "MENU",
+      "venueSlug": "phatbrewclub"
+    }
+  },
+  {
+    "operationName": "menuVenue",
+    "query": "query menuVenue($venueSlug: String!) {\n  guestVenue(slug: $venueSlug) {\n    id\n    name\n    slug\n    facebookPixelId\n    isIframe\n    venueId: id\n    bookingLink\n    currency\n    ordering\n    countryCode\n    timezone\n    tabsEnabled\n    landingCallToActionText\n    landingCallToActionUrl\n    isClosed\n    isLive\n    isOrderingAvailable\n    alwaysShowVisualMenu\n    multiVendorEnabled\n    hours {\n      ...TimeBlocksParts\n      __typename\n    }\n    supportEmail\n    supportPhone\n    logo {\n      id\n      originalImagePath\n      originalImageUrl\n      __typename\n    }\n    banner {\n      id\n      originalImagePath\n      originalImageUrl\n      __typename\n    }\n    mobileBanner {\n      id\n      originalImagePath\n      originalImageUrl\n      __typename\n    }\n    location {\n      id: googlePlaceId\n      googlePlaceId\n      priceLevel\n      state: adminArea1\n      name\n      url\n      formattedAddress\n      streetAddress\n      state: adminArea1\n      locality\n      adminArea2\n      adminArea1\n      latitude\n      longitude\n      countryCode\n      postalCode\n      __typename\n    }\n    cuisines {\n      name\n      __typename\n    }\n    orderingTypes {\n      id\n      orderingType\n      enabled\n      landingText\n      isAvailable\n      usingTableGroups\n      orderingWindow {\n        id\n        enabled\n        __typename\n      }\n      __typename\n    }\n    __typename\n  }\n}\nfragment TimeSlotParts on TimeSlot {\n  startTime\n  endTime\n  __typename\n}\nfragment TimeBlocksParts on TimeBlocks {\n  id\n  name\n  sun {\n    ...TimeSlotParts\n    __typename\n  }\n  mon {\n    ...TimeSlotParts\n    __typename\n  }\n  tue {\n    ...TimeSlotParts\n    __typename\n  }\n  wed {\n    ...TimeSlotParts\n    __typename\n  }\n  thu {\n    ...TimeSlotParts\n    __typename\n  }\n  fri {\n    ...TimeSlotParts\n    __typename\n  }\n  sat {\n    ...TimeSlotParts\n    __typename\n  }\n  __typename\n}",
+    "variables": {
+      "venueSlug": "phatbrewclub"
+    }
+  },
+  {
+    "operationName": "menu",
+    "query": "query menu($venueSlug: String!, $orderingType: OrderingType!, $categorySlug: String!, $tableNumber: String, $tableArea: String, $orderingWindowStartDate: String) {\n  guestMenuCategory(\n    venueSlug: $venueSlug\n    categorySlug: $categorySlug\n    orderingType: $orderingType\n    tableArea: $tableArea\n    tableNumber: $tableNumber\n    orderingWindowStartDate: $orderingWindowStartDate\n  ) {\n    id\n    name\n    slug\n    isWaitTimeActive\n    waitTimeEstimationInMinutes\n    image {\n      id\n      originalImagePath\n      originalImageUrl\n      __typename\n    }\n    menuSections {\n      id\n      name\n      slug\n      subSection\n      isWaitTimeActive\n      isUnavailable\n      waitTimeEstimationInMinutes\n      menuItems {\n        id\n        slug\n        name\n        type\n        isAvailable(orderingWindowStartDate: $orderingWindowStartDate)\n        isLive\n        isPopular\n        image {\n          id\n          originalImagePath\n          originalImageUrl\n          __typename\n        }\n        namefr\n        imageCredit\n        filterTags\n        nameel\n        namees\n        nameit\n        namezhCN\n        namede\n        description\n        descriptionPlain\n        descriptionfr\n        descriptionel\n        descriptiones\n        descriptionit\n        descriptionzhCN\n        descriptionde\n        dietaryTags\n        priceData {\n          displayPrice\n          priceInCents\n          originalPriceInCents\n          originalDisplayPrice\n          hasPriceOverride\n          __typename\n        }\n        rewardPrice {\n          originalAmountInCents\n          originalDisplayAmount\n          __typename\n        }\n        __typename\n      }\n      __typename\n    }\n    __typename\n  }\n  guestMenuCategories(\n    venueSlug: $venueSlug\n    orderingType: $orderingType\n    tableArea: $tableArea\n    tableNumber: $tableNumber\n    orderingWindowStartDate: $orderingWindowStartDate\n  ) {\n    id\n    name\n    slug\n    isClosed(\n      tableArea: $tableArea\n      tableNumber: $tableNumber\n      orderingType: $orderingType\n      orderingWindowStartDate: $orderingWindowStartDate\n    )\n    image {\n      id\n      originalImagePath\n      originalImageUrl\n      __typename\n    }\n    position\n    mvoFeatured\n    isWaitTimeActive\n    waitTimeEstimationInMinutes\n    menuSections {\n      id\n      name\n      slug\n      subSection\n      __typename\n    }\n    __typename\n  }\n}",
+    "variables": {
+      "categorySlug": "beers-ciders",
+      "orderingType": "MENU",
+      "venueSlug": "phatbrewclub"
+    }
+  },
+  {
+    "operationName": "popupNotificationModal",
+    "query": "query popupNotificationModal($venueSlug: String!) {\n  guestVenue(slug: $venueSlug) {\n    id\n    popupNotificationText\n    popupNotificationImage {\n      id\n      originalImagePath\n      originalImageUrl\n      __typename\n    }\n    __typename\n  }\n}",
+    "variables": {
+      "venueSlug": "phatbrewclub"
+    }
+  },
+  {
+    "operationName": "venueLanding",
+    "query": "query venueLanding($venueSlug: String!) {\n  guestVenue(slug: $venueSlug) {\n    ...VenueLanding\n    __typename\n  }\n}\nfragment TimeSlotParts on TimeSlot {\n  startTime\n  endTime\n  __typename\n}\nfragment TimeBlocksParts on TimeBlocks {\n  id\n  name\n  sun {\n    ...TimeSlotParts\n    __typename\n  }\n  mon {\n    ...TimeSlotParts\n    __typename\n  }\n  tue {\n    ...TimeSlotParts\n    __typename\n  }\n  wed {\n    ...TimeSlotParts\n    __typename\n  }\n  thu {\n    ...TimeSlotParts\n    __typename\n  }\n  fri {\n    ...TimeSlotParts\n    __typename\n  }\n  sat {\n    ...TimeSlotParts\n    __typename\n  }\n  __typename\n}\nfragment VenueLanding on GuestVenue {\n  id\n  venueId: id\n  countryCode\n  name\n  slug\n  ordering\n  isClosed\n  isLive\n  facebookPixelId\n  popupNotificationText\n  timezone\n  tabsEnabled\n  landingCallToActionText\n  landingCallToActionUrl\n  isOrderingAvailable\n  alwaysShowVisualMenu\n  skipTableNumberModal\n  showOrderingTypePicker\n  showCategoryListViewOnLandingPage\n  currency\n  organizationId\n  orderingTypes {\n    id\n    name\n    landingText\n    orderingType\n    isAvailable\n    isSnoozed\n    hasTableNumber\n    tablePromptText\n    tableShortText\n    usingTableGroups\n    orderingWindow {\n      id\n      enabled\n      __typename\n    }\n    __typename\n  }\n  hours {\n    ...TimeBlocksParts\n    __typename\n  }\n  location {\n    id: googlePlaceId\n    formattedAddress\n    state: adminArea1\n    locality\n    adminArea2\n    adminArea1\n    __typename\n  }\n  logo {\n    id\n    originalImagePath\n    originalImageUrl\n    __typename\n  }\n  banner {\n    id\n    originalImagePath\n    originalImageUrl\n    __typename\n  }\n  mobileBanner {\n    id\n    originalImagePath\n    originalImageUrl\n    __typename\n  }\n  startTabAvailable\n  multiVendorEnabled\n  cardSurchargeName\n  __typename\n}",
+    "variables": {
+      "venueSlug": "phatbrewclub"
+    }
+  }
+]

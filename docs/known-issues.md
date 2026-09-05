@@ -1,5 +1,32 @@
 # Known issues and decisions
 
+## me&u sync: working, but needs their blessing before launch
+
+The menu operation was captured by intercepting the POST bodies me&u's own
+guest client sends (`scripts/capture-meandu.mjs`), because their gateway
+disables GraphQL introspection. The trimmed query lives in
+`src/meandu/queries.ts` and pulls 75 live items across both venues with current
+prices.
+
+Two things worth knowing:
+
+- **The venues have different me&u slugs.** West Perth is `phatbrewclub`,
+  Hillarys is `phatbrewclub-hillarys`. Both were seeded with the West Perth
+  slug, so Hillarys would have displayed West Perth's menu.
+- **Hillarys publishes no drinks category on me&u**, only food. The sync
+  reports that as "not published by this venue" rather than an error, and one
+  absent category no longer costs a venue the menus it does have.
+
+It remains off by default (`MEANDU_SYNC_ENABLED=false`). This is an
+undocumented internal contract that can change without notice, and publicly
+readable is not the same as licensed to republish. The brewery should get a
+supported feed or written agreement from me&u before this is switched on.
+
+The sync refuses to write anything that does not look like a menu — zero items,
+a missing sections array, or an item without a name all leave the previous
+snapshot in place. A stale menu is recoverable; a blank one loses a customer
+mid-decision.
+
 ## Corrections to the original audit
 
 Three findings in the first audit were wrong. They came from text extraction

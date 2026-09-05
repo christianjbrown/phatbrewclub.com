@@ -41,7 +41,9 @@ export const VENUES = [
     transportNote: 'On the boardwalk at Hillarys Boat Harbour, next to Breakwater',
     capacity: 300,
     amenities: ['Ocean views', 'Live music', 'Fresh seafood', 'Family friendly', 'Parking', 'Outdoor seating'],
-    meanduSlug: 'phatbrewclub',
+    // Confirmed against the gateway: this resolves to "Phat Brew Club - Hillarys".
+    // Both venues previously pointed at the West Perth slug.
+    meanduSlug: 'phatbrewclub-hillarys',
     hoursLabel: 'Spring/Summer',
     publicHolidayNote: 'Public holidays usually noon to 9pm at both venues. Check our socials for Christmas trading.',
     hours: [
@@ -56,24 +58,24 @@ export const VENUES = [
 
 /** name, style, abv, ibu, category, decal filename, description */
 export const BEERS: [string, string, number, number, string, string, string][] = [
-  ['West Is Best', 'Australian Lager', 4.2, 18, 'core', 'phat-core-west-is-best-decal-2025.png', 'Brewed entirely from WA barley and hops. Crisp, clean and built for a Perth afternoon.'],
-  ['Culture of Good Times', 'Hazy IPA', 6.0, 40, 'core', 'phat-core-culture-of-good-times-decal-2025.png', 'Soft, juicy and heavy on tropical hop aroma.'],
-  ['Risky Business', 'West Coast IPA', 7.0, 60, 'core', 'phat-core-risky-business-decal-2025.png', 'Resinous, bitter and unapologetic. Hops front and centre.'],
-  ['OG Pale Ale', 'Pale Ale', 5.0, 35, 'core', 'phat-core-og-pale-ale-decal-2025.png', 'The original. Bright citrus, a clean finish, still a favourite.'],
-  ['Phubba Bubba', 'Bubblegum Sour', 5.5, 8, 'core', 'phat-core-phubba-bubba-bubblegum-decal-2025.png', 'Sharp, fruity and faintly ridiculous. In the best way.'],
-  ['Hazy Mid', 'Mid-strength Hazy', 3.5, 25, 'core', 'phat-core-hazy-mid-decal.png', 'All the hop aroma, half the strength. Session all afternoon.'],
-  ['Xtra Phat Ale', 'Amber Ale', 5.0, 30, 'core', 'phat-core-xtra-phat-ale-decal.png', 'Malt-led and smooth, with just enough bitterness to balance.'],
-  ['Phatatron', 'Double IPA', 7.0, 70, 'limited', 'phat-limited-edition-phatatron-decal-2025.png', 'Big, hazy and hop-saturated. Brewed occasionally, gone quickly.'],
-  ['Yuzu WCIPA', 'West Coast IPA', 6.8, 55, 'limited', 'phat-limited-edition-yuzu-wcipa-decal2.png', 'Yuzu against a classic west coast backbone. Sharp and aromatic.'],
-  ['Boat Party', 'Tropical Sour', 4.8, 10, 'limited', 'phat-limited-edition-boat-party-decal.png', 'Brewed for the Hillarys boardwalk and the weather that comes with it.'],
-  ['All Gas No Brakes', 'Double IPA', 8.0, 80, 'limited', 'phat-all-gas-no-brakes-decal.png', 'As advertised. Enormous hop load, no restraint applied.'],
-  ['Three Cheers', 'Birthday IPA', 6.5, 45, 'limited', 'phat-3rd-birthday-3cheers-decal.png', 'Brewed for our third birthday. Worth repeating.'],
-  ['Muscle Beach', 'Hazy Pale', 5.2, 30, 'seasonal', 'phat-muscle-beach-decal.png', 'Summer seasonal. Soft body, stone fruit, easy going.'],
-  ['Pavalicious', 'Pastry Sour', 5.5, 12, 'seasonal', 'phat-pavalicious-decal.png', 'Dessert in a can. Sweet, tart, and not remotely subtle.'],
-  ['Brightside', 'Session Ale', 4.0, 22, 'seasonal', 'phat-brightside-decal-1.png', 'Light, clean and built for a long session.'],
-  ['Passion', 'Fruited Sour', 5.0, 10, 'seasonal', 'phat-passion-decal-2.png', 'Passionfruit forward, tart and bright.'],
-  ['Grand Northern', 'Collab Lager', 4.6, 20, 'collab', 'phat-collab-mane-grand-northern-decal-2025.png', 'A collaboration brew. Clean lager, shared credit.'],
-  ['Plateful Pils', 'Collab Pilsner', 5.0, 30, 'collab', 'phat-collab-plateful-pils-decal-2025-1.png', 'Crisp continental pilsner, brewed with friends.'],
+  ['West Is Best', 'Australian Lager', 4.2, 18, 'core', 'phat-core-west-is-best-decal-2025.png', ''],
+  ['Culture of Good Times', 'Hazy IPA', 6.0, 40, 'core', 'phat-core-culture-of-good-times-decal-2025.png', ''],
+  ['Risky Business', 'West Coast IPA', 7.0, 60, 'core', 'phat-core-risky-business-decal-2025.png', ''],
+  ['OG Pale Ale', 'Pale Ale', 5.0, 35, 'core', 'phat-core-og-pale-ale-decal-2025.png', ''],
+  ['Phubba Bubba', 'Bubblegum Sour', 5.5, 8, 'core', 'phat-core-phubba-bubba-bubblegum-decal-2025.png', ''],
+  ['Hazy Mid', 'Mid-strength Hazy', 3.5, 25, 'core', 'phat-core-hazy-mid-decal.png', ''],
+  ['Xtra Phat Ale', 'Amber Ale', 5.0, 30, 'core', 'phat-core-xtra-phat-ale-decal.png', ''],
+  ['Phatatron', 'Double IPA', 7.0, 70, 'limited', 'phat-limited-edition-phatatron-decal-2025.png', ''],
+  ['Yuzu WCIPA', 'West Coast IPA', 6.8, 55, 'limited', 'phat-limited-edition-yuzu-wcipa-decal2.png', ''],
+  ['Boat Party', 'Tropical Sour', 4.8, 10, 'limited', 'phat-limited-edition-boat-party-decal.png', ''],
+  ['All Gas No Brakes', 'Double IPA', 8.0, 80, 'limited', 'phat-all-gas-no-brakes-decal.png', ''],
+  ['Three Cheers', 'Birthday IPA', 6.5, 45, 'limited', 'phat-3rd-birthday-3cheers-decal.png', ''],
+  ['Muscle Beach', 'Hazy Pale', 5.2, 30, 'seasonal', 'phat-muscle-beach-decal.png', ''],
+  ['Pavalicious', 'Pastry Sour', 5.5, 12, 'seasonal', 'phat-pavalicious-decal.png', ''],
+  ['Brightside', 'Session Ale', 4.0, 22, 'seasonal', 'phat-brightside-decal-1.png', ''],
+  ['Passion', 'Fruited Sour', 5.0, 10, 'seasonal', 'phat-passion-decal-2.png', ''],
+  ['Grand Northern', 'Collab Lager', 4.6, 20, 'collab', 'phat-collab-mane-grand-northern-decal-2025.png', ''],
+  ['Plateful Pils', 'Collab Pilsner', 5.0, 30, 'collab', 'phat-collab-plateful-pils-decal-2025-1.png', ''],
 ]
 
 /**

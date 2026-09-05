@@ -16,7 +16,8 @@
     "payload": "cross-env NODE_OPTIONS=--no-deprecation payload",
     "lint": "cross-env NODE_OPTIONS=--no-deprecation eslint .",
     "typecheck": "tsc --noEmit && tsc --noEmit -p tsconfig.seed.json",
-    "seed:ci": "node --no-deprecation --import=tsx/esm src/seed/index.ts"
+    "seed:ci": "node --no-deprecation --import=tsx/esm src/seed/index.ts",
+    "meandu:sync": "node --no-deprecation --import=tsx/esm src/meandu/sync.ts"
   },
   "dependencies": {
     "@payloadcms/db-postgres": "3.88.0",
