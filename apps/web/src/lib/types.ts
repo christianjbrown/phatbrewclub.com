@@ -42,6 +42,7 @@ export type Venue = {
   faqs?: { question: string; answer: string }[] | null
   openingHours?: OpeningHour[] | null
   hoursOverrides?: { date: string; label?: string | null; opens?: string | null; closes?: string | null; closed?: boolean | null }[] | null
+  functionsPack?: Media | null
 }
 
 export type Beer = {
@@ -156,4 +157,10 @@ export type Merch = {
   shopUrl?: string | null
   description?: string | null
   images?: Media[] | null
+}
+
+export type Settings = {
+  instagram?: string | null
+  facebook?: string | null
+  untappd?: string | null
 }

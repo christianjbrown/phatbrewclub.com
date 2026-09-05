@@ -1,4 +1,4 @@
-import type { Beer, Menu, Merch, Page, Paginated, PhatEvent, Post, TapList, Venue } from './types'
+import type { Beer, Menu, Merch, Page, Paginated, PhatEvent, Post, TapList, Venue, Settings } from './types'
 
 /**
  * Two different addresses for the same service, deliberately.
@@ -94,6 +94,18 @@ export const getPosts = () =>
 export const getPost = (slug: string) =>
   api<Paginated<Post>>('posts', { depth: 1, limit: 1, 'where[slug][equals]': slug }, ['posts'])
     .then((r) => r.docs[0] ?? null)
+
+/**
+ * Globals are a single document, so there is no docs array to unwrap. Failing
+ * soft: the footer's social links are not worth a 500 if the CMS blips.
+ */
+export const getSettings = async (): Promise<Settings> => {
+  try {
+    return await api<Settings>('globals/settings', { depth: 0 }, ['settings'])
+  } catch {
+    return {}
+  }
+}
 
 export const getMerch = () =>
   api<Paginated<Merch>>('merch', { depth: 1, limit: 50, sort: 'title' }, ['merch']).then((r) => r.docs)

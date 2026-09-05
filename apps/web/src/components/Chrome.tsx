@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import { Newsletter } from './Newsletter'
+import { getSettings } from '@/lib/payload'
 import type { Venue } from '@/lib/types'
 
 const NAV: [string, string, [string, string][]?][] = [
@@ -9,7 +10,7 @@ const NAV: [string, string, [string, string][]?][] = [
   ['News', '/news'],
   ['Functions', '/functions', [['West Perth', '/functions/west-perth'], ['Hillarys', '/functions/hillarys']]],
   ['Shop', '/shop'],
-  ['Homebrew', '/homebrew-comp'],
+  ['Homebrew comp', '/homebrew-comp'],
   ['About', '/about'],
   ['Contact', '/contact'],
 ]
@@ -56,7 +57,19 @@ export const Header = ({ current }: { current?: string }) => (
   </header>
 )
 
-export const Footer = ({ venues }: { venues: Venue[] }) => (
+export const Footer = async ({ venues }: { venues: Venue[] }) => {
+  const settings = await getSettings()
+  const socials: [string, string][] = (
+    [
+      ['Instagram', settings.instagram],
+      ['Facebook', settings.facebook],
+      ['Untappd', settings.untappd],
+    ] as [string, string | null | undefined][]
+  )
+    .filter((s) => Boolean(s[1]))
+    .map(([label, url]) => [label, url as string])
+
+  return (
   <footer>
     <div className="wrap">
       <div className="grid g4">
@@ -87,7 +100,17 @@ export const Footer = ({ venues }: { venues: Venue[] }) => (
         </div>
       </div>
       <Newsletter />
+      {socials.length ? (
+        <p className="socials">
+          {socials.map(([label, url]) => (
+            <a key={label} href={url} target="_blank" rel="noopener noreferrer me">
+              {label}
+            </a>
+          ))}
+        </p>
+      ) : null}
       <p className="legal">Phat Brew Club · Independent brewery, Western Australia</p>
     </div>
   </footer>
-)
+  )
+}

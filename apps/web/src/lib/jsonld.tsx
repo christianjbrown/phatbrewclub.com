@@ -138,7 +138,7 @@ export const faqSchema = (v: Venue) => ({
   })),
 })
 
-export const organisationSchema = (venues: Venue[]) => ({
+export const organisationSchema = (venues: Venue[], socials: string[] = []) => ({
   '@context': 'https://schema.org',
   '@type': 'Organization',
   '@id': `${SITE}#org`,
@@ -146,6 +146,8 @@ export const organisationSchema = (venues: Venue[]) => ({
   url: SITE,
   description: 'Independent craft brewery in Western Australia with two venues.',
   location: venues.map((v) => ({ '@id': `${SITE}/venues/${v.slug}#venue` })),
+  // sameAs is how a search engine ties the site to the brewery's own accounts.
+  ...(socials.length ? { sameAs: socials } : {}),
 })
 
 export const JsonLd = ({ data }: { data: unknown }) => (

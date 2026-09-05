@@ -24,7 +24,7 @@ export default async function NewsPage() {
                 const img = mediaSize(p.heroImage, 'card')
                 const dims = mediaDims(p.heroImage, 'card')
                 return (
-                  <article className="card" key={p.id}>
+                  <Link className="card card-link" href={`/news/${p.slug}`} key={p.id}>
                     {img ? (
                       // eslint-disable-next-line @next/next/no-img-element
                       <img
@@ -43,12 +43,10 @@ export default async function NewsPage() {
                           {formatDate(p.publishedAt, { day: 'numeric', month: 'long', year: 'numeric' })}
                         </p>
                       ) : null}
-                      <h2 style={{ fontSize: 20, marginBottom: 8 }}>
-                        <Link href={`/news/${p.slug}`}>{p.title}</Link>
-                      </h2>
+                      <h3 style={{ fontSize: 20, marginBottom: 8 }}>{p.title}</h3>
                       {p.excerpt ? <p style={{ margin: 0, fontSize: 15 }}>{p.excerpt}</p> : null}
                     </div>
-                  </article>
+                  </Link>
                 )
               })}
             </div>

@@ -116,9 +116,11 @@ export const EventCard = ({ event, as: Heading = 'h3' }: { event: PhatEvent; as?
   const posterDims = mediaDims(event.heroImage, 'card')
 
   return (
-    <article className={`evc${past ? ' past' : ''}`}>
+    // The whole card is the link, not just the title and the poster. Nesting
+    // anchors is invalid, so the artwork is a plain div inside it.
+    <Link className={`evc card-link${past ? ' past' : ''}`} href={`/whats-on/${event.slug}`}>
       {poster ? (
-        <Link href={`/whats-on/${event.slug}`} className="evc-art">
+        <div className="evc-art">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             src={poster}
@@ -133,13 +135,11 @@ export const EventCard = ({ event, as: Heading = 'h3' }: { event: PhatEvent; as?
             <span>{eventMonth(event.startsAt)}</span>
             <b>{eventDay(event.startsAt)}</b>
           </span>
-        </Link>
+        </div>
       ) : null}
 
       <div className="evc-body">
-        <Heading className="ev-title">
-          <Link href={`/whats-on/${event.slug}`}>{event.title}</Link>
-        </Heading>
+        <Heading className="ev-title">{event.title}</Heading>
         <p className="evc-meta">
           {eventTime(event.startsAt)} · {(event.venues ?? []).map((v) => v.shortName).join(' and ')}
         </p>
@@ -150,6 +150,6 @@ export const EventCard = ({ event, as: Heading = 'h3' }: { event: PhatEvent; as?
           </span>
         </p>
       </div>
-    </article>
+    </Link>
   )
 }

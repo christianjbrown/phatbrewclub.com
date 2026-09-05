@@ -3,11 +3,11 @@ import { Footer, Header } from '@/components/Chrome'
 import { HeroVideo } from '@/components/HeroVideo'
 import { BeerCard, EventCard, OpenBadge, TapRows } from '@/components/Bits'
 import { JsonLd, organisationSchema, venueSchema } from '@/lib/jsonld'
-import { getBeers, getEvents, getTapList, getVenues, mediaSize, mediaSrcSet } from '@/lib/payload'
+import { getBeers, getEvents, getSettings, getTapList, getVenues, mediaSize, mediaSrcSet } from '@/lib/payload'
 
 export default async function Home() {
   const venues = await getVenues()
-  const [beers, events] = await Promise.all([getBeers('core'), getEvents(20)])
+  const [beers, events, settings] = await Promise.all([getBeers('core'), getEvents(20), getSettings()])
   const wp = venues.find((v) => v.slug === 'west-perth')
   const tapList = wp ? await getTapList(wp.id) : null
   const hero = mediaSize(venues.find((v) => v.slug === 'hillarys')?.heroImage, 'hero')
@@ -17,7 +17,14 @@ export default async function Home() {
     <>
       <Header />
       <main id="main">
-        <JsonLd data={organisationSchema(venues)} />
+        <JsonLd
+          data={organisationSchema(
+            venues,
+            [settings.instagram, settings.facebook, settings.untappd].filter(
+              (u): u is string => Boolean(u),
+            ),
+          )}
+        />
         {venues.map((v) => <JsonLd key={v.id} data={venueSchema(v)} />)}
 
         <div className="hero">

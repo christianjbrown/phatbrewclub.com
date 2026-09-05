@@ -149,6 +149,11 @@ const run = async () => {
   const venueIds = new Map<string, number | string>()
   for (const v of VENUES) {
     const heroId = await upload(v.hero, `${v.name} venue photograph`)
+    // Only West Perth publishes one; Hillarys' functions page has no download.
+    const packId =
+      v.slug === 'west-perth'
+        ? await upload('functions-west-perth-pack.pdf', 'West Perth functions and events pack')
+        : undefined
     const data = {
       name: v.name,
       shortName: v.shortName,
@@ -167,6 +172,7 @@ const run = async () => {
       publicHolidayNote: v.publicHolidayNote,
       faqs: (v.faqs ?? []).map(([question, answer]) => ({ question, answer })),
       heroImage: heroId,
+      ...(packId ? { functionsPack: packId } : {}),
       openingHours: v.hours.map(([day, opens, closes]) => ({ day, opens, closes, closed: false })),
       _status: 'published' as const,
     }
@@ -518,6 +524,11 @@ const run = async () => {
         { label: 'About', url: '/about' },
         { label: 'Contact', url: '/contact' },
       ],
+      // The two the brewery actually links from its own site, taken from the
+      // sameAs block in its markup. No Untappd: it has beer pages there but no
+      // brewery page we found, and a guessed URL is worse than none.
+      instagram: 'https://www.instagram.com/phatbrewclub',
+      facebook: 'https://www.facebook.com/phatbrewclub',
       defaultTitle: 'Phat Brew Club',
       defaultDescription:
         'Independent Perth brewery with two venues: Phat HQ in West Perth and The Trophy Room at Hillarys.',

@@ -110,7 +110,11 @@ export const Venues: CollectionConfig = {
           label: 'Integrations',
           description: 'Links to the systems the venue already runs on.',
           fields: [
-            { name: 'bookingUrl', type: 'text', admin: { description: 'nowbookit booking URL. Opened in a modal on the site.' } },
+            // The brewery publishes a functions brochure as a PDF and nothing else:
+    // its own functions pages say only "Function details coming soon". Anything
+    // more specific here would be invented.
+    { name: 'functionsPack', type: 'upload', relationTo: 'media' },
+    { name: 'bookingUrl', type: 'text', admin: { description: 'nowbookit booking URL. Opened in a modal on the site.' } },
             { name: 'meanduSlug', type: 'text', admin: { description: 'me&u venue slug, used to sync menus and the tap list.' } },
             { name: 'menuUrl', type: 'text', admin: { description: 'Public me&u food menu URL.' } },
           ],

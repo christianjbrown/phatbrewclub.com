@@ -249,6 +249,7 @@ export interface Venue {
         id?: string | null;
       }[]
     | null;
+  functionsPack?: (number | null) | Media;
   /**
    * nowbookit booking URL. Opened in a modal on the site.
    */
@@ -1004,6 +1005,7 @@ export interface VenuesSelect<T extends boolean = true> {
         answer?: T;
         id?: T;
       };
+  functionsPack?: T;
   bookingUrl?: T;
   meanduSlug?: T;
   menuUrl?: T;
