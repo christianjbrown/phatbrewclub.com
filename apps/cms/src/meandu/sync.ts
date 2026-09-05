@@ -39,6 +39,10 @@ const assertUsable = (cat: MenuCategory | null | undefined, where: string): Menu
   return cat
 }
 
+/** Loose match: me&u writes names differently from the CMS ("West Is Best" vs
+ *  "West is Best Lager"), so compare on letters and digits only. */
+const norm = (v: string) => v.toLowerCase().replace(/[^a-z0-9]/g, '')
+
 const run = async () => {
   if (!ENABLED) {
     console.log('meandu-sync: disabled (MEANDU_SYNC_ENABLED is not "true") — exiting without writing')
@@ -112,6 +116,57 @@ const run = async () => {
           const count = sections.reduce((n, s) => n + s.items.length, 0)
           console.log(`  ${venue.shortName}/${categorySlug}: ${sections.length} sections, ${count} items`)
           updated++
+
+          // The "On Tap" section is the live tap list. Mirror it so the site can
+          // answer "what is pouring right now" without anyone retyping it.
+          const onTap = cat.menuSections.find((sec) => /on tap/i.test(sec.name))
+          if (onTap) {
+            const { docs: allBeers } = await payload.find({ collection: 'beers', limit: 200, depth: 0 })
+            const byName = new Map(
+              (allBeers as unknown as { id: number | string; name: string }[]).map((b) => [norm(b.name), b.id]),
+            )
+
+            const taps = (onTap.menuItems ?? [])
+              .filter((i) => i.isAvailable !== false)
+              .map((item, idx) => {
+                const key = norm(item.name)
+                // Try exact, then containment either way, so "West Is Best" and
+                // "West is Best Lager" resolve to the same beer.
+                let beerId = byName.get(key)
+                if (!beerId) {
+                  for (const [name, id] of byName) {
+                    if (name.length > 4 && (key.includes(name) || name.includes(key))) { beerId = id; break }
+                  }
+                }
+                return {
+                  tapNumber: idx + 1,
+                  ...(beerId ? { beer: beerId } : { guestName: item.name, guestStyle: '' }),
+                  price: item.priceData?.displayPrice ?? '',
+                  kegBlown: false,
+                }
+              })
+
+            const matched = taps.filter((t) => 'beer' in t).length
+            const tapData = {
+              venue: venue.id,
+              taps,
+              source: 'meandu' as const,
+              syncedAt: new Date().toISOString(),
+            }
+            const existing = await payload.find({
+              collection: 'tap-lists',
+              where: { venue: { equals: venue.id } },
+              limit: 1,
+            })
+            if (existing.totalDocs) {
+              await payload.update({ collection: 'tap-lists', id: existing.docs[0]!.id, data: tapData as never })
+            } else {
+              await payload.create({ collection: 'tap-lists', data: tapData as never })
+            }
+            console.log(
+              `  ${venue.shortName}: tap list refreshed, ${taps.length} taps (${matched} matched to a beer, ${taps.length - matched} guest)`,
+            )
+          }
         } catch (err) {
           const msg = err instanceof Error ? err.message : String(err)
           // "Not Found" means the venue simply does not publish this category.

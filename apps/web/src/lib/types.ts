@@ -64,7 +64,15 @@ export type Beer = {
   ingredients?: { producer: string; contribution?: string | null }[] | null
 }
 
-export type Tap = { tapNumber: number; beer: Beer; kegBlown?: boolean | null }
+export type Tap = {
+  tapNumber: number
+  /** Absent for guest taps, which have no Beer record of their own. */
+  beer?: Beer | null
+  guestName?: string | null
+  guestStyle?: string | null
+  price?: string | null
+  kegBlown?: boolean | null
+}
 
 export type TapList = {
   id: number | string

@@ -422,8 +422,17 @@ export interface TapList {
   taps?:
     | {
         tapNumber: number;
-        beer: number | Beer;
+        /**
+         * Leave blank for a guest tap.
+         */
+        beer?: (number | null) | Beer;
         kegBlown?: boolean | null;
+        /**
+         * Name, for a tap with no Beer record.
+         */
+        guestName?: string | null;
+        guestStyle?: string | null;
+        price?: string | null;
         id?: string | null;
       }[]
     | null;
@@ -1021,6 +1030,9 @@ export interface TapListsSelect<T extends boolean = true> {
         tapNumber?: T;
         beer?: T;
         kegBlown?: T;
+        guestName?: T;
+        guestStyle?: T;
+        price?: T;
         id?: T;
       };
   source?: T;

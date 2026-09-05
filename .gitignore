@@ -8,3 +8,4 @@ mocks/shots/
 .next/
 apps/*/.next/
 apps/*/node_modules/
+final-shots/

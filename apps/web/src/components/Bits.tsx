@@ -67,17 +67,30 @@ export const BeerCard = ({ beer }: { beer: Beer }) => {
 
 export const TapRows = ({ list }: { list: TapList }) => (
   <div style={{ maxWidth: 760 }}>
-    {(list.taps ?? []).map((t) => (
-      <div className={`tap${t.kegBlown ? ' out' : ''}`} key={t.tapNumber}>
-        <span className="tapn">{t.tapNumber}</span>
-        <strong>{t.beer?.name}</strong>
-        <span className="st">{t.kegBlown ? 'Keg blown' : t.beer?.style}</span>
-        <span className="ab">{t.kegBlown ? '—' : `${t.beer?.abv}%`}</span>
-      </div>
-    ))}
+    {(list.taps ?? []).map((t) => {
+      // A tap is either a beer we know about or a guest keg. Both pour.
+      const name = t.beer?.name ?? t.guestName ?? 'Guest tap'
+      const style = t.beer?.style ?? t.guestStyle ?? ''
+      const strength = t.beer?.abv ? `${t.beer.abv}%` : (t.price ?? '')
+      return (
+        <div className={`tap${t.kegBlown ? ' out' : ''}`} key={t.tapNumber}>
+          <span className="tapn">{t.tapNumber}</span>
+          {t.beer ? (
+            <strong><Link href={`/beers/${t.beer.slug}`}>{name}</Link></strong>
+          ) : (
+            <strong>{name}</strong>
+          )}
+          <span className="st">{t.kegBlown ? 'Keg blown' : style}</span>
+          <span className="ab">{t.kegBlown ? '—' : strength}</span>
+        </div>
+      )
+    })}
     {list.syncedAt ? (
       <p style={{ marginTop: 18, color: '#777', fontSize: 14 }}>
-        Synced from me&amp;u · {new Date(list.syncedAt).toLocaleString('en-AU', { timeZone: 'Australia/Perth' })}
+        {list.source === 'meandu' ? 'Synced from me&u' : 'Updated'} ·{' '}
+        {new Date(list.syncedAt).toLocaleString('en-AU', {
+          timeZone: 'Australia/Perth', dateStyle: 'medium', timeStyle: 'short',
+        })}
       </p>
     ) : null}
   </div>

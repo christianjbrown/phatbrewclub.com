@@ -108,13 +108,22 @@ export const tapMenuSchema = (venue: Venue, list: TapList) => ({
   hasMenuSection: {
     '@type': 'MenuSection',
     name: 'On tap',
+    // Guest taps belong in the menu too; they just have no Beer record to
+    // describe them, so fall back to whatever the tap itself carries.
     hasMenuItem: (list.taps ?? [])
-      .filter((t) => !t.kegBlown && t.beer)
-      .map((t) => ({
-        '@type': 'MenuItem',
-        name: t.beer.name,
-        description: `${t.beer.style}, ${t.beer.abv}% ABV`,
-      })),
+      .filter((t) => !t.kegBlown && (t.beer || t.guestName))
+      .map((t) => {
+        const name = t.beer?.name ?? t.guestName ?? 'Guest tap'
+        const description = t.beer
+          ? `${t.beer.style}, ${t.beer.abv}% ABV`
+          : [t.guestStyle, t.price].filter(Boolean).join(', ')
+        return {
+          '@type': 'MenuItem',
+          name,
+          ...(description ? { description } : {}),
+          ...(t.price ? { offers: { '@type': 'Offer', price: t.price.replace(/[^0-9.]/g, ''), priceCurrency: 'AUD' } } : {}),
+        }
+      }),
   },
 })
 

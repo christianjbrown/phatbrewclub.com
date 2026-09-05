@@ -28,7 +28,10 @@ configMapGenerator:
       # Commerce ships dark. Square keeps taking real orders until the
       # Stripe checkout has been proven end to end with test cards.
       - COMMERCE_ENABLED=false
-      - MEANDU_SYNC_ENABLED=false
+      # Enabled locally to prove the sync end to end. Before this is switched
+      # on in production the brewery needs a supported feed or written
+      # agreement from me&u, per docs/known-issues.md.
+      - MEANDU_SYNC_ENABLED=true
       - MEANDU_GATEWAY=https://ap1-guest-gateway.meandu.app/graphql
 
 # Local-only values. Real environments read these from Secret Manager, never

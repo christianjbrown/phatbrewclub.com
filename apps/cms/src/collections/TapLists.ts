@@ -45,8 +45,29 @@ export const TapLists: CollectionConfig = {
           type: 'row',
           fields: [
             { name: 'tapNumber', type: 'number', required: true, admin: { width: '15%' } },
-            { name: 'beer', type: 'relationship', relationTo: 'beers', required: true, admin: { width: '55%' } },
+            {
+              name: 'beer',
+              type: 'relationship',
+              relationTo: 'beers',
+              // Optional on purpose. Guest taps, collabs and one-off kegs pour
+              // here too and will never exist as a Beer record, and a required
+              // relationship would silently drop them from the list.
+              admin: { width: '55%', description: 'Leave blank for a guest tap.' },
+            },
             { name: 'kegBlown', type: 'checkbox', label: 'Keg blown', admin: { width: '30%' } },
+          ],
+        },
+        {
+          type: 'row',
+          admin: { condition: (_, s) => !s?.beer },
+          fields: [
+            {
+              name: 'guestName',
+              type: 'text',
+              admin: { width: '40%', description: 'Name, for a tap with no Beer record.' },
+            },
+            { name: 'guestStyle', type: 'text', admin: { width: '35%' } },
+            { name: 'price', type: 'text', admin: { width: '25%', placeholder: '$10.50' } },
           ],
         },
       ],
