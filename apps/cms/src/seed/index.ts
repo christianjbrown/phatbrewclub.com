@@ -3,7 +3,7 @@ import path from 'path'
 import { fileURLToPath } from 'url'
 import { getPayload } from 'payload'
 import config from '../payload.config.js'
-import { BEERS, EVENTS, VENUES } from './data.js'
+import { BEERS, BEER_INGREDIENTS, BEER_VIDEOS, EVENTS, VENUES } from './data.js'
 import { richText } from './lexical.js'
 import { AWARDS, POSTS } from './content.js'
 import BEER_PRODUCTS from './beer-products.json' with { type: 'json' }
@@ -164,6 +164,8 @@ const run = async () => {
       },
       transportNote: v.transportNote,
       mapsQuery: v.mapsQuery,
+      instagram: v.instagram,
+      intro: v.intro,
       capacity: v.capacity,
       tapCount: 20,
       amenities: v.amenities,
@@ -192,6 +194,12 @@ const run = async () => {
     const slug = name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '')
     const data = {
       name, slug, style, abv, ibu, category, description,
+      // Their homepage names the growers and maltsters behind West Is Best, and
+      // the collection already had a field for it.
+      ...(BEER_INGREDIENTS[slug]
+        ? { ingredients: BEER_INGREDIENTS[slug].map(([producer, contribution]) => ({ producer, contribution })) }
+        : {}),
+      ...(BEER_VIDEOS[slug] ? { videoId: BEER_VIDEOS[slug] } : {}),
       canArtwork: artId,
       availableAt: [...venueIds.values()],
       _status: 'published' as const,

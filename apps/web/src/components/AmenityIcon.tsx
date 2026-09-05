@@ -42,8 +42,28 @@ const Dot = () => (
   <svg {...svg}><circle cx="12" cy="12" r="3.2" fill="currentColor" /></svg>
 )
 
+
+const Wave = () => (
+  <svg {...svg}><g {...stroke}><path d="M2 15c2.5 0 2.5-2 5-2s2.5 2 5 2 2.5-2 5-2 2.5 2 5 2" /><path d="M2 19c2.5 0 2.5-2 5-2s2.5 2 5 2 2.5-2 5-2 2.5 2 5 2" /><circle cx="17" cy="6" r="3" /></g></svg>
+)
+const Note = () => (
+  <svg {...svg}><g {...stroke}><path d="M9 18V5l11-2v13" /><circle cx="6.5" cy="18" r="2.6" /><circle cx="17.5" cy="16" r="2.6" /></g></svg>
+)
+const Fish = () => (
+  <svg {...svg}><g {...stroke}><path d="M3 12c3-4 7-6 11-6 3 0 5 1.6 6.4 3.4.5.6.5 1.6 0 2.2C19 13.4 17 15 14 15c-4 0-8-2-11-3Z" /><path d="M3 12c1.6 1.2 2.6 2.8 3 4.6" /><circle cx="16.6" cy="10.4" r=".9" fill="currentColor" stroke="none" /></g></svg>
+)
+const Chair = () => (
+  <svg {...svg}><g {...stroke}><path d="M6 4v8h12V4" /><path d="M4 12h16" /><path d="M7 12v8M17 12v8" /></g></svg>
+)
+
 const RULES: [RegExp, () => React.JSX.Element][] = [
-  [/garden|terrace|outdoor|beer garden/i, Tree],
+  // Order matters: the first match wins, so the specific rules come before
+  // the general ones — "Outdoor seating" is a chair, not a beer garden.
+  [/ocean|sea view|water|beach|harbour/i, Wave],
+  [/live music|music|band|dj/i, Note],
+  [/seafood|fish|oyster/i, Fish],
+  [/outdoor seating|seating/i, Chair],
+  [/garden|terrace|beer garden/i, Tree],
   [/kid|child|family|play/i, Balloon],
   [/arcade|game|pool|darts/i, Gamepad],
   [/dog|pet/i, Paw],

@@ -59,25 +59,13 @@ export const Header = ({ current }: { current?: string }) => (
           )}
         </ul>
       </nav>
-      {/* Instagram is where this brewery actually lives, and it was buried in
-          the footer. Icon only in the bar, with a label for screen readers. */}
-      <a
-        className="hd-ig"
-        href="https://www.instagram.com/phatbrewclub"
-        target="_blank"
-        rel="noopener noreferrer me"
-        aria-label="Phat Brew Club on Instagram"
-      >
-        <InstagramIcon />
-      </a>
-
       {/* A plain GET form in the header, so search works with no JavaScript and
           a result is a shareable URL. */}
       <form className="hd-search" action="/search" method="get" role="search">
         <label className="sr-only" htmlFor="hd-q">Search</label>
         <input id="hd-q" name="q" type="search" placeholder="Search" autoComplete="off" />
       </form>
-      <Link className="book" href="/venues">Book a table</Link>
+      <Link className="book" href="/venues">Book</Link>
     </div>
   </header>
 )
@@ -86,7 +74,11 @@ export const Footer = async ({ venues }: { venues: Venue[] }) => {
   const settings = await getSettings()
   const socials: [string, string][] = (
     [
-      ['Instagram', settings.instagram],
+      // Each venue runs its own Instagram, so one generic link sent half the
+      // audience to the wrong account.
+      ...venues
+        .filter((v) => v.instagram)
+        .map((v) => [`Instagram · ${v.shortName}`, v.instagram] as [string, string | null | undefined]),
       ['Facebook', settings.facebook],
       ['TikTok', settings.tiktok],
       ['YouTube', settings.youtube],
@@ -106,7 +98,7 @@ export const Footer = async ({ venues }: { venues: Venue[] }) => {
             <p style={{ fontSize: 15, color: 'var(--muted)', margin: '0 0 8px' }}>
               {v.address.street}, {v.address.suburb} {v.address.state} {v.address.postcode}
             </p>
-            <Link href={`/venues/${v.slug}`}>Hours</Link>
+            <Link href={`/venues/${v.slug}`}>Venue</Link>
             {' · '}
             <Link href={`/venues/${v.slug}/menu`}>Menu</Link>
           </div>
@@ -132,6 +124,8 @@ export const Footer = async ({ venues }: { venues: Venue[] }) => {
           {socials.map(([label, url]) => {
             const Icon = {
               Instagram: InstagramIcon,
+              'Instagram · West Perth': InstagramIcon,
+              'Instagram · Hillarys': InstagramIcon,
               Facebook: FacebookIcon,
               TikTok: TikTokIcon,
               YouTube: YouTubeIcon,

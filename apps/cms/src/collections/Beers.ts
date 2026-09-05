@@ -85,6 +85,15 @@ export const Beers: CollectionConfig = {
       admin: { description: 'Which venues normally stock it. The live tap list is separate.' },
     },
     {
+      name: 'videoId',
+      type: 'text',
+      label: 'YouTube video id',
+      admin: {
+        description: 'Just the id, e.g. TBpZtuEvC_4. Embedded on the beer page.',
+        placeholder: 'TBpZtuEvC_4',
+      },
+    },
+    {
       name: 'ingredients',
       type: 'array',
       label: 'Local producers',

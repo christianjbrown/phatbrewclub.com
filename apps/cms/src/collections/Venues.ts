@@ -127,6 +127,12 @@ export const Venues: CollectionConfig = {
           'Optional. The exact place name to search on Google Maps. Leave blank to use the venue name and address.',
       },
     },
+    /**
+     * Each venue runs its own Instagram — phatbrewclub for West Perth,
+     * phatbrewclubhillarys for Hillarys — so a single site-wide handle sent
+     * everyone to the wrong one half the time.
+     */
+    { name: 'instagram', type: 'text', admin: { description: 'Full URL to this venue\'s Instagram.' } },
     { name: 'functionsPack', type: 'upload', relationTo: 'media' },
     { name: 'bookingUrl', type: 'text', admin: { description: 'nowbookit booking URL. Opened in a modal on the site.' } },
             { name: 'meanduSlug', type: 'text', admin: { description: 'me&u venue slug, used to sync menus and the tap list.' } },

@@ -87,6 +87,7 @@ export default async function VenuePage({ params }: { params: Promise<{ slug: st
                 <p style={{ color: '#8a8a8a' }}>{venue.transportNote}</p>
                 <VenueMap venue={venue} />
                 <h3 style={{ marginTop: 26 }}>Good to know</h3>
+                {venue.intro ? <p className="lede">{venue.intro}</p> : null}
                 <p>{(venue.amenities ?? []).map((a) => (
                   <span className="chip" key={a}><AmenityIcon label={a} />{a}</span>
                 ))}</p>
@@ -148,6 +149,16 @@ export default async function VenuePage({ params }: { params: Promise<{ slug: st
               <Link className="btn" href={`/venues/${venue.slug}/menu`}>
                 See the menu
               </Link>
+              {venue.instagram ? (
+                <a
+                  className="btn btn-o"
+                  href={venue.instagram}
+                  target="_blank"
+                  rel="noopener noreferrer me"
+                >
+                  {venue.shortName} on Instagram
+                </a>
+              ) : null}
               {venue.meanduSlug ? (
                 <a
                   className="btn btn-o"

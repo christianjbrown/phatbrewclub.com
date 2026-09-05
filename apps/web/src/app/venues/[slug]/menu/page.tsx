@@ -2,6 +2,8 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import { Footer, Header } from '@/components/Chrome'
+import { DietaryTags } from '@/components/DietaryTags'
+import { MenuPhoto } from '@/components/MenuPhoto'
 import {
   getMenus,
   getVenue,
@@ -72,14 +74,11 @@ export default async function VenueMenuPage({ params }: Params) {
                         return (
                           <div className="menu-item" key={`${sec.name}-${it.name}`}>
                             {img ? (
-                              // eslint-disable-next-line @next/next/no-img-element
-                              <img
-                                className="menu-shot"
-                                src={img}
+                              <MenuPhoto
+                                thumb={img}
                                 srcSet={mediaSrcSet(it.image, ['micro', 'thumbnail'])}
-                                sizes="112px"
+                                full={mediaSize(it.image, 'card') ?? img}
                                 alt={it.image?.alt ?? it.name ?? ''}
-                                loading="lazy"
                                 width={dims?.width}
                                 height={dims?.height}
                               />
@@ -92,7 +91,7 @@ export default async function VenueMenuPage({ params }: Params) {
                               {it.description ? (
                                 <p className="menu-desc">{it.description}</p>
                               ) : null}
-                              {it.dietary ? <p className="menu-diet">{it.dietary}</p> : null}
+                              <DietaryTags value={it.dietary} />
                             </div>
                           </div>
                         )
@@ -102,6 +101,22 @@ export default async function VenueMenuPage({ params }: Params) {
                 </div>
               ))
             )}
+
+            {venue.meanduSlug ? (
+              <p style={{ marginTop: 26 }}>
+                {/* Ordering happens on me&u, which is also where these prices
+                    and photos come from. Linking per item is not possible: the
+                    feed carries no per-item ordering URL, only the venue's. */}
+                <a
+                  className="btn"
+                  href={`https://meandu.app/${venue.meanduSlug}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  Order on me&amp;u
+                </a>
+              </p>
+            ) : null}
 
             {menus[0]?.syncedAt ? (
               <p style={{ color: '#777', fontSize: 14 }}>

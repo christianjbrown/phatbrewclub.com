@@ -44,6 +44,8 @@ export type Venue = {
   hoursOverrides?: { date: string; label?: string | null; opens?: string | null; closes?: string | null; closed?: boolean | null }[] | null
   functionsPack?: Media | null
   mapsQuery?: string | null
+  instagram?: string | null
+  intro?: string | null
 }
 
 export type Beer = {
@@ -53,6 +55,7 @@ export type Beer = {
   style: string
   abv: number
   ibu?: number | null
+  videoId?: string | null
   category: 'core' | 'seasonal' | 'limited' | 'collab'
   description?: string | null
   canArtwork?: Media | null

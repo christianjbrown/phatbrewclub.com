@@ -2,6 +2,7 @@ import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import type { Metadata } from 'next'
 import { Footer, Header } from '@/components/Chrome'
+import { VideoEmbed } from '@/components/VideoEmbed'
 import { JsonLd, beerSchema } from '@/lib/jsonld'
 import { Lightbox } from '@/components/Lightbox'
 import { toShots } from '@/lib/shots'
@@ -153,6 +154,15 @@ export default async function BeerPage({ params }: { params: Promise<{ slug: str
             )}
           </div>
         </section>
+
+        {beer.videoId ? (
+          <section>
+            <div className="wrap">
+              <h2>Watch</h2>
+              <VideoEmbed id={beer.videoId} title={`${beer.name} — Phat Brew Club`} />
+            </div>
+          </section>
+        ) : null}
 
         {(beer.ingredients ?? []).length ? (
           <section>

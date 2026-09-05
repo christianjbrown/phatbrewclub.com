@@ -14,6 +14,9 @@ export const VENUES = [
     latitude: -31.9441142,
     longitude: 115.8449941,
     mapsQuery: 'Phat Brew Club West Perth',
+    instagram: 'https://www.instagram.com/phatbrewclub',
+    intro:
+      'Opposite City West Train Station, our 450-person HQ is built for all-day fun — 20 Phat Brew beers on tap, a massive beer garden, superb cocktails, arcade games, kids\u2019 zone, and kitchen favourites that go big on flavour. Perfect for group bookings, casual hangs, long lunches and evening sessions.',
     transportNote: 'Directly opposite City West Station',
     capacity: 450,
     amenities: ['Beer garden', 'Kids zone', 'Arcade games', 'Dog friendly', 'Function spaces', 'Parking'],
@@ -50,6 +53,9 @@ export const VENUES = [
     latitude: -31.8244722,
     longitude: 115.7412655,
     mapsQuery: 'Phat Brew Club Hillarys',
+    instagram: 'https://www.instagram.com/phatbrewclubhillarys',
+    intro:
+      'Right on the Hillarys Boat Harbour boardwalk, our brand-new coastal brewpub brings ocean views, fresh seafood, handcrafted beers and golden-hour energy all day long. With exclusive brews, live music and relaxed WA vibes, it\u2019s your new favourite spot for summer sessions.',
     transportNote: 'On the boardwalk at Hillarys Boat Harbour, next to Breakwater',
     capacity: 300,
     amenities: ['Ocean views', 'Live music', 'Fresh seafood', 'Family friendly', 'Parking', 'Outdoor seating'],
@@ -177,3 +183,26 @@ export const EVENTS: [string, number, number, string, string[], string, boolean,
   ['Live on the Boardwalk', 6, 19, 'once', ['hillarys'], 'Live music', true, '',
     'Live music on the boardwalk as the sun goes down. Free entry, no bookings needed.'],
 ]
+
+/**
+ * The local producers behind West Is Best, in the brewery's own words from their
+ * homepage. Their site gives this beer a whole section naming the growers and
+ * maltsters; the Beers collection already had a "Local producers" field for
+ * exactly this and it was sitting empty.
+ */
+export const BEER_INGREDIENTS: Record<string, [string, string][]> = {
+  'west-is-best': [
+    ['Mallokup Malt', "Scotty's premium WA-malted barley forming the clean, crisp backbone."],
+    ['Yalup River Farm', "Wayde's world-class West Australian barley grown in rich, southern soil."],
+    ['Margaret River Hops', "Dirk's ultra-fresh WA hops delivering subtle aroma, bite, and balance."],
+    [
+      'Phat Brew Club Brewers',
+      'Rob and the team crafting a lager designed for WA summers, beer gardens, BBQs, and that first-sip “yes” moment.',
+    ],
+  ],
+}
+
+/** YouTube ids, keyed by beer slug. Theirs, embedded from their own channel. */
+export const BEER_VIDEOS: Record<string, string> = {
+  'west-is-best': 'TBpZtuEvC_4',
+}
