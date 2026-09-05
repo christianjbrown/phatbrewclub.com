@@ -49,7 +49,10 @@ export const BeerCard = ({ beer }: { beer: Beer }) => {
         // eslint-disable-next-line @next/next/no-img-element
         <img
           src={img}
-          srcSet={mediaSrcSet(beer.canArtwork, ['micro', 'thumbnail', 'small'])}
+          // 215px slot: a 2x screen wants 430, and offering 600 made it jump
+          // there. 400 is a 7% shortfall on a small decal and about half the
+          // bytes, so the ladder stops at 400 here.
+          srcSet={mediaSrcSet(beer.canArtwork, ['micro', 'thumbnail'])}
           sizes="(min-width: 900px) 215px, 45vw"
           alt={beer.canArtwork?.alt ?? `${beer.name} can artwork`}
           loading="lazy"

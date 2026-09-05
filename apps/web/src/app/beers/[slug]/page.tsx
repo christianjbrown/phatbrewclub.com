@@ -112,7 +112,7 @@ export default async function BeerPage({ params }: { params: Promise<{ slug: str
               <Lightbox
                 shots={toShots(
                   beer.gallery,
-                  (m) => mediaSize(m, 'card'),
+                  (m) => mediaSize(m, 'small'),
                   // The largest derivative rather than the original. This used
                   // to send the untouched upload because the hero size cropped
                   // to landscape and these product shots are portrait; sizes
@@ -120,6 +120,10 @@ export default async function BeerPage({ params }: { params: Promise<{ slug: str
                   // shipping a multi-megabyte JPEG into a lightbox.
                   (m) => mediaSize(m, 'hero'),
                   `${beer.name} product photograph`,
+                  (m) => ({
+                    srcSet: mediaSrcSet(m, ['thumbnail', 'small', 'card']),
+                    ...(mediaDims(m, 'small') ?? {}),
+                  }),
                 )}
               />
             </div>

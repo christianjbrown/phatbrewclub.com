@@ -30,7 +30,19 @@ export const Lightbox = ({ shots }: { shots: Shot[] }) => {
         {shots.map((s, i) => (
           <button key={s.thumb} type="button" className="shot" onClick={() => open(i)}>
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src={s.thumb} alt={s.alt} loading="lazy" width={800} height={600} />
+            {/* The grid is four ~266px columns, so the thumbnail needs 600 at
+                2x, not the 800 it used to send with no srcset at all — and the
+                dimensions are the picture's own rather than a hard-coded
+                800x600 that squashed portrait shots. */}
+            <img
+              src={s.thumb}
+              srcSet={s.srcSet}
+              sizes="(min-width: 900px) 266px, 45vw"
+              alt={s.alt}
+              loading="lazy"
+              width={s.width}
+              height={s.height}
+            />
             <span className="sr-only">Enlarge photo {i + 1} of {shots.length}</span>
           </button>
         ))}

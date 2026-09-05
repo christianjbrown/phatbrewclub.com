@@ -1,6 +1,14 @@
 import type { Media } from './types'
 
-export type Shot = { thumb: string; full: string; alt: string }
+export type Shot = {
+  thumb: string
+  full: string
+  alt: string
+  /** srcset for the thumbnail, so the grid is not stuck with one size. */
+  srcSet?: string
+  width?: number
+  height?: number
+}
 
 /**
  * Plain data mapping, deliberately not in the Lightbox component file. That
@@ -14,11 +22,12 @@ export const toShots = (
   thumb: (m: Media) => string | null,
   full: (m: Media) => string | null,
   fallbackAlt: string,
+  meta?: (m: Media) => { srcSet?: string; width?: number; height?: number },
 ): Shot[] =>
   (gallery ?? [])
     .map((m) => {
       const t = thumb(m)
       const f = full(m)
-      return t && f ? { thumb: t, full: f, alt: m.alt || fallbackAlt } : null
+      return t && f ? { thumb: t, full: f, alt: m.alt || fallbackAlt, ...(meta?.(m) ?? {}) } : null
     })
     .filter((s): s is Shot => s !== null)
