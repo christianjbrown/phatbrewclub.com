@@ -224,3 +224,44 @@ defensible rather than merely convenient:
 - Deleted images can linger in Google's edge cache, because the objects are
   served `immutable` for a year. `gcloud storage ls` is the authority, not an
   HTTP 200. Replacements get a new filename, so this bites deletions only.
+
+## Beer facts: where each number comes from
+
+Name, style and ABV come from the can artwork. Descriptions come from the
+brewery's own shop pages, or from their Untappd entries where the shop has no
+listing. Nothing is written here.
+
+This needed saying because the first pass invented most of it. Names were read
+off decal filenames and the rest was guessed, so the site published wrong
+alcohol content: 3 Cheers was listed at 6.5% when its can says 10%, Brightside
+was a 4% Session Ale when it is Mr Brightside, a 6.5% NZ Bright IPA, and Passion
+was a Fruited Sour when Phat Passion is a hard seltzer. Of the eighteen beers,
+only Risky Business and Hazy Mid were right end to end.
+
+**IBU is deliberately absent.** No source we have carries it, so all eighteen
+figures were fabricated, and they rendered on cards, on detail pages and in the
+Product schema. Untappd shows an IBU for some beers; it is not used, because it
+is not consistently the brewery's own figure.
+
+### Independent corroboration
+
+Where sources disagree the can wins, since it is what the drinker is holding.
+Untappd has Hazy Mid at 3.8% and its can says 3.5%.
+
+OG Pale needed a third opinion: the 2025 can says 5.5%, the brewery's own shop
+listing and Untappd both say 5%. Mane Liquor, an independent stockist, lists it
+at 5.5%, so the can and a current retailer agree against two stale listings.
+Mane also confirmed West Is Best (Lager, 4.2%), Extra Phat (XPA, 5% — we had it
+as an Amber Ale) and Phubba Bubba (5.5%).
+
+The national chains — Dan Murphy's, BWS, Liquorland, Vintage Cellars, First
+Choice, Liquor Barons, Cellarbrations, The Bottle-O, Bottlemart, Thirsty Camel,
+Harry Brown, IGA Liquor — do not stock this brewery. It is small and WA-only,
+and the useful third parties are the independents: Mane Liquor, Copper & Oak,
+WA Cellars.
+
+### The ABV suffix
+
+Their shop copy ends with a parenthetical ABV, and the site renders ABV as its
+own field. Printing both puts two numbers side by side that disagree whenever a
+listing is stale, so the suffix is stripped and the sentence kept.

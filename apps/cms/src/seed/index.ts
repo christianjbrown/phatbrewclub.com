@@ -241,7 +241,14 @@ const run = async () => {
       collection: 'beers',
       id: found.docs[0].id,
       data: {
-        ...(bp.description ? { description: bp.description } : {}),
+        // Their shop copy ends with a parenthetical ABV, and we render ABV as
+        // its own field, so the two would sit side by side — and disagree where
+        // the shop listing is stale. OG Pale's copy says "(5% ABV)" while the
+        // 2025 can and Mane Liquor both say 5.5%. Drop the suffix, keep the
+        // sentence.
+        ...(bp.description
+          ? { description: bp.description.replace(/\s*\(\s*\d+(?:\.\d+)?\s*%\s*ABV\s*\)\s*$/i, '').trim() }
+          : {}),
         ...(bp.price ? { price: bp.price } : {}),
         ...(bp.packSize ? { packSize: bp.packSize } : {}),
         ...(bp.allergens.length ? { allergens: bp.allergens } : {}),
