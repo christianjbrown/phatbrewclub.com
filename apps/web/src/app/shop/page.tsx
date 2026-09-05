@@ -1,6 +1,6 @@
 import type { Metadata } from 'next'
 import { Footer, Header } from '@/components/Chrome'
-import { getMerch, getVenues, mediaSize, mediaSrcSet } from '@/lib/payload'
+import { getMerch, getVenues, mediaDims, mediaSize, mediaSrcSet } from '@/lib/payload'
 
 export const metadata: Metadata = {
   title: 'Shop',
@@ -36,18 +36,19 @@ export default async function ShopPage() {
               <div className="grid g3 shop-grid">
                 {merch.map((m) => {
                   const first = m.images?.[0] ?? null
-                  const img = mediaSize(first, 'card')
+                  const img = mediaSize(first, 'small')
+                  const d = mediaDims(first, 'small')
                   return (
                     <article key={m.id} className="shop-card">
                       {img ? (
                         <img
                           src={img}
-                          srcSet={mediaSrcSet(first, ['thumbnail', 'card'])}
+                          srcSet={mediaSrcSet(first, ['micro', 'thumbnail', 'small'])}
                           sizes="(min-width: 900px) 300px, 45vw"
                           alt={first?.alt ?? m.title}
                           loading="lazy"
-                          width={800}
-                          height={600}
+                          width={d?.width}
+                          height={d?.height}
                         />
                       ) : null}
                       <div className="shop-card-body">

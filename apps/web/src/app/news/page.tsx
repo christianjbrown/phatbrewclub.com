@@ -29,7 +29,7 @@ export default async function NewsPage() {
                       // eslint-disable-next-line @next/next/no-img-element
                       <img
                         src={img}
-                        srcSet={mediaSrcSet(p.heroImage, ['thumbnail', 'card'])}
+                        srcSet={mediaSrcSet(p.heroImage, ['thumbnail', 'small', 'card'])}
                         sizes="(min-width: 900px) 360px, 90vw"
                         alt={p.heroImage?.alt ?? ''}
                         loading="lazy"

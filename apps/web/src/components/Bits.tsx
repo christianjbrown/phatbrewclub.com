@@ -38,7 +38,7 @@ export const HoursTable = ({ venue }: { venue: Venue }) => {
 }
 
 export const BeerCard = ({ beer }: { beer: Beer }) => {
-  const img = mediaSize(beer.canArtwork, 'can')
+  const img = mediaSize(beer.canArtwork, 'thumbnail')
   return (
     // The whole card is the link, not just the heading. A 40px text target
     // inside a 300px card is a needlessly small thing to hit, especially on a
@@ -49,7 +49,7 @@ export const BeerCard = ({ beer }: { beer: Beer }) => {
         // eslint-disable-next-line @next/next/no-img-element
         <img
           src={img}
-          srcSet={mediaSrcSet(beer.canArtwork, ['thumbnail', 'can'])}
+          srcSet={mediaSrcSet(beer.canArtwork, ['micro', 'thumbnail', 'small'])}
           sizes="(min-width: 900px) 215px, 45vw"
           alt={beer.canArtwork?.alt ?? `${beer.name} can artwork`}
           loading="lazy"
@@ -124,7 +124,7 @@ export const EventCard = ({ event, as: Heading = 'h3' }: { event: PhatEvent; as?
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             src={poster}
-            srcSet={mediaSrcSet(event.heroImage, ['thumbnail', 'card'])}
+            srcSet={mediaSrcSet(event.heroImage, ['thumbnail', 'small', 'card'])}
             sizes="(min-width: 900px) 360px, 90vw"
             alt={event.heroImage?.alt ?? `${event.title} poster`}
             loading="lazy"

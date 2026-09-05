@@ -42,7 +42,7 @@ const renderBlock = async (block: Block, key: string) => {
                 <img
                   className="page-hero-img"
                   src={img}
-                  srcSet={mediaSrcSet(block.image, ['card', 'hero'])}
+                  srcSet={mediaSrcSet(block.image, ['small', 'card', 'hero'])}
                   sizes="(min-width: 900px) 52vw, 92vw"
                   alt={block.image?.alt ?? ''}
                   fetchPriority="high"
@@ -177,7 +177,7 @@ const renderBlock = async (block: Block, key: string) => {
                   <img
                     key={img.id}
                     src={src}
-                    srcSet={mediaSrcSet(img, ['thumbnail', 'card'])}
+                    srcSet={mediaSrcSet(img, ['thumbnail', 'small', 'card'])}
                     sizes="(min-width: 900px) 360px, 90vw"
                     alt={img.alt ?? ''}
                     loading="lazy"

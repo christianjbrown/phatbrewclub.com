@@ -67,8 +67,8 @@ export default async function VenueMenuPage({ params }: Params) {
                     <div key={sec.name} style={{ marginTop: 22 }}>
                       <p className="eyebrow" style={{ marginBottom: 10 }}>{sec.name}</p>
                       {(sec.items ?? []).map((it) => {
-                        const img = mediaSize(it.image, 'thumbnail')
-                        const dims = mediaDims(it.image, 'thumbnail')
+                        const img = mediaSize(it.image, 'micro')
+                        const dims = mediaDims(it.image, 'micro')
                         return (
                           <div className="menu-item" key={`${sec.name}-${it.name}`}>
                             {img ? (
@@ -76,7 +76,7 @@ export default async function VenueMenuPage({ params }: Params) {
                               <img
                                 className="menu-shot"
                                 src={img}
-                                srcSet={mediaSrcSet(it.image, ['thumbnail', 'card'])}
+                                srcSet={mediaSrcSet(it.image, ['micro', 'thumbnail'])}
                                 sizes="112px"
                                 alt={it.image?.alt ?? it.name ?? ''}
                                 loading="lazy"

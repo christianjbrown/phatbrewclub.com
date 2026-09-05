@@ -7,6 +7,7 @@ import * as migration_20260905_133656_add_can_image_size from './20260905_133656
 import * as migration_20260905_154916_add_merch from './20260905_154916_add_merch';
 import * as migration_20260905_180844_add_menu_item_images from './20260905_180844_add_menu_item_images';
 import * as migration_20260905_182700_add_functions_pack from './20260905_182700_add_functions_pack';
+import * as migration_20260905_190000_resize_ladder from './20260905_190000_resize_ladder';
 
 export const migrations = [
   {
@@ -53,5 +54,10 @@ export const migrations = [
     up: migration_20260905_182700_add_functions_pack.up,
     down: migration_20260905_182700_add_functions_pack.down,
     name: '20260905_182700_add_functions_pack'
+  },
+  {
+    up: migration_20260905_190000_resize_ladder.up,
+    down: migration_20260905_190000_resize_ladder.down,
+    name: '20260905_190000_resize_ladder',
   },
 ];

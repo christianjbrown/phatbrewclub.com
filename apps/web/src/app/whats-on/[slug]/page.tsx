@@ -44,7 +44,7 @@ export default async function EventPage({ params }: { params: Promise<{ slug: st
                 <img
                   className="poster"
                   src={poster}
-                  srcSet={mediaSrcSet(event.heroImage, ['thumbnail', 'card'])}
+                  srcSet={mediaSrcSet(event.heroImage, ['thumbnail', 'small', 'card'])}
                   sizes="(min-width: 900px) 380px, 90vw"
                   alt={event.heroImage?.alt ?? `${event.title} poster`}
                   width={posterDims?.width}

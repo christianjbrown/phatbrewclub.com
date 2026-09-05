@@ -32,8 +32,16 @@ export const Media: CollectionConfig = {
      * matches, so mediaSrcSet no longer has to discard mismatched sizes.
      */
     imageSizes: [
+      // A ladder, not a set of named crops. Since the sizes stopped cropping,
+      // "can" at 440 was doing nothing that 400 did not, so it is gone.
+      //
+      // The bottom rung matters: with 400 as the smallest, the menu thumbnails
+      // shipped 400px into a 112px slot — about thirteen times the pixels the
+      // slot can show, and 1.2MB across one page. 240 covers a 112px slot at
+      // 2x; 600 covers the 300px shop cards, which were taking 800.
+      { name: 'micro', width: 240, formatOptions: { format: 'webp', options: { quality: 80 } } },
       { name: 'thumbnail', width: 400, formatOptions: { format: 'webp', options: { quality: 80 } } },
-      { name: 'can', width: 440, formatOptions: { format: 'webp', options: { quality: 82 } } },
+      { name: 'small', width: 600, formatOptions: { format: 'webp', options: { quality: 80 } } },
       { name: 'card', width: 800, formatOptions: { format: 'webp', options: { quality: 80 } } },
       { name: 'hero', width: 1600, formatOptions: { format: 'webp', options: { quality: 78 } } },
     ],

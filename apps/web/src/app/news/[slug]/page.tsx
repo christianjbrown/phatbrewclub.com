@@ -36,7 +36,7 @@ export default async function PostPage({ params }: { params: Promise<{ slug: str
               // eslint-disable-next-line @next/next/no-img-element
               <img
                 src={img}
-                srcSet={mediaSrcSet(post.heroImage, ['card', 'hero'])}
+                srcSet={mediaSrcSet(post.heroImage, ['small', 'card', 'hero'])}
                 sizes="(min-width: 900px) 860px, 100vw"
                 alt={post.heroImage?.alt ?? ''}
                 width={dims?.width}

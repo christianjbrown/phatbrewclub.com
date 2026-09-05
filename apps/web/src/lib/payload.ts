@@ -121,8 +121,10 @@ type Sized = {
   sizes?: Record<string, { url?: string | null; width?: number | null; height?: number | null } | undefined>
 }
 
+export type MediaSize = 'micro' | 'thumbnail' | 'small' | 'card' | 'hero'
+
 /** Largest first, so a fallback walks down rather than off the edge. */
-const SIZE_ORDER = ['hero', 'card', 'can', 'thumbnail'] as const
+const SIZE_ORDER = ['hero', 'card', 'small', 'thumbnail', 'micro'] as const
 
 /**
  * The dimensions a derivative actually has.
@@ -134,7 +136,7 @@ const SIZE_ORDER = ['hero', 'card', 'can', 'thumbnail'] as const
  */
 export const mediaDims = (
   m: Sized | null | undefined,
-  size: 'thumbnail' | 'card' | 'hero' | 'can',
+  size: MediaSize,
 ): { width: number; height: number } | undefined => {
   if (!m) return undefined
   const from = SIZE_ORDER.indexOf(size)
@@ -156,7 +158,7 @@ export const mediaDims = (
  */
 export const mediaSize = (
   m: Sized | null | undefined,
-  size: 'thumbnail' | 'card' | 'hero' | 'can',
+  size: MediaSize,
 ): string | null => {
   if (!m) return null
 
@@ -164,7 +166,7 @@ export const mediaSize = (
   if (exact) return absolute(exact)
 
   // Walk down from the requested size through whatever was generated.
-  const from = SIZE_ORDER.indexOf(size as (typeof SIZE_ORDER)[number])
+  const from = SIZE_ORDER.indexOf(size)
   const candidates = from === -1 ? SIZE_ORDER : SIZE_ORDER.slice(from + 1)
   for (const key of candidates) {
     const url = m.sizes?.[key]?.url

@@ -47,7 +47,7 @@ export default async function VenuePage({ params }: { params: Promise<{ slug: st
             <img
               className="hero-img"
               src={hero}
-              srcSet={mediaSrcSet(venue.heroImage, ['card', 'hero'])}
+              srcSet={mediaSrcSet(venue.heroImage, ['small', 'card', 'hero'])}
               sizes="100vw"
               alt=""
               fetchPriority="high"
