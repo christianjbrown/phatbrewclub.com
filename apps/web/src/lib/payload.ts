@@ -220,3 +220,51 @@ export const mediaSrcSet = (m: Sized | null | undefined, sizes: string[]): strin
 
   return parts.length > 1 ? parts.join(', ') : undefined
 }
+
+/**
+ * Site search.
+ *
+ * Payload's REST `like` is a case-insensitive contains, which is enough for a
+ * site this size and avoids standing up a search index for a few hundred
+ * documents. Each collection is queried for the fields a visitor would actually
+ * type — a beer's name and style, an event's title, a page's title — and the
+ * results are merged.
+ *
+ * Collections are queried in parallel and a failure in one does not empty the
+ * page: a search that returns beers but no events is more useful than an error.
+ */
+export type SearchHit = { title: string; href: string; kind: string; detail?: string }
+
+export const search = async (q: string): Promise<SearchHit[]> => {
+  const term = q.trim()
+  if (term.length < 2) return []
+
+  const grab = async <T>(path: string, query: Query, map: (docs: T[]) => SearchHit[]) => {
+    try {
+      const r = await api<Paginated<T>>(path, query, [path])
+      return map(r.docs)
+    } catch {
+      return []
+    }
+  }
+
+  const [beers, events, posts, pages, merch] = await Promise.all([
+    grab<Beer>('beers', { depth: 0, limit: 20, 'where[name][like]': term }, (d) =>
+      d.map((b) => ({ title: b.name, href: `/beers/${b.slug}`, kind: 'Beer', detail: b.style ?? undefined })),
+    ),
+    grab<PhatEvent>('events', { depth: 0, limit: 20, 'where[title][like]': term }, (d) =>
+      d.map((e) => ({ title: e.title, href: `/whats-on/${e.slug}`, kind: "What's on" })),
+    ),
+    grab<Post>('posts', { depth: 0, limit: 20, 'where[title][like]': term }, (d) =>
+      d.map((p) => ({ title: p.title, href: `/news/${p.slug}`, kind: 'News' })),
+    ),
+    grab<Page>('pages', { depth: 0, limit: 20, 'where[title][like]': term }, (d) =>
+      d.map((p) => ({ title: p.title, href: `/${p.slug}`, kind: 'Page' })),
+    ),
+    grab<Merch>('merch', { depth: 0, limit: 20, 'where[title][like]': term }, (d) =>
+      d.map((m) => ({ title: m.title, href: '/shop', kind: 'Shop' })),
+    ),
+  ])
+
+  return [...beers, ...events, ...posts, ...pages, ...merch]
+}

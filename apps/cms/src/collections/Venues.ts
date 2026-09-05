@@ -113,6 +113,20 @@ export const Venues: CollectionConfig = {
             // The brewery publishes a functions brochure as a PDF and nothing else:
     // its own functions pages say only "Function details coming soon". Anything
     // more specific here would be invented.
+    /**
+     * What to ask Google Maps for, when the venue's own name is not what Maps
+     * knows it by. The Hillarys venue trades as The Trophy Room, and searching
+     * that name plus its address put the pin on The Breakwater next door;
+     * Google lists it as "Phat Brew Club Hillarys".
+     */
+    {
+      name: 'mapsQuery',
+      type: 'text',
+      admin: {
+        description:
+          'Optional. The exact place name to search on Google Maps. Leave blank to use the venue name and address.',
+      },
+    },
     { name: 'functionsPack', type: 'upload', relationTo: 'media' },
     { name: 'bookingUrl', type: 'text', admin: { description: 'nowbookit booking URL. Opened in a modal on the site.' } },
             { name: 'meanduSlug', type: 'text', admin: { description: 'me&u venue slug, used to sync menus and the tap list.' } },

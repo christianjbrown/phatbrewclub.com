@@ -59,6 +59,12 @@ export const Header = ({ current }: { current?: string }) => (
           )}
         </ul>
       </nav>
+      {/* A plain GET form in the header, so search works with no JavaScript and
+          a result is a shareable URL. */}
+      <form className="hd-search" action="/search" method="get" role="search">
+        <label className="sr-only" htmlFor="hd-q">Search</label>
+        <input id="hd-q" name="q" type="search" placeholder="Search" autoComplete="off" />
+      </form>
       <Link className="book" href="/venues">Book a table</Link>
     </div>
   </header>

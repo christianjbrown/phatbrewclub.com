@@ -43,6 +43,7 @@ export type Venue = {
   openingHours?: OpeningHour[] | null
   hoursOverrides?: { date: string; label?: string | null; opens?: string | null; closes?: string | null; closed?: boolean | null }[] | null
   functionsPack?: Media | null
+  mapsQuery?: string | null
 }
 
 export type Beer = {

@@ -268,3 +268,34 @@ a.card-link:focus-visible{outline:3px solid var(--orange);outline-offset:2px}
 .socials a{display:inline-flex;align-items:center;gap:8px;font:600 15px Rubik;color:var(--muted)}
 .socials svg{flex:0 0 auto}
 .socials a:hover{color:var(--orange)}
+
+/* Search */
+.search-form{display:flex;gap:10px;max-width:520px;margin:0 0 22px}
+.search-form input{flex:1;min-width:0;background:#111;border:1px solid #2a2a2a;color:#fff;border-radius:8px;padding:12px 14px;font:400 16px Rubik}
+.search-form input::placeholder{color:#6f6f6f}
+.search-form input:focus-visible{outline:2px solid var(--orange);outline-offset:1px;border-color:var(--orange)}
+.search-form .btn{margin:0}
+.results{list-style:none;margin:0;padding:0;display:grid;gap:10px}
+.results a{display:flex;align-items:center;gap:12px;flex-wrap:wrap;background:var(--card);border:1px solid var(--line);border-radius:10px;padding:14px 16px;color:inherit;text-decoration:none}
+.results a:hover{border-color:var(--orange)}
+.results a:hover strong{color:var(--orange)}
+.results-detail{color:var(--muted);font-size:14px}
+
+/* Booking widget. Nowbookit sizes its own content but cannot resize our frame,
+   so the height is set here and the frame scrolls if it needs to. */
+.booking{background:#fff;border-radius:12px;overflow:hidden;border:1px solid var(--line)}
+.booking iframe{width:100%;height:900px;border:0;display:block}
+@media(max-width:600px){.booking iframe{height:1050px}}
+
+/* Header search. Sits before the booking button and shrinks first, because a
+   table booking matters more than a search box on a narrow screen. */
+.hd-search{margin-left:auto}
+.hd-search input{width:150px;background:rgba(0,0,0,.16);border:1px solid rgba(0,0,0,.28);color:#111;border-radius:8px;padding:10px 12px;font:500 14px Rubik;min-height:40px}
+.hd-search input::placeholder{color:rgba(0,0,0,.55)}
+.hd-search input:focus-visible{outline:2px solid #000;outline-offset:1px;background:#fff}
+.hd-search + .book{margin-left:12px}
+@media(max-width:860px){
+  .hd-search{margin-left:0;order:2;flex:1 1 140px}
+  .hd-search input{width:100%}
+  .hd-search + .book{margin-left:0}
+}

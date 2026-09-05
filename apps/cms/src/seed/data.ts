@@ -13,6 +13,7 @@ export const VENUES = [
     // "102, Railway Street, West Perth", which is the building.
     latitude: -31.9441142,
     longitude: 115.8449941,
+    mapsQuery: 'Phat Brew Club West Perth',
     transportNote: 'Directly opposite City West Station',
     capacity: 450,
     amenities: ['Beer garden', 'Kids zone', 'Arcade games', 'Dog friendly', 'Function spaces', 'Parking'],
@@ -48,6 +49,7 @@ export const VENUES = [
     // is not mapped, so this is the closest defensible point.
     latitude: -31.8244722,
     longitude: 115.7412655,
+    mapsQuery: 'Phat Brew Club Hillarys',
     transportNote: 'On the boardwalk at Hillarys Boat Harbour, next to Breakwater',
     capacity: 300,
     amenities: ['Ocean views', 'Live music', 'Fresh seafood', 'Family friendly', 'Parking', 'Outdoor seating'],

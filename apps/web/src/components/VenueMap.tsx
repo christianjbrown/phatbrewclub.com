@@ -21,7 +21,12 @@ export const VenueMap = ({ venue }: { venue: Venue }) => {
   const { latitude: lat, longitude: lng } = venue.address
   if (typeof lat !== 'number' || typeof lng !== 'number') return null
 
-  const place = `${venue.name}, ${venue.address.street}, ${venue.address.suburb} ${venue.address.state} ${venue.address.postcode}`
+  // Prefer the name Google actually lists the venue under. Searching "The
+  // Trophy Room" plus its address put the Hillarys pin on The Breakwater next
+  // door; Maps knows it as "Phat Brew Club Hillarys".
+  const place =
+    venue.mapsQuery?.trim() ||
+    `${venue.name}, ${venue.address.street}, ${venue.address.suburb} ${venue.address.state} ${venue.address.postcode}`
   const query = encodeURIComponent(place)
   const key = process.env.MAPS_EMBED_KEY
 

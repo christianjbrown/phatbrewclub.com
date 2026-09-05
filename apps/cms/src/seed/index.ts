@@ -163,6 +163,7 @@ const run = async () => {
         postcode: v.postcode, latitude: v.latitude, longitude: v.longitude,
       },
       transportNote: v.transportNote,
+      mapsQuery: v.mapsQuery,
       capacity: v.capacity,
       tapCount: 20,
       amenities: v.amenities,
