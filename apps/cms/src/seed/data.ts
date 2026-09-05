@@ -6,12 +6,15 @@ export const VENUES = [
     street: '73/102 Railway Street',
     suburb: 'West Perth',
     postcode: '6005',
-    latitude: -31.9436,
-    longitude: 115.8382,
+    // Geocoded, not estimated. An earlier guess here was ~800m west and
+    // dropped the map pin on Subiaco Road.
+    latitude: -31.9440572,
+    longitude: 115.8467847,
     transportNote: 'Directly opposite City West Station',
     capacity: 450,
     amenities: ['Beer garden', 'Kids zone', 'Arcade games', 'Dog friendly', 'Function spaces', 'Parking'],
     meanduSlug: 'phatbrewclub',
+    bookingUrl: 'https://bookings.nowbookit.com/?accountid=f28d754c-989b-4f8a-ac15-f637a65ed7b1&venueid=8277&theme=light&colors=hex,e65100,000000',
     // Taken from the venue page. The venues trade seasonal hours, hence the label.
     hoursLabel: 'Spring/Summer',
     publicHolidayNote: 'Public holidays usually noon to 9pm at both venues. Check our socials for Christmas trading.',
@@ -36,14 +39,15 @@ export const VENUES = [
     street: '222/58 Southside Drive, Sorrento Quay',
     suburb: 'Hillarys',
     postcode: '6025',
-    latitude: -31.8244,
-    longitude: 115.7395,
+    latitude: -31.8245333,
+    longitude: 115.7396422,
     transportNote: 'On the boardwalk at Hillarys Boat Harbour, next to Breakwater',
     capacity: 300,
     amenities: ['Ocean views', 'Live music', 'Fresh seafood', 'Family friendly', 'Parking', 'Outdoor seating'],
     // Confirmed against the gateway: this resolves to "Phat Brew Club - Hillarys".
     // Both venues previously pointed at the West Perth slug.
     meanduSlug: 'phatbrewclub-hillarys',
+    bookingUrl: 'https://bookings.nowbookit.com/?accountid=f28d754c-989b-4f8a-ac15-f637a65ed7b1&venueid=14140&colors=hex,FF6F20,000000',
     hoursLabel: 'Spring/Summer',
     publicHolidayNote: 'Public holidays usually noon to 9pm at both venues. Check our socials for Christmas trading.',
     hours: [

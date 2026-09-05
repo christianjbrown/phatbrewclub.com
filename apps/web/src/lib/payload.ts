@@ -100,11 +100,39 @@ type Sized = {
   sizes?: Record<string, { url?: string | null; width?: number | null } | undefined>
 }
 
+/** Largest first, so a fallback walks down rather than off the edge. */
+const SIZE_ORDER = ['hero', 'square', 'card', 'can', 'thumbnail'] as const
+
 /**
- * A srcset across whatever derivatives exist, so a phone downloads an 800px
- * hero rather than the 1600px one. Without this the mobile LCP is dominated by
- * an image three times larger than the screen it lands on.
+ * Payload generates derivatives on upload but skips any target larger than the
+ * source, since it will not upscale. Falling back to the original in that case
+ * serves the biggest file on the page — the can artwork was shipping a 202KB
+ * PNG to fill a 215px card.
+ *
+ * So: ask for a size, and if it is missing take the next smaller one that
+ * exists. The original is a last resort, not the first fallback.
  */
+export const mediaSize = (
+  m: Sized | null | undefined,
+  size: 'thumbnail' | 'card' | 'hero' | 'square' | 'can',
+): string | null => {
+  if (!m) return null
+
+  const exact = m.sizes?.[size]?.url
+  if (exact) return absolute(exact)
+
+  // Walk down from the requested size through whatever was generated.
+  const from = SIZE_ORDER.indexOf(size as (typeof SIZE_ORDER)[number])
+  const candidates = from === -1 ? SIZE_ORDER : SIZE_ORDER.slice(from + 1)
+  for (const key of candidates) {
+    const url = m.sizes?.[key]?.url
+    if (url) return absolute(url)
+  }
+
+  // Nothing generated at all (an SVG, or an upload smaller than every target).
+  return m.url ? absolute(m.url) : null
+}
+
 export const mediaSrcSet = (m: Sized | null | undefined, sizes: string[]): string | undefined => {
   if (!m?.sizes) return undefined
   const parts = sizes
@@ -112,17 +140,4 @@ export const mediaSrcSet = (m: Sized | null | undefined, sizes: string[]): strin
     .filter((v): v is { url?: string | null; width?: number | null } => Boolean(v?.url && v?.width))
     .map((v) => `${absolute(v.url!)} ${v.width}w`)
   return parts.length > 1 ? parts.join(', ') : undefined
-}
-
-/**
- * Payload generates thumbnail/card/hero/square variants on upload. Serving the
- * original into a small box is exactly the mistake the old site made — its logo
- * was requested at 2400px to render at 140px. Ask for the size you are actually
- * going to display, and fall back to the original only if it is missing.
- */
-export const mediaSize = (m: Sized | null | undefined, size: 'thumbnail' | 'card' | 'hero' | 'square'): string | null => {
-  if (!m) return null
-  const variant = m.sizes?.[size]?.url
-  if (variant) return absolute(variant)
-  return m.url ? absolute(m.url) : null
 }

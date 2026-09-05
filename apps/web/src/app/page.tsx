@@ -32,7 +32,7 @@ export default async function Home() {
               Two venues, twenty taps, brewed on site in West Perth. Gold Plate winner for WA&apos;s
               best brewery, 2025.
             </p>
-            <a className="btn" href="#book">Book a table</a>
+            <Link className="btn" href="/venues">Book a table</Link>
             <Link className="btn btn-o" href="/beers">See what&apos;s pouring</Link>
           </div>
         </div>
@@ -57,7 +57,7 @@ export default async function Home() {
                         <br />
                         <span style={{ color: '#8a8a8a' }}>{v.transportNote}</span>
                       </p>
-                      <a className="btn" href={v.bookingUrl ?? '#book'}>Book {v.shortName}</a>
+                      <a className="btn" href={v.bookingUrl ?? '/venues'}>Book {v.shortName}</a>
                       <Link className="btn btn-o" href={`/venues/${v.slug}`}>Hours and menu</Link>
                     </div>
                   </article>
@@ -70,8 +70,15 @@ export default async function Home() {
         {tapList ? (
           <section>
             <div className="wrap">
-              <h2>On tap right now</h2>
-              <p>Updated from the venue, not typed out once a month.</p>
+              {/* Names the venue: the two venues pour different things, and a
+                  bare "on tap right now" invites someone to turn up at Hillarys
+                  expecting a West Perth keg. */}
+              <h2>On tap right now at {wp?.shortName ?? 'West Perth'}</h2>
+              <p>
+                <Link href={`/venues/${wp?.slug ?? 'west-perth'}`}>
+                  See {wp?.shortName ?? 'West Perth'} opening hours and menu
+                </Link>
+              </p>
               <TapRows list={tapList} />
             </div>
           </section>
@@ -80,7 +87,7 @@ export default async function Home() {
         <section>
           <div className="wrap">
             <h2>What&apos;s on this week</h2>
-            <div className="grid" style={{ gap: 14 }}>
+            <div className="grid g4 fill">
               {upcoming.map((e) => <EventCard event={e} key={e.id} />)}
             </div>
             <p style={{ marginTop: 24 }}>

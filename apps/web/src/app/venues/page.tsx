@@ -40,7 +40,7 @@ export default async function VenuesPage() {
                       <p style={{ marginBottom: 18 }}>
                         {(v.amenities ?? []).map((a) => <span className="chip" key={a}>{a}</span>)}
                       </p>
-                      <a className="btn" href={v.bookingUrl ?? '#book'}>Book {v.shortName}</a>
+                      <a className="btn" href={v.bookingUrl ?? '/contact'}>Book {v.shortName}</a>
                       <Link className="btn btn-o" href={`/venues/${v.slug}`}>Hours and menu</Link>
                     </div>
                   </div>

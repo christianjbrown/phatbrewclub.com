@@ -101,6 +101,7 @@ const run = async () => {
       tapCount: 20,
       amenities: v.amenities,
       meanduSlug: v.meanduSlug,
+      bookingUrl: v.bookingUrl,
       hoursLabel: v.hoursLabel,
       publicHolidayNote: v.publicHolidayNote,
       faqs: (v.faqs ?? []).map(([question, answer]) => ({ question, answer })),

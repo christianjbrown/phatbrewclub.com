@@ -28,7 +28,7 @@ export default async function BeerPage({ params }: { params: Promise<{ slug: str
   const pouring = lists.filter(({ list }) =>
     (list?.taps ?? []).some((t) => !t.kegBlown && String(t.beer?.id) === String(beer.id)),
   )
-  const art = mediaUrl(beer.canArtwork)
+  const art = mediaSize(beer.canArtwork, 'square')
 
   return (
     <>

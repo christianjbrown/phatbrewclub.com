@@ -22,29 +22,36 @@ const renderBlock = async (block: Block, key: string) => {
   switch (block.blockType) {
     case 'hero': {
       const img = mediaSize(block.image, 'hero')
+      // Shown as a real image beside the copy rather than dimmed behind it.
+      // The About page photograph is the crew who started the brewery; it is
+      // the point of the page, not wallpaper for the headline.
       return (
-        <div className="hero" key={key} style={{ minHeight: 380 }}>
-          {img ? (
-            // eslint-disable-next-line @next/next/no-img-element
-            <img
-              className="hero-img"
-              src={img}
-              srcSet={mediaSrcSet(block.image, ['card', 'hero'])}
-              sizes="100vw"
-              alt=""
-              fetchPriority="high"
-              decoding="async"
-            />
-          ) : null}
+        <section key={key}>
           <div className="wrap">
-            {block.eyebrow ? <p className="eyebrow">{block.eyebrow}</p> : null}
-            <h1>{block.heading}</h1>
-            {block.lede ? <p className="lede">{block.lede}</p> : null}
-            {(block.actions ?? []).map((a, i) => (
-              <a className={i === 0 ? 'btn' : 'btn btn-o'} href={a.url} key={a.url}>{a.label}</a>
-            ))}
+            <div className={img ? 'page-hero' : undefined}>
+              <div>
+                {block.eyebrow ? <p className="eyebrow">{block.eyebrow}</p> : null}
+                <h1>{block.heading}</h1>
+                {block.lede ? <p className="lede">{block.lede}</p> : null}
+                {(block.actions ?? []).map((a, i) => (
+                  <a className={i === 0 ? 'btn' : 'btn btn-o'} href={a.url} key={a.url}>{a.label}</a>
+                ))}
+              </div>
+              {img ? (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img
+                  className="page-hero-img"
+                  src={img}
+                  srcSet={mediaSrcSet(block.image, ['card', 'hero'])}
+                  sizes="(min-width: 900px) 52vw, 92vw"
+                  alt={block.image?.alt ?? ''}
+                  fetchPriority="high"
+                  decoding="async"
+                />
+              ) : null}
+            </div>
           </div>
-        </div>
+        </section>
       )
     }
     case 'richText':
@@ -208,7 +215,7 @@ export default async function CmsPage({ params }: { params: Promise<{ slug: stri
 
   return (
     <>
-      <Header />
+      <Header current={`/${slug}`} />
       <main id="main">
         {blocks}
       </main>

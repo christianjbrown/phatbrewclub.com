@@ -17,11 +17,11 @@ export default async function ShopPage() {
           <div className="wrap">
             <h1>Shop</h1>
             <p className="lede">
-              Beer cubes, merch and gift cards. Checkout arrives with the ecommerce phase.
+              Beer cubes, merch and gift cards.
             </p>
             <p className="note">
-              <b>Phase 6:</b> products, cart and Stripe checkout come from the Payload ecommerce
-              plugin. The existing Square store stays live until this has taken real test payments.
+              Online ordering is coming soon. In the meantime, cubes and merch are
+              available at both venues.
             </p>
           </div>
         </section>

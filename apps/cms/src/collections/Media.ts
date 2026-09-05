@@ -8,14 +8,22 @@ export const Media: CollectionConfig = {
   upload: {
     // Sizes are generated once on upload and served from object storage,
     // so the front end never ships a 3 MB photo to fill a 400px box.
+    // WebP for every derivative. The can artwork arrives as PNG with an alpha
+    // channel, where a 312x520 image was costing 202KB — larger than the
+    // photographs beside it. WebP takes that to a fraction with no visible
+    // difference at these sizes.
+    formatOptions: {
+      format: 'webp',
+      options: { quality: 82 },
+    },
     imageSizes: [
-      { name: 'thumbnail', width: 400, height: 300, position: 'centre' },
-      { name: 'card', width: 800, height: 600, position: 'centre' },
-      // 1600 not 1920: Payload does not upscale, so a 1920 variant is silently
-      // never generated for sources narrower than that, and callers fall back
-      // to the full-size original without any warning.
-      { name: 'hero', width: 1600, height: 900, position: 'centre' },
-      { name: 'square', width: 800, height: 800, position: 'centre' },
+      // Portrait, because the can decals are 1200x1500 and a landscape crop
+      // cuts the top and bottom off the artwork.
+      { name: 'can', width: 440, height: 550, position: 'centre', formatOptions: { format: 'webp', options: { quality: 82 } } },
+      { name: 'thumbnail', width: 400, height: 300, position: 'centre', formatOptions: { format: 'webp', options: { quality: 80 } } },
+      { name: 'card', width: 800, height: 600, position: 'centre', formatOptions: { format: 'webp', options: { quality: 80 } } },
+      { name: 'hero', width: 1600, height: 900, position: 'centre', formatOptions: { format: 'webp', options: { quality: 78 } } },
+      { name: 'square', width: 800, height: 800, position: 'centre', formatOptions: { format: 'webp', options: { quality: 80 } } },
     ],
     adminThumbnail: 'thumbnail',
     mimeTypes: ['image/*', 'application/pdf'],

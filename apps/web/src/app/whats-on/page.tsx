@@ -22,7 +22,7 @@ export default async function WhatsOnPage() {
           <div className="wrap">
             <h1>What&apos;s on</h1>
             <p className="lede">Everything happening across both venues.</p>
-            <div className="grid" style={{ gap: 14, marginTop: 24 }}>
+            <div className="grid g3 fill" style={{ marginTop: 24 }}>
               {upcoming.length
                 ? upcoming.map((e) => <EventCard event={e} as="h2" key={e.id} />)
                 : <p>Nothing listed right now. Check back soon.</p>}
@@ -33,7 +33,7 @@ export default async function WhatsOnPage() {
           <section>
             <div className="wrap">
               <h2>Recently finished</h2>
-              <div className="grid" style={{ gap: 14 }}>
+              <div className="grid g3 fill">
                 {past.map((e) => <EventCard event={e} as="h3" key={e.id} />)}
               </div>
             </div>

@@ -89,7 +89,7 @@ export default async function VenuePage({ params }: { params: Promise<{ slug: st
         {tapList ? (
           <section>
             <div className="wrap">
-              <h2>{venue.tapCount ?? 20} taps, poured today</h2>
+              <h2>{venue.tapCount ?? 20} taps, poured today at {venue.shortName}</h2>
               <TapRows list={tapList} />
             </div>
           </section>
@@ -115,7 +115,7 @@ export default async function VenuePage({ params }: { params: Promise<{ slug: st
           <section>
             <div className="wrap">
               <h2>What&apos;s on at {venue.shortName}</h2>
-              <div className="grid" style={{ gap: 14 }}>
+              <div className="grid g3 fill">
                 {mine.map((e) => <EventCard event={e} key={e.id} />)}
               </div>
             </div>

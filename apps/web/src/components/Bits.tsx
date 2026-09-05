@@ -38,7 +38,7 @@ export const HoursTable = ({ venue }: { venue: Venue }) => {
 }
 
 export const BeerCard = ({ beer }: { beer: Beer }) => {
-  const img = mediaSize(beer.canArtwork, 'square')
+  const img = mediaSize(beer.canArtwork, 'can')
   return (
     // The whole card is the link, not just the heading. A 40px text target
     // inside a 300px card is a needlessly small thing to hit, especially on a
@@ -49,7 +49,7 @@ export const BeerCard = ({ beer }: { beer: Beer }) => {
         // eslint-disable-next-line @next/next/no-img-element
         <img
           src={img}
-          srcSet={mediaSrcSet(beer.canArtwork, ['thumbnail', 'square'])}
+          srcSet={mediaSrcSet(beer.canArtwork, ['thumbnail', 'can'])}
           sizes="(min-width: 900px) 215px, 45vw"
           alt={beer.canArtwork?.alt ?? `${beer.name} can artwork`}
           loading="lazy"
@@ -110,29 +110,45 @@ export const TapRows = ({ list }: { list: TapList }) => (
 export const EventCard = ({ event, as: Heading = 'h3' }: { event: PhatEvent; as?: 'h2' | 'h3' }) => {
   const past = new Date(event.startsAt) < new Date()
   const hillarysOnly = (event.venues ?? []).length === 1 && event.venues[0]?.slug === 'hillarys'
-  const img = mediaSize(event.heroImage, 'thumbnail')
+  // The brewery designs a poster for each of these. Lead with it rather than
+  // shrinking it to a thumbnail beside the text.
+  const poster = mediaSize(event.heroImage, 'card')
+
   return (
-    <article className={`ev${past ? ' past' : ''}`}>
-      {img ? (
-        // eslint-disable-next-line @next/next/no-img-element
-        <img className="ev-img" src={img} alt={event.heroImage?.alt ?? ''} loading="lazy" width={120} height={90} />
+    <article className={`evc${past ? ' past' : ''}`}>
+      {poster ? (
+        <Link href={`/whats-on/${event.slug}`} className="evc-art">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src={poster}
+            srcSet={mediaSrcSet(event.heroImage, ['thumbnail', 'card'])}
+            sizes="(min-width: 900px) 360px, 90vw"
+            alt={event.heroImage?.alt ?? `${event.title} poster`}
+            loading="lazy"
+            width={800}
+            height={600}
+          />
+          <span className={`evc-date${hillarysOnly ? ' hil' : ''}`}>
+            <span>{eventMonth(event.startsAt)}</span>
+            <b>{eventDay(event.startsAt)}</b>
+          </span>
+        </Link>
       ) : null}
-      <div className={`dt${hillarysOnly ? ' hil' : ''}`}>
-        <span>{eventMonth(event.startsAt)}</span>
-        <b>{eventDay(event.startsAt)}</b>
-      </div>
-      <div style={{ flex: 1 }}>
-        <Heading className="ev-title" style={{ marginBottom: 4 }}>
+
+      <div className="evc-body">
+        <Heading className="ev-title">
           <Link href={`/whats-on/${event.slug}`}>{event.title}</Link>
         </Heading>
-        <p style={{ margin: 0, fontSize: 15 }}>
-          {eventTime(event.startsAt)} · {(event.venues ?? []).map((v) => v.shortName).join(' and ')} ·{' '}
-          {event.isFree ? 'Free entry' : event.price}
+        <p className="evc-meta">
+          {eventTime(event.startsAt)} · {(event.venues ?? []).map((v) => v.shortName).join(' and ')}
+        </p>
+        <p className="evc-foot">
+          <span className="evc-price">{event.isFree ? 'Free entry' : event.price}</span>
+          <span className="chip">
+            {event.recurrence === 'once' ? 'One-off' : past ? 'Past' : 'Weekly'}
+          </span>
         </p>
       </div>
-      <span className="chip" style={{ margin: 0 }}>
-        {event.recurrence === 'once' ? 'One-off' : past ? 'Past' : 'Weekly'}
-      </span>
     </article>
   )
 }

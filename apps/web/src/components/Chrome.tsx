@@ -49,7 +49,7 @@ export const Header = ({ current }: { current?: string }) => (
           )}
         </ul>
       </nav>
-      <a className="book" href="#book">Book a table</a>
+      <Link className="book" href="/venues">Book a table</Link>
     </div>
   </header>
 )
