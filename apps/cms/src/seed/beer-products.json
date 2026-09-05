@@ -1,0 +1,117 @@
+[
+  {
+    "beerSlug": "culture-of-good-times",
+    "productSlug": "culture-of-good-times-cube-6-",
+    "price": 90,
+    "packSize": "16 x 375ml cans",
+    "allergens": [
+      "Lactose"
+    ],
+    "description": "Phat Brew Club's Culture of Good Times is a big time hazy IPA loaded with Nectaron, Citra and Eldorado, it is huge pineapple, passionfruit and stonefruit with a touch of sweetness. (6% ABV)",
+    "shopUrl": "https://www.phatbrewclub.com/product/culture-of-good-times-cube-6-/433",
+    "images": [
+      "beer-culture-of-good-times-1.jpg",
+      "beer-culture-of-good-times-2.jpg",
+      "beer-culture-of-good-times-3.jpg",
+      "beer-culture-of-good-times-4.jpg",
+      "beer-culture-of-good-times-5.jpg"
+    ]
+  },
+  {
+    "beerSlug": "og-pale-ale",
+    "productSlug": "og-pale-cube-5-",
+    "price": 75,
+    "packSize": "16 x 375ml cans",
+    "allergens": [],
+    "description": "Packed full of Amarillo, Mosaic and El Dorado hops this is one hell of a pale ale. It's OG and delivers exactly what it promises. (5% ABV)",
+    "shopUrl": "https://www.phatbrewclub.com/product/og-pale-cube-5-/1179",
+    "images": [
+      "beer-og-pale-ale-1.jpg",
+      "beer-og-pale-ale-2.jpg",
+      "beer-og-pale-ale-3.jpg",
+      "beer-og-pale-ale-4.jpg",
+      "beer-og-pale-ale-5.jpg",
+      "beer-og-pale-ale-6.jpg"
+    ]
+  },
+  {
+    "beerSlug": "phatatron",
+    "productSlug": "phatatron-cube-7-",
+    "price": 110,
+    "packSize": "16 x 375ml cans",
+    "allergens": [],
+    "description": "Our fan-favourite oatcream IPA, Phatatron is loaded with Necatron hops and a ridiculously creamy, pillowy body. Contains Lactose",
+    "shopUrl": "https://www.phatbrewclub.com/product/phatatron-cube-7-/353",
+    "images": [
+      "beer-phatatron-1.jpg",
+      "beer-phatatron-2.jpg",
+      "beer-phatatron-3.jpg",
+      "beer-phatatron-4.jpg",
+      "beer-phatatron-5.jpg"
+    ]
+  },
+  {
+    "beerSlug": "phubba-bubba",
+    "productSlug": "phubba-bubba-sour-5-5-cube",
+    "price": 85,
+    "packSize": "16 x 375ml cans",
+    "allergens": [],
+    "description": "Phat Brew Club's Phubba Bubba is bubblegum in a can! Made with Amarillo Hops and real strawberries, this sour is Phat Phan favourite. (5.5% ABV)",
+    "shopUrl": "https://www.phatbrewclub.com/product/phubba-bubba-sour-5-5-cube/414",
+    "images": [
+      "beer-phubba-bubba-1.jpg",
+      "beer-phubba-bubba-2.jpg",
+      "beer-phubba-bubba-3.jpg",
+      "beer-phubba-bubba-4.jpg",
+      "beer-phubba-bubba-5.jpg"
+    ]
+  },
+  {
+    "beerSlug": "risky-business",
+    "productSlug": "risky-business-7-cube",
+    "price": 95,
+    "packSize": "16 x 375ml cans",
+    "allergens": [],
+    "description": "Phat Brew Club's Risky Business is loaded with some of our favourite hops, with Citra, Eclipse, and Simcoe, this IPA has big citrus vibes with orange and grapefruit offset by a punchy bitterness. (7% ABV)",
+    "shopUrl": "https://www.phatbrewclub.com/product/risky-business-7-cube/352",
+    "images": [
+      "beer-risky-business-1.jpg",
+      "beer-risky-business-2.jpg",
+      "beer-risky-business-3.jpg",
+      "beer-risky-business-4.jpg",
+      "beer-risky-business-5.jpg"
+    ]
+  },
+  {
+    "beerSlug": "west-is-best",
+    "productSlug": "west-is-best-lager-4-cube",
+    "price": 60,
+    "packSize": "16 x 375ml cans",
+    "allergens": [],
+    "description": "This one is our tip of the hat to how bloody good WA produce is, this crispy smashable Lager uses all WA grains from Mallokup Malt and hops from Margaret River Hops. (4.2% ABV)",
+    "shopUrl": "https://www.phatbrewclub.com/product/west-is-best-lager-4-cube/1185",
+    "images": [
+      "beer-west-is-best-1.jpg",
+      "beer-west-is-best-2.jpg",
+      "beer-west-is-best-3.jpg",
+      "beer-west-is-best-4.jpg",
+      "beer-west-is-best-5.jpg"
+    ]
+  },
+  {
+    "beerSlug": "xtra-phat-ale",
+    "productSlug": "xtra-phat-ale-5-cube",
+    "price": 75,
+    "packSize": "16 x 375ml cans",
+    "allergens": [],
+    "description": "Phat Brew Club's Punchy Xtra Phat Ale is full of passionfruit, stonefruit and grapefruit from some of our fave hops Galaxy, Citra and Eclipse. (5% ABV)",
+    "shopUrl": "https://www.phatbrewclub.com/product/xtra-phat-ale-5-cube/356",
+    "images": [
+      "beer-xtra-phat-ale-1.jpg",
+      "beer-xtra-phat-ale-2.jpg",
+      "beer-xtra-phat-ale-3.jpg",
+      "beer-xtra-phat-ale-4.jpg",
+      "beer-xtra-phat-ale-5.jpg"
+    ]
+  }
+]

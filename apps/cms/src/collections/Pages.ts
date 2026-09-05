@@ -100,6 +100,48 @@ const Faq: Block = {
   ],
 }
 
+
+const Awards: Block = {
+  slug: 'awards',
+  labels: { singular: 'Awards list', plural: 'Awards lists' },
+  fields: [
+    { name: 'heading', type: 'text' },
+    {
+      name: 'entries',
+      type: 'array',
+      labels: { singular: 'Award', plural: 'Awards' },
+      fields: [
+        {
+          type: 'row',
+          fields: [
+            { name: 'year', type: 'text', required: true, admin: { width: '18%' } },
+            { name: 'body', type: 'text', required: true, admin: { width: '42%', description: 'Who gave it' } },
+            { name: 'detail', type: 'text', admin: { width: '40%', description: 'What it was for' } },
+          ],
+        },
+      ],
+    },
+  ],
+}
+
+const Gallery: Block = {
+  slug: 'gallery',
+  labels: { singular: 'Gallery', plural: 'Galleries' },
+  fields: [
+    { name: 'heading', type: 'text' },
+    { name: 'images', type: 'upload', relationTo: 'media', hasMany: true, required: true },
+  ],
+}
+
+const Quote: Block = {
+  slug: 'quote',
+  labels: { singular: 'Quote', plural: 'Quotes' },
+  fields: [
+    { name: 'quote', type: 'textarea', required: true },
+    { name: 'attribution', type: 'text' },
+  ],
+}
+
 export const Pages: CollectionConfig = {
   slug: 'pages',
   labels: { singular: 'Page', plural: 'Pages' },
@@ -121,7 +163,7 @@ export const Pages: CollectionConfig = {
       name: 'layout',
       type: 'blocks',
       required: true,
-      blocks: [Hero, RichTextBlock, VenueCards, BeerGrid, EventList, TapListBlock, Faq],
+      blocks: [Hero, RichTextBlock, VenueCards, BeerGrid, EventList, TapListBlock, Faq, Awards, Gallery, Quote],
     },
     seo,
   ],

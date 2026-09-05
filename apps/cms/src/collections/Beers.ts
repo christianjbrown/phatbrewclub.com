@@ -48,6 +48,36 @@ export const Beers: CollectionConfig = {
     { name: 'tastingNotes', type: 'richText' },
     { name: 'canArtwork', type: 'upload', relationTo: 'media' },
     {
+      name: 'gallery',
+      type: 'upload',
+      relationTo: 'media',
+      hasMany: true,
+      admin: { description: 'Product photography. The can shot above is used for cards and listings.' },
+    },
+    {
+      name: 'allergens',
+      type: 'select',
+      hasMany: true,
+      options: ['Lactose', 'Gluten', 'Wheat', 'Nuts', 'Soy'].map((v) => ({ label: v, value: v })),
+      admin: { description: 'Declared on the product. Shown prominently on the beer page.' },
+    },
+    {
+      type: 'row',
+      fields: [
+        {
+          name: 'price',
+          type: 'number',
+          admin: { width: '33%', description: 'Cube price in AUD, if sold online.' },
+        },
+        {
+          name: 'packSize',
+          type: 'text',
+          admin: { width: '34%', placeholder: '16 x 375ml cans' },
+        },
+        { name: 'shopUrl', type: 'text', admin: { width: '33%' } },
+      ],
+    },
+    {
       name: 'availableAt',
       type: 'relationship',
       relationTo: 'venues',

@@ -97,3 +97,27 @@ comparison, because it autoplays a video and pulls about forty Instagram images
 from third-party CDNs. Its CLS, request count and transfer size were directly
 measured and are the honest comparison.
 
+
+## Schema changes need a migration, and the failure is silent-ish
+
+Adding blocks or fields to a collection creates new Postgres tables. In dev,
+Payload pushes schema automatically so nothing looks wrong; in production it
+does not, and the first query against the missing table fails with `42P01
+undefined_table` — after a nine-minute Job backoff, by which point Kubernetes
+has deleted the pod and taken the logs with it.
+
+This bit twice in one sitting: once adding the awards/gallery/quote blocks, and
+again adding the beer product fields. Before deploying a collection change:
+
+    cd apps/cms && npm run migrate:create -- <name>
+
+Then rebuild the migrate image. Worth adding a CI check that fails when the
+config's schema hash has moved but `src/migrations` has not.
+
+## Product data lived on a second upload path
+
+Product photography is served from the legacy Weebly store path
+`/uploads/<digits>/`, not the `/uploads/b/<hash>/` used by site content. The
+first harvester only matched the second, so it silently returned one image
+across all 29 products — the logo. Both roots are now matched, which is where
+the other 169 images and 111 MB came from.

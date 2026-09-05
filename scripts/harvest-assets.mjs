@@ -12,6 +12,9 @@ const PAGES = [
   '/shop/headwear/4', '/shop/beer-cube-16-x-375ml-cans-/5',
 ];
 
+// Two upload roots exist: /uploads/b/<hash>/ for site content and the legacy
+// Weebly store path /uploads/<digits>/ for product photography. Missing the
+// second one silently skipped every product image.
 const isFirstParty = (u) =>
   /editmysite\.com\/uploads\//.test(u) || /phatbrewclub\.com\/uploads\//.test(u);
 

@@ -18,20 +18,17 @@ export default async function ContactPage() {
             <h1>Get in touch</h1>
             <div className="grid g2">
               <div>
-                <h2>Call us</h2>
+                <h2>Where to find us</h2>
                 {venues.map((v) => (
                   <div className="card" style={{ marginBottom: 14 }} key={v.id}>
                     <div className="pad">
                       <h3>{v.shortName}</h3>
-                      {v.phone ? (
-                        <p style={{ margin: 0 }}>
-                          <a href={`tel:${v.phone.replace(/\s/g, '')}`}
-                            style={{ color: 'var(--orange)', fontSize: 19, fontWeight: 700 }}>{v.phone}</a>
-                        </p>
-                      ) : <p style={{ margin: 0, color: '#8a8a8a' }}>Phone number to be supplied</p>}
                       <p style={{ margin: '6px 0 0', fontSize: 15 }}>
                         {v.address.street}, {v.address.suburb} {v.address.state} {v.address.postcode}
                       </p>
+                      {v.transportNote ? (
+                        <p style={{ margin: '4px 0 0', fontSize: 15, color: '#8a8a8a' }}>{v.transportNote}</p>
+                      ) : null}
                     </div>
                   </div>
                 ))}

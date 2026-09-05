@@ -351,6 +351,20 @@ export interface Beer {
   } | null;
   canArtwork?: (number | null) | Media;
   /**
+   * Product photography. The can shot above is used for cards and listings.
+   */
+  gallery?: (number | Media)[] | null;
+  /**
+   * Declared on the product. Shown prominently on the beer page.
+   */
+  allergens?: ('Lactose' | 'Gluten' | 'Wheat' | 'Nuts' | 'Soy')[] | null;
+  /**
+   * Cube price in AUD, if sold online.
+   */
+  price?: number | null;
+  packSize?: string | null;
+  shopUrl?: string | null;
+  /**
    * Which venues normally stock it. The live tap list is separate.
    */
   availableAt?: (number | Venue)[] | null;
@@ -644,6 +658,40 @@ export interface Page {
         blockName?: string | null;
         blockType: 'faq';
       }
+    | {
+        heading?: string | null;
+        entries?:
+          | {
+              year: string;
+              /**
+               * Who gave it
+               */
+              body: string;
+              /**
+               * What it was for
+               */
+              detail?: string | null;
+              id?: string | null;
+            }[]
+          | null;
+        id?: string | null;
+        blockName?: string | null;
+        blockType: 'awards';
+      }
+    | {
+        heading?: string | null;
+        images: (number | Media)[];
+        id?: string | null;
+        blockName?: string | null;
+        blockType: 'gallery';
+      }
+    | {
+        quote: string;
+        attribution?: string | null;
+        id?: string | null;
+        blockName?: string | null;
+        blockType: 'quote';
+      }
   )[];
   /**
    * Leave blank to fall back to the title and intro above.
@@ -908,6 +956,11 @@ export interface BeersSelect<T extends boolean = true> {
   description?: T;
   tastingNotes?: T;
   canArtwork?: T;
+  gallery?: T;
+  allergens?: T;
+  price?: T;
+  packSize?: T;
+  shopUrl?: T;
   availableAt?: T;
   ingredients?:
     | T
@@ -1108,6 +1161,37 @@ export interface PagesSelect<T extends boolean = true> {
                     answer?: T;
                     id?: T;
                   };
+              id?: T;
+              blockName?: T;
+            };
+        awards?:
+          | T
+          | {
+              heading?: T;
+              entries?:
+                | T
+                | {
+                    year?: T;
+                    body?: T;
+                    detail?: T;
+                    id?: T;
+                  };
+              id?: T;
+              blockName?: T;
+            };
+        gallery?:
+          | T
+          | {
+              heading?: T;
+              images?: T;
+              id?: T;
+              blockName?: T;
+            };
+        quote?:
+          | T
+          | {
+              quote?: T;
+              attribution?: T;
               id?: T;
               blockName?: T;
             };

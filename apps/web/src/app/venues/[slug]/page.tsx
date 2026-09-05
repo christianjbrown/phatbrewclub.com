@@ -2,6 +2,7 @@ import { notFound } from 'next/navigation'
 import type { Metadata } from 'next'
 import { Footer, Header } from '@/components/Chrome'
 import { EventCard, HoursTable, OpenBadge, TapRows } from '@/components/Bits'
+import { VenueMap } from '@/components/VenueMap'
 import { JsonLd, tapMenuSchema, venueSchema } from '@/lib/jsonld'
 import { getEvents, getTapList, getVenue, getVenues, mediaSize, mediaSrcSet } from '@/lib/payload'
 
@@ -68,9 +69,7 @@ export default async function VenuePage({ params }: { params: Promise<{ slug: st
                   {venue.address.suburb} {venue.address.state} {venue.address.postcode}
                 </p>
                 <p style={{ color: '#8a8a8a' }}>{venue.transportNote}</p>
-                {venue.phone ? (
-                  <p><a className="btn btn-o" href={`tel:${venue.phone.replace(/\s/g, '')}`}>Call {venue.shortName}</a></p>
-                ) : null}
+                <VenueMap venue={venue} />
                 <h3 style={{ marginTop: 26 }}>Good to know</h3>
                 <p>{(venue.amenities ?? []).map((a) => <span className="chip" key={a}>{a}</span>)}</p>
               </div>

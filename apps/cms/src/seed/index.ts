@@ -5,6 +5,8 @@ import { getPayload } from 'payload'
 import config from '../payload.config.js'
 import { BEERS, EVENTS, VENUES } from './data.js'
 import { richText } from './lexical.js'
+import { AWARDS, POSTS } from './content.js'
+import BEER_PRODUCTS from './beer-products.json' with { type: 'json' }
 
 const dirname = path.dirname(fileURLToPath(import.meta.url))
 const IMG = path.resolve(dirname, '../../../../mocks/img')
@@ -107,6 +109,35 @@ const run = async () => {
   }
   console.log(`  beers     ${BEERS.length}`)
 
+  // 4b. Enrich beers with the data that only existed on the shop's product
+  //     pages: real tasting descriptions, allergen declarations, cube prices
+  //     and the product photography.
+  let enriched = 0
+  for (const bp of BEER_PRODUCTS as {
+    beerSlug: string; price: number | null; packSize: string | null
+    allergens: string[]; description: string | null; shopUrl: string; images: string[]
+  }[]) {
+    const found = await payload.find({ collection: 'beers', where: { slug: { equals: bp.beerSlug } }, limit: 1 })
+    if (!found.totalDocs) continue
+    const gallery = (
+      await Promise.all(bp.images.map((f, i) => upload(f, `${bp.beerSlug} product photograph ${i + 1}`)))
+    ).filter(Boolean)
+    await payload.update({
+      collection: 'beers',
+      id: found.docs[0].id,
+      data: {
+        ...(bp.description ? { description: bp.description } : {}),
+        ...(bp.price ? { price: bp.price } : {}),
+        ...(bp.packSize ? { packSize: bp.packSize } : {}),
+        ...(bp.allergens.length ? { allergens: bp.allergens } : {}),
+        shopUrl: bp.shopUrl,
+        gallery,
+      } as never,
+    })
+    enriched++
+  }
+  console.log(`  enriched  ${enriched} beers with product data`)
+
   // 5. Tap lists — first six beers per venue, with one keg blown at West Perth
   for (const [slug, venueId] of venueIds) {
     const taps = BEERS.slice(0, 6).map(([name], i) => ({
@@ -192,6 +223,73 @@ const run = async () => {
     }
   }
   console.log(`  events    ${EVENTS.length}${pruned ? ` (${pruned} stale removed)` : ''}`)
+
+  // 7a. News posts
+  for (const [title, slug, excerpt, paras] of POSTS) {
+    const data = {
+      title, slug, excerpt,
+      publishedAt: new Date().toISOString(),
+      body: richText(...paras),
+      _status: 'published' as const,
+    }
+    const found = await payload.find({ collection: 'posts', where: { slug: { equals: slug } }, limit: 1 })
+    if (found.totalDocs) await payload.update({ collection: 'posts', id: found.docs[0].id, data: data as never })
+    else await payload.create({ collection: 'posts', data: data as never })
+  }
+  console.log(`  posts     ${POSTS.length}`)
+
+  // 7b. About page, built from blocks so the brewery can add the next award
+  //     themselves rather than asking for a deploy.
+  const aboutImgs = await Promise.all([
+    upload('about-img-7952-1647848790.jpg', 'The Phat Brew Club crew in the early days'),
+    upload('about-phat-porter-cans-1647849068.jpg', 'Cans of Phat Porter, the beer that started it'),
+    upload('about-2025-10-24-09-54-18.jpg', 'The Phat Brew Club team'),
+    upload('about-2025-10-24-09-55-13.jpg', 'Behind the bar at Phat Brew Club'),
+  ])
+
+  const aboutData = {
+    title: 'About us',
+    slug: 'about',
+    layout: [
+      {
+        blockType: 'hero',
+        eyebrow: 'WHO ARE THIS PHAT BREW CLUB BUNCH?',
+        heading: 'It started with a football club and a homebrew kit',
+        lede: 'A group of mates who met at their local footy club, started brewing together on weekends, and ended up with two venues and a trophy cabinet.',
+        image: aboutImgs[0],
+      },
+      {
+        blockType: 'richText',
+        heading: 'The Phat Brew Club crew',
+        body: richText(
+          'When mates get together to brew a beer it rarely starts with commercial ambitions. It is usually just an excuse to catch up. Every so often it turns into something considerably bigger.',
+          'Phat Brew Club came out of a group who met through their local football club and got into homebrewing together. Regular brew days and a shared obsession with good beer led to the decision to start canning and kegging what they were making, so everyone else could drink it too.',
+          'The turning point was 2020, when the group won the Margaret River Brewhouse Backyard Brewing competition with a Coffee Cream Porter. That led to Phat Porter being brewed commercially, and the club has not really slowed down since.',
+        ),
+      },
+      {
+        blockType: 'quote',
+        quote: 'The win gave us the confidence that our beers were good enough to be brewed at a commercial scale.',
+        attribution: 'Phat Brew Club',
+      },
+      { blockType: 'gallery', heading: 'The crew', images: aboutImgs.filter(Boolean).slice(1) },
+      {
+        blockType: 'awards',
+        heading: 'Awards',
+        entries: AWARDS.map(([year, body, detail]) => ({ year, body, detail })),
+      },
+    ],
+    seo: {
+      title: 'About Phat Brew Club',
+      description:
+        'Phat Brew Club started with a group of mates from a football club and a homebrew kit. Two Perth venues, and a trophy cabinet that keeps growing.',
+    },
+    _status: 'published' as const,
+  }
+  const foundAbout = await payload.find({ collection: 'pages', where: { slug: { equals: 'about' } }, limit: 1 })
+  if (foundAbout.totalDocs) await payload.update({ collection: 'pages', id: foundAbout.docs[0].id, data: aboutData as never })
+  else await payload.create({ collection: 'pages', data: aboutData as never })
+  console.log('  page      about')
 
   // 7. Pages. The homebrew comp is a block-built page rather than a hard-coded
   //    route, so the brewery can update it — and retire it — without a deploy.

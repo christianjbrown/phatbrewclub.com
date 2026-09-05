@@ -52,6 +52,11 @@ export type Beer = {
   description?: string | null
   canArtwork?: Media | null
   untappdUrl?: string | null
+  gallery?: Media[] | null
+  allergens?: string[] | null
+  price?: number | null
+  packSize?: string | null
+  shopUrl?: string | null
   availableAt?: Venue[] | null
   ingredients?: { producer: string; contribution?: string | null }[] | null
 }
@@ -92,6 +97,9 @@ export type Block =
   | { blockType: 'eventList'; heading?: string | null; venue?: Venue | null; limit?: number | null }
   | { blockType: 'tapList'; heading?: string | null; venue?: Venue | null }
   | { blockType: 'faq'; heading?: string | null; questions?: { question: string; answer?: unknown }[] | null }
+  | { blockType: 'awards'; heading?: string | null; entries?: { year: string; body: string; detail?: string | null }[] | null }
+  | { blockType: 'gallery'; heading?: string | null; images?: Media[] | null }
+  | { blockType: 'quote'; quote: string; attribution?: string | null }
 
 export type Page = {
   id: number | string
@@ -99,4 +107,14 @@ export type Page = {
   slug: string
   layout?: Block[] | null
   seo?: { title?: string | null; description?: string | null } | null
+}
+
+export type Post = {
+  id: number | string
+  title: string
+  slug: string
+  publishedAt?: string | null
+  excerpt?: string | null
+  heroImage?: Media | null
+  body?: unknown
 }

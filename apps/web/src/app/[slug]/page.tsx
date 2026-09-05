@@ -4,7 +4,7 @@ import { Footer, Header } from '@/components/Chrome'
 import { BeerCard, EventCard, OpenBadge, TapRows } from '@/components/Bits'
 import { RichText } from '@/components/RichText'
 import {
-  getBeers, getEvents, getPage, getTapList, getVenues, mediaSize,
+  getBeers, getEvents, getPage, getTapList, getVenues, mediaSize, mediaSrcSet,
 } from '@/lib/payload'
 import type { Block } from '@/lib/types'
 
@@ -26,7 +26,15 @@ const renderBlock = async (block: Block, key: string) => {
         <div className="hero" key={key} style={{ minHeight: 380 }}>
           {img ? (
             // eslint-disable-next-line @next/next/no-img-element
-            <img className="hero-img" src={img} alt="" fetchPriority="high" decoding="async" />
+            <img
+              className="hero-img"
+              src={img}
+              srcSet={mediaSrcSet(block.image, ['card', 'hero'])}
+              sizes="100vw"
+              alt=""
+              fetchPriority="high"
+              decoding="async"
+            />
           ) : null}
           <div className="wrap">
             {block.eyebrow ? <p className="eyebrow">{block.eyebrow}</p> : null}
@@ -125,6 +133,64 @@ const renderBlock = async (block: Block, key: string) => {
                 </details>
               ))}
             </div>
+          </div>
+        </section>
+      )
+    case 'awards':
+      return (
+        <section key={key}>
+          <div className="wrap">
+            {block.heading ? <h2>{block.heading}</h2> : null}
+            <div style={{ maxWidth: 860 }}>
+              {(block.entries ?? []).map((a, i) => (
+                <div className="award" key={`${a.year}-${i}`}>
+                  <strong>{a.year}</strong>
+                  <div>
+                    <p style={{ margin: 0, fontWeight: 700 }}>{a.body}</p>
+                    {a.detail ? <p style={{ margin: '2px 0 0', fontSize: 15 }}>{a.detail}</p> : null}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+      )
+    case 'gallery':
+      return (
+        <section key={key}>
+          <div className="wrap">
+            {block.heading ? <h2>{block.heading}</h2> : null}
+            <div className="grid g3">
+              {(block.images ?? []).map((img) => {
+                const src = mediaSize(img, 'card')
+                if (!src) return null
+                return (
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img
+                    key={img.id}
+                    src={src}
+                    srcSet={mediaSrcSet(img, ['thumbnail', 'card'])}
+                    sizes="(min-width: 900px) 360px, 90vw"
+                    alt={img.alt ?? ''}
+                    loading="lazy"
+                    width={800}
+                    height={600}
+                    style={{ borderRadius: 14, width: '100%', aspectRatio: '4/3', objectFit: 'cover' }}
+                  />
+                )
+              })}
+            </div>
+          </div>
+        </section>
+      )
+    case 'quote':
+      return (
+        <section key={key}>
+          <div className="wrap">
+            <blockquote className="pull">
+              <p>{block.quote}</p>
+              {block.attribution ? <cite>{block.attribution}</cite> : null}
+            </blockquote>
           </div>
         </section>
       )

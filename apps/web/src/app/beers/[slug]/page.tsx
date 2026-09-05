@@ -3,7 +3,7 @@ import { notFound } from 'next/navigation'
 import type { Metadata } from 'next'
 import { Footer, Header } from '@/components/Chrome'
 import { JsonLd, beerSchema } from '@/lib/jsonld'
-import { getBeer, getBeers, getTapList, getVenues, mediaUrl } from '@/lib/payload'
+import { getBeer, getBeers, getTapList, getVenues, mediaSize, mediaSrcSet, mediaUrl } from '@/lib/payload'
 
 export const generateMetadata = async ({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> => {
   const { slug } = await params
@@ -50,8 +50,28 @@ export default async function BeerPage({ params }: { params: Promise<{ slug: str
                   {beer.ibu ? <div><b>{beer.ibu}</b><span>IBU</span></div> : null}
                   <div><b>{beer.style}</b><span>STYLE</span></div>
                 </div>
-                <p style={{ marginTop: 24 }}>
-                  <Link className="btn" href="/shop">Buy a cube</Link>
+                {beer.allergens?.length ? (
+                  <p style={{ marginTop: 18 }}>
+                    <strong style={{ display: 'block', fontSize: 14, marginBottom: 6, color: 'var(--orange)' }}>
+                      CONTAINS
+                    </strong>
+                    {beer.allergens.map((a) => <span className="chip" key={a}>{a}</span>)}
+                  </p>
+                ) : null}
+                {beer.price ? (
+                  <p style={{ marginTop: 18, fontSize: 17 }}>
+                    <strong style={{ fontSize: 24, color: 'var(--orange)' }}>
+                      ${beer.price.toFixed(2)}
+                    </strong>
+                    {beer.packSize ? <span style={{ color: '#9a9a9a' }}> · {beer.packSize}</span> : null}
+                  </p>
+                ) : null}
+                <p style={{ marginTop: 20 }}>
+                  {beer.shopUrl ? (
+                    <a className="btn" href={beer.shopUrl}>Buy a cube</a>
+                  ) : (
+                    <Link className="btn" href="/shop">Visit the shop</Link>
+                  )}
                   {beer.untappdUrl ? <a className="btn btn-o" href={beer.untappdUrl}>On Untappd</a> : null}
                 </p>
               </div>
@@ -82,6 +102,34 @@ export default async function BeerPage({ params }: { params: Promise<{ slug: str
             )}
           </div>
         </section>
+
+        {(beer.gallery ?? []).length ? (
+          <section>
+            <div className="wrap">
+              <h2>The beer</h2>
+              <div className="grid g3">
+                {(beer.gallery ?? []).map((img) => {
+                  const src = mediaSize(img, 'card')
+                  if (!src) return null
+                  return (
+                    // eslint-disable-next-line @next/next/no-img-element
+                    <img
+                      key={img.id}
+                      src={src}
+                      srcSet={mediaSrcSet(img, ['thumbnail', 'card'])}
+                      sizes="(min-width: 900px) 360px, 90vw"
+                      alt={img.alt ?? ''}
+                      loading="lazy"
+                      width={800}
+                      height={600}
+                      style={{ borderRadius: 14, width: '100%', aspectRatio: '4/3', objectFit: 'cover' }}
+                    />
+                  )
+                })}
+              </div>
+            </div>
+          </section>
+        ) : null}
 
         {(beer.ingredients ?? []).length ? (
           <section>

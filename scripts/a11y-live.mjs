@@ -6,6 +6,7 @@ const PATHS = [
   '/', '/venues', '/venues/west-perth', '/venues/hillarys', '/beers',
   '/beers/west-is-best', '/whats-on', '/whats-on/quiz-night',
   '/about', '/contact', '/shop', '/functions/west-perth', '/functions/hillarys',
+  '/news', '/news/quiz-night-both-venues', '/homebrew-comp',
 ]
 
 const run = async () => {

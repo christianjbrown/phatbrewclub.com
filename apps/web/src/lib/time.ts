@@ -24,11 +24,20 @@ export const formatDate = (iso: string, opts: Intl.DateTimeFormatOptions = {}) =
 export const eventDay = (iso: string) => formatDate(iso, { day: 'numeric' })
 export const eventMonth = (iso: string) => formatDate(iso, { month: 'short' }).toUpperCase()
 export const eventWeekday = (iso: string) => formatDate(iso, { weekday: 'short' })
-export const eventTime = (iso: string) =>
-  formatDate(iso, { hour: 'numeric', minute: '2-digit', hour12: true })
-    .replace(':00', '')
-    .replace(/\s/g, '')
-    .toLowerCase()
+export const eventTime = (iso: string) => {
+  const parts = new Intl.DateTimeFormat('en-AU', {
+    timeZone: TZ, hour: 'numeric', minute: '2-digit', hour12: false,
+  }).formatToParts(new Date(iso))
+  const h = Number(parts.find((p) => p.type === 'hour')?.value ?? 0)
+  const m = Number(parts.find((p) => p.type === 'minute')?.value ?? 0)
+  // Same reasoning as formatHuman: 12am/12pm get misread, and an event start
+  // time is exactly where that matters.
+  if (m === 0 && h === 0) return 'midnight'
+  if (m === 0 && h === 12) return 'noon'
+  const h12 = h % 12 === 0 ? 12 : h % 12
+  const suffix = h < 12 ? 'am' : 'pm'
+  return m === 0 ? `${h12}${suffix}` : `${h12}:${String(m).padStart(2, '0')}${suffix}`
+}
 
 /** Perth has no DST, so the offset is a constant +08:00. */
 export const toPerthIso = (iso: string): string => {
@@ -89,6 +98,12 @@ export const formatHuman = (hhmm: string): string => {
   if (mins === null) return hhmm
   const h24 = Math.floor(mins / 60) % 24
   const m = mins % 60
+
+  // "12am" and "12pm" are routinely read as each other, and a pub closing time
+  // is exactly where that costs someone a wasted trip. Say what is meant.
+  if (m === 0 && h24 === 0) return 'midnight'
+  if (m === 0 && h24 === 12) return 'noon'
+
   const h12 = h24 % 12 === 0 ? 12 : h24 % 12
   const suffix = h24 < 12 ? 'am' : 'pm'
   return m === 0 ? `${h12}${suffix}` : `${h12}:${String(m).padStart(2, '0')}${suffix}`
