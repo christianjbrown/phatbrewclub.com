@@ -324,8 +324,12 @@ const run = async () => {
     const base = title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '')
     const slug = slugs.length === 1 ? `${base}-${slugs[0]}` : base
     // Give the recurring specials and quiz the brewery's own promo graphics.
+    // Two different quiz posters exist: news-quiz-night is West Perth's themed
+    // quiz calendar, news-quiz-night-hillarys is Hillarys' weekly poster.
     const artFor = /quiz/i.test(title)
-      ? 'news-quiz-night.jpg'
+      ? slugs.includes('hillarys') && !slugs.includes('west-perth')
+        ? 'news-quiz-night-hillarys.jpg'
+        : 'news-quiz-night.jpg'
       : slugs.includes('hillarys') && !slugs.includes('west-perth')
         ? 'news-hillarys-specials.jpg'
         : 'news-west-perth-specials.jpg'
