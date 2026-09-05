@@ -166,14 +166,16 @@ export default async function VenuePage({ params }: { params: Promise<{ slug: st
           <section>
             <div className="wrap">
               <h2>Common questions</h2>
-              <div style={{ maxWidth: 760 }}>
+              {/* Shown, not folded. Four one-line answers behind four clicks
+                  is not progressive disclosure. */}
+              <dl className="faq">
                 {venue.faqs.map((f) => (
-                  <details key={f.question} style={{ borderBottom: '1px solid #222', padding: '16px 0' }}>
-                    <summary style={{ font: '700 18px Rubik', cursor: 'pointer' }}>{f.question}</summary>
-                    <p style={{ margin: '12px 0 0' }}>{f.answer}</p>
-                  </details>
+                  <div key={f.question}>
+                    <dt>{f.question}</dt>
+                    <dd>{f.answer}</dd>
+                  </div>
                 ))}
-              </div>
+              </dl>
             </div>
           </section>
         ) : null}

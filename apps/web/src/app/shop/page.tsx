@@ -71,7 +71,10 @@ export default async function ShopPage() {
                         />
                       ) : null}
                       <div className="shop-card-body">
-                        <h2>{m.title}</h2>
+                        <h2>
+                          {m.title}
+                          {m.soldOut ? <span className="sold-out">Sold out</span> : null}
+                        </h2>
                         {m.description ? <p className="shop-desc">{m.description}</p> : null}
                         <p className="shop-price">
                           {typeof m.price === 'number' ? money.format(m.price) : 'In venue'}

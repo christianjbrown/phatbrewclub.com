@@ -28,7 +28,12 @@ export default async function BeerPage({ params }: { params: Promise<{ slug: str
   const pouring = lists.filter(({ list }) =>
     (list?.taps ?? []).some((t) => !t.kegBlown && String(t.beer?.id) === String(beer.id)),
   )
-  const art = mediaSize(beer.canArtwork, 'card')
+  // The art sits in a 320px column with 20px of padding either side, so the
+  // slot is 280px and 'small' (600) covers it at 2x. It was asking for 'card'
+  // (800) with no srcset at all, so every visitor got the 800 whatever their
+  // screen.
+  const art = mediaSize(beer.canArtwork, 'small')
+  const artDims = mediaDims(beer.canArtwork, 'small')
 
   return (
     <>
@@ -40,8 +45,15 @@ export default async function BeerPage({ params }: { params: Promise<{ slug: str
             <div className="grid" style={{ gridTemplateColumns: 'minmax(0,320px) minmax(0,1fr)', gap: 44 }}>
               {art ? (
                 // eslint-disable-next-line @next/next/no-img-element
-                <img src={art} alt={beer.canArtwork?.alt ?? `${beer.name} can artwork`} width={520} height={650}
-                  style={{ background: '#0a0a0a', borderRadius: 14, padding: 20 }} />
+                <img
+                  src={art}
+                  srcSet={mediaSrcSet(beer.canArtwork, ['micro', 'thumbnail', 'small'])}
+                  sizes="(min-width: 900px) 280px, 80vw"
+                  alt={beer.canArtwork?.alt ?? `${beer.name} can artwork`}
+                  width={artDims?.width}
+                  height={artDims?.height}
+                  style={{ background: '#0a0a0a', borderRadius: 14, padding: 20, width: '100%', height: 'auto' }}
+                />
               ) : <div />}
               <div>
                 <p className="eyebrow">{LABEL[beer.category]}</p>

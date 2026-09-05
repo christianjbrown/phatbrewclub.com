@@ -2,6 +2,7 @@
   {
     "slug": "bar-mat",
     "title": "Bar Mat",
+    "soldOut": false,
     "price": 40,
     "description": "Bar Mat",
     "shopUrl": "https://www.phatbrewclub.com/product/bar-mat/1536",
@@ -13,6 +14,7 @@
   {
     "slug": "beanie-cuff",
     "title": "BEANIE - CUFF",
+    "soldOut": true,
     "price": 30,
     "description": null,
     "shopUrl": "https://www.phatbrewclub.com/product/beanie-cuff/32",
@@ -23,6 +25,7 @@
   {
     "slug": "black-beanie",
     "title": "BLACK BEANIE",
+    "soldOut": false,
     "price": 30,
     "description": "Phat Blew Club Classic Black Beanie",
     "shopUrl": "https://www.phatbrewclub.com/product/black-beanie/1829",
@@ -34,6 +37,7 @@
   {
     "slug": "cap-embroidered",
     "title": "Cap - Embroidered",
+    "soldOut": false,
     "price": 40,
     "description": "Fully embroidered baseball cap",
     "shopUrl": "https://www.phatbrewclub.com/product/cap-embroidered/30",
@@ -45,6 +49,7 @@
   {
     "slug": "green-beanie",
     "title": "GREEN BEANIE",
+    "soldOut": false,
     "price": 30,
     "description": "Phat Blew Club Classic Green Beanie",
     "shopUrl": "https://www.phatbrewclub.com/product/green-beanie/1831",
@@ -56,6 +61,7 @@
   {
     "slug": "growler",
     "title": "Growler",
+    "soldOut": false,
     "price": 50,
     "description": "Double insulated Growler - keeps your beer cold for hours whilst not having to be kept in the fridge",
     "shopUrl": "https://www.phatbrewclub.com/product/growler/15",
@@ -66,6 +72,7 @@
   {
     "slug": "hoodie-black",
     "title": "Hoodie (Black)",
+    "soldOut": false,
     "price": 75,
     "description": "Get your hands on one of our Phat Brew Club logo branded Hoodies to let the world know you're a connoisseur of the world's best beer. They're made by AS Colour, so you know they're quality and they'll last.",
     "shopUrl": "https://www.phatbrewclub.com/product/hoodie-black-/23",
@@ -79,6 +86,7 @@
   {
     "slug": "oktoberfest-investor-special-only",
     "title": "OKTOBERFEST INVESTOR SPECIAL ONLY",
+    "soldOut": true,
     "price": 49,
     "description": "🎉 Investor Exclusive — Oktoberfest at Phat 🎉",
     "shopUrl": "https://www.phatbrewclub.com/product/oktoberfest-investor-special-only/1962",
@@ -95,6 +103,7 @@
   {
     "slug": "orange-beanie",
     "title": "ORANGE BEANIE",
+    "soldOut": false,
     "price": 30,
     "description": "Phat Blew Club Classic Orange Beanie",
     "shopUrl": "https://www.phatbrewclub.com/product/orange-beanie/1832",
@@ -106,6 +115,7 @@
   {
     "slug": "pink-beanie",
     "title": "PINK BEANIE",
+    "soldOut": false,
     "price": 30,
     "description": "Phat Blew Club Classic Pink Beanie",
     "shopUrl": "https://www.phatbrewclub.com/product/pink-beanie/1830",
@@ -116,6 +126,7 @@
   {
     "slug": "stubby-holder",
     "title": "Stubby Holder",
+    "soldOut": false,
     "price": 12,
     "description": null,
     "shopUrl": "https://www.phatbrewclub.com/product/stubby-holder/16",
@@ -126,6 +137,7 @@
   {
     "slug": "t-shirt-pink-mens",
     "title": "T-Shirt Pink Mens",
+    "soldOut": true,
     "price": 40,
     "description": null,
     "shopUrl": "https://www.phatbrewclub.com/product/t-shirt-pink-mens/7",
@@ -136,6 +148,7 @@
   {
     "slug": "west-is-best-footy-jumper",
     "title": "West is Best Footy Jumper",
+    "soldOut": false,
     "price": 70,
     "description": "Limited Edition | $70",
     "shopUrl": "https://www.phatbrewclub.com/product/west-is-best-footy-jumper/1776",

@@ -284,7 +284,7 @@ const run = async () => {
   let merchCount = 0
   for (const m of MERCH as {
     slug: string; title: string; price: number | null
-    description: string | null; shopUrl: string; images: string[]
+    description: string | null; shopUrl: string; images: string[]; soldOut?: boolean
   }[]) {
     const images = (
       await Promise.all(m.images.map((f, i) => upload(f, `${m.title} product photograph ${i + 1}`)))
@@ -295,6 +295,7 @@ const run = async () => {
       ...(m.price ? { price: m.price } : {}),
       ...(m.description ? { description: m.description } : {}),
       shopUrl: m.shopUrl,
+      soldOut: Boolean(m.soldOut),
       images,
       _status: 'published' as const,
     }

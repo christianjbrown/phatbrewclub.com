@@ -4,7 +4,7 @@ import { Footer, Header } from '@/components/Chrome'
 import { AmenityIcon } from '@/components/AmenityIcon'
 import { OpenBadge } from '@/components/Bits'
 import { JsonLd, venueSchema } from '@/lib/jsonld'
-import { getVenues, mediaSize } from '@/lib/payload'
+import { getVenues, mediaSize, mediaSrcSet } from '@/lib/payload'
 
 export const metadata: Metadata = {
   title: 'Our venues',
@@ -23,13 +23,23 @@ export default async function VenuesPage() {
             <h1>Two venues, one club</h1>
             <p className="lede">Both brewing, both pouring, both open seven days.</p>
             {venues.map((v) => {
-              const img = mediaSize(v.heroImage, 'card')
+              // The image column is roughly 1/2.4 of the container, about
+              // 470px, so 'small' at 2x is the honest rung and the srcset lets
+              // a 1x screen take less. It had no srcset at all.
+              const img = mediaSize(v.heroImage, 'small')
               return (
                 <article className="card" style={{ marginBottom: 22 }} key={v.id}>
                   <div className="grid" style={{ gridTemplateColumns: 'minmax(0,1fr) minmax(0,1.4fr)', gap: 0 }}>
                     {img ? (
                       // eslint-disable-next-line @next/next/no-img-element
-                      <img src={img} alt={v.heroImage?.alt ?? v.name} style={{ height: '100%', minHeight: 280 }} />
+                      <img
+                        src={img}
+                        srcSet={mediaSrcSet(v.heroImage, ['thumbnail', 'small', 'card'])}
+                        sizes="(min-width: 900px) 470px, 92vw"
+                        alt={v.heroImage?.alt ?? v.name}
+                        loading="lazy"
+                        style={{ height: '100%', minHeight: 280, objectFit: 'cover', width: '100%' }}
+                      />
                     ) : <div />}
                     <div className="pad" style={{ padding: 28 }}>
                       <h2 style={{ marginBottom: 12 }}>{v.name}</h2>

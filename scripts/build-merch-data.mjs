@@ -31,6 +31,17 @@ const ext = (u) => extname(new URL(u).pathname).toLowerCase() || '.jpg'
 // product declares a distinct og:image, which the carousel never changes.
 const OG = JSON.parse(readFileSync(join(ROOT, 'assets/product-og-images.json'), 'utf8'))
 
+// What the brewery still lists. Their shop shows no sold-out badge — an item
+// that has gone is simply removed — so absence from this capture is the only
+// signal available that something is no longer sold. Three merch items in the
+// older product scrape are no longer stocked, and listing them sends people to
+// a checkout for something they cannot buy.
+const CURRENT = new Set(
+  JSON.parse(readFileSync(join(ROOT, 'assets/shop-current.json'), 'utf8')).titles.map((t) =>
+    t.toLowerCase().trim(),
+  ),
+)
+
 const seen = new Map()
 for (const p of products) {
   for (const u of new Set(p.images ?? [])) seen.set(stem(u), (seen.get(stem(u)) ?? 0) + 1)
@@ -62,6 +73,7 @@ for (const p of products) {
   out.push({
     slug,
     title: p.title,
+    soldOut: !CURRENT.has(p.title.toLowerCase().trim()),
     // "A$40.00" -> 40. Stored as a number so the site formats it, rather than
     // baking one currency's punctuation into the content.
     price: p.price ? Number(String(p.price).replace(/[^0-9.]/g, '')) : null,
