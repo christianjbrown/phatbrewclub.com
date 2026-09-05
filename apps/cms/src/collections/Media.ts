@@ -8,16 +8,18 @@ export const Media: CollectionConfig = {
   hooks: { afterChange: [setCacheControl] },
   access: { read: anyone, create: canManageOperational, update: canManageOperational, delete: canManageOperational },
   upload: {
-    // Sizes are generated once on upload and served from object storage,
-    // so the front end never ships a 3 MB photo to fill a 400px box.
-    // WebP for every derivative. The can artwork arrives as PNG with an alpha
-    // channel, where a 312x520 image was costing 202KB — larger than the
-    // photographs beside it. WebP takes that to a fraction with no visible
-    // difference at these sizes.
-    formatOptions: {
-      format: 'webp',
-      options: { quality: 82 },
-    },
+    /**
+     * The master is stored exactly as uploaded. Only derivatives are converted.
+     *
+     * A top-level formatOptions here re-encoded the upload itself to WebP: the
+     * pink beanie master was a 2048x2048 WebP re-encode of a JPEG. Resolution
+     * survived, but every future derivative was then being generated from a
+     * lossy intermediate, and regenerating at a higher quality could never
+     * recover what the first re-encode threw away.
+     *
+     * Masters are never served — every surface asks for a derivative — so the
+     * only cost of keeping them untouched is storage, which is pennies.
+     */
     /**
      * Width only, so every derivative is a pure resize.
      *
