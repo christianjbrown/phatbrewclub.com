@@ -174,3 +174,13 @@ a.card-link:hover{border-color:var(--orange)}
 a.card-link:hover h3{color:var(--orange)}
 a.card-link:focus-visible{outline:3px solid var(--orange);outline-offset:2px}
 .ev-title{font:700 20px/1.25 Rubik;margin:0 0 4px}
+.shot{padding:0;border:0;background:none;cursor:zoom-in;border-radius:14px;overflow:hidden;display:block;width:100%}
+.shot img{width:100%;aspect-ratio:4/3;object-fit:cover;display:block;border-radius:14px;transition:transform .2s}
+.shot:hover img{transform:scale(1.03)}
+.shot:focus-visible{outline:3px solid var(--orange);outline-offset:3px}
+.lb{border:0;background:transparent;padding:0;max-width:min(92vw,900px);max-height:92vh}
+.lb::backdrop{background:rgba(0,0,0,.85)}
+.lb figure{margin:0}
+.lb img{width:100%;height:auto;max-height:80vh;object-fit:contain;border-radius:12px;display:block}
+.lb figcaption{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:12px 2px 0;color:#ddd;font:500 14px Rubik}
+.lb figcaption button{background:var(--orange);color:#000;border:0;font:700 14px Rubik;padding:9px 18px;border-radius:8px;cursor:pointer;min-height:40px}

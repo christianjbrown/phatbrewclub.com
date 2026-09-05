@@ -3,6 +3,8 @@ import { notFound } from 'next/navigation'
 import type { Metadata } from 'next'
 import { Footer, Header } from '@/components/Chrome'
 import { JsonLd, beerSchema } from '@/lib/jsonld'
+import { Lightbox } from '@/components/Lightbox'
+import { toShots } from '@/lib/shots'
 import { getBeer, getBeers, getTapList, getVenues, mediaSize, mediaSrcSet, mediaUrl } from '@/lib/payload'
 
 export const generateMetadata = async ({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> => {
@@ -89,6 +91,26 @@ export default async function BeerPage({ params }: { params: Promise<{ slug: str
           </div>
         </section>
 
+        {(beer.gallery ?? []).length ? (
+          <section>
+            <div className="wrap">
+              {/* Above the tap list on purpose: on a page selling a beer, the
+                  photographs matter more than which taps happen to have it. */}
+              <h2>Photos</h2>
+              <Lightbox
+                shots={toShots(
+                  beer.gallery,
+                  (m) => mediaSize(m, 'card'),
+                  // The full-size original, not a derivative: the hero crop is
+                  // landscape and these product shots are portrait.
+                  (m) => mediaUrl(m),
+                  `${beer.name} product photograph`,
+                )}
+              />
+            </div>
+          </section>
+        ) : null}
+
         <section>
           <div className="wrap">
             <h2>Pouring right now</h2>
@@ -112,34 +134,6 @@ export default async function BeerPage({ params }: { params: Promise<{ slug: str
             )}
           </div>
         </section>
-
-        {(beer.gallery ?? []).length ? (
-          <section>
-            <div className="wrap">
-              <h2>The beer</h2>
-              <div className="grid g3">
-                {(beer.gallery ?? []).map((img) => {
-                  const src = mediaSize(img, 'card')
-                  if (!src) return null
-                  return (
-                    // eslint-disable-next-line @next/next/no-img-element
-                    <img
-                      key={img.id}
-                      src={src}
-                      srcSet={mediaSrcSet(img, ['thumbnail', 'card'])}
-                      sizes="(min-width: 900px) 360px, 90vw"
-                      alt={img.alt ?? ''}
-                      loading="lazy"
-                      width={800}
-                      height={600}
-                      style={{ borderRadius: 14, width: '100%', aspectRatio: '4/3', objectFit: 'cover' }}
-                    />
-                  )
-                })}
-              </div>
-            </div>
-          </section>
-        ) : null}
 
         {(beer.ingredients ?? []).length ? (
           <section>
