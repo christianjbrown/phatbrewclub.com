@@ -6,7 +6,8 @@
     "description": "Bar Mat",
     "shopUrl": "https://www.phatbrewclub.com/product/bar-mat/1536",
     "images": [
-      "merch-bar-mat-1.jpeg"
+      "merch-bar-mat-1.jpeg",
+      "merch-bar-mat-2.jpeg"
     ]
   },
   {
@@ -26,7 +27,8 @@
     "description": "Phat Blew Club Classic Black Beanie",
     "shopUrl": "https://www.phatbrewclub.com/product/black-beanie/1829",
     "images": [
-      "merch-black-beanie-1.jpeg"
+      "merch-black-beanie-1.jpeg",
+      "merch-black-beanie-2.jpeg"
     ]
   },
   {
@@ -47,7 +49,8 @@
     "description": "Phat Blew Club Classic Green Beanie",
     "shopUrl": "https://www.phatbrewclub.com/product/green-beanie/1831",
     "images": [
-      "merch-green-beanie-1.jpeg"
+      "merch-green-beanie-1.jpeg",
+      "merch-green-beanie-2.jpeg"
     ]
   },
   {
@@ -96,7 +99,8 @@
     "description": "Phat Blew Club Classic Orange Beanie",
     "shopUrl": "https://www.phatbrewclub.com/product/orange-beanie/1832",
     "images": [
-      "merch-orange-beanie-1.jpeg"
+      "merch-orange-beanie-1.jpeg",
+      "merch-orange-beanie-2.jpeg"
     ]
   },
   {
@@ -105,7 +109,9 @@
     "price": 30,
     "description": "Phat Blew Club Classic Pink Beanie",
     "shopUrl": "https://www.phatbrewclub.com/product/pink-beanie/1830",
-    "images": []
+    "images": [
+      "merch-pink-beanie-1.jpeg"
+    ]
   },
   {
     "slug": "stubby-holder",
@@ -113,7 +119,9 @@
     "price": 12,
     "description": null,
     "shopUrl": "https://www.phatbrewclub.com/product/stubby-holder/16",
-    "images": []
+    "images": [
+      "merch-stubby-holder-1.jpeg"
+    ]
   },
   {
     "slug": "t-shirt-pink-mens",

@@ -24,6 +24,13 @@ const IMG = join(ROOT, 'mocks/img')
 const stem = (u) => basename(new URL(u).pathname).replace(/\.[^.]+$/, '').toLowerCase()
 const ext = (u) => extname(new URL(u).pathname).toLowerCase() || '.jpg'
 
+// The product's own primary photo, declared in its og:image. This is the
+// authority, not the frequency heuristic below: the Orange Beanie's own
+// photograph also appears in thirteen other products' carousels, so counting
+// occurrences threw it away and left the beanie with no picture at all. Every
+// product declares a distinct og:image, which the carousel never changes.
+const OG = JSON.parse(readFileSync(join(ROOT, 'assets/product-og-images.json'), 'utf8'))
+
 const seen = new Map()
 for (const p of products) {
   for (const u of new Set(p.images ?? [])) seen.set(stem(u), (seen.get(stem(u)) ?? 0) + 1)
@@ -41,7 +48,11 @@ const wanted = []
 for (const p of products) {
   if (BEERISH.test(p.title)) continue
   const slug = slugify(p.title)
-  const own = (p.images ?? []).filter(isOwnPhoto)
+  // Primary first, then any additional shots unique to this product. Without
+  // the primary, two items shipped with no photo at all.
+  const primary = OG[p.url]
+  const extras = (p.images ?? []).filter((u) => isOwnPhoto(u) && stem(u) !== (primary ? stem(primary) : null))
+  const own = primary ? [primary, ...extras] : extras
   const images = []
   own.forEach((u, i) => {
     const target = `merch-${slug}-${i + 1}${ext(u)}`
