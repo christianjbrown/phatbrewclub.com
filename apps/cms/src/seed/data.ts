@@ -6,10 +6,13 @@ export const VENUES = [
     street: '73/102 Railway Street',
     suburb: 'West Perth',
     postcode: '6005',
-    // Geocoded, not estimated. An earlier guess here was ~800m west and
-    // dropped the map pin on Subiaco Road.
-    latitude: -31.9440572,
-    longitude: 115.8467847,
+    // OpenStreetMap's own node for the venue, not a geocode of the address
+    // string. Two earlier attempts missed: a guess ~800m west that landed on
+    // Subiaco Road, then a geocode 169m east that landed on the City West
+    // Centre corner at Sutherland Street. Reverse-geocoding these back gives
+    // "102, Railway Street, West Perth", which is the building.
+    latitude: -31.9441142,
+    longitude: 115.8449941,
     transportNote: 'Directly opposite City West Station',
     capacity: 450,
     amenities: ['Beer garden', 'Kids zone', 'Arcade games', 'Dog friendly', 'Function spaces', 'Parking'],
@@ -39,8 +42,12 @@ export const VENUES = [
     street: '222/58 Southside Drive, Sorrento Quay',
     suburb: 'Hillarys',
     postcode: '6025',
-    latitude: -31.8245333,
-    longitude: 115.7396422,
+    // OpenStreetMap has no node for this venue, so this is 58 Sorrento Quay
+    // Boardwalk, the building in the street address. The previous pin was 154m
+    // west and reverse-geocoded to a Dome two doors down. The individual shop
+    // is not mapped, so this is the closest defensible point.
+    latitude: -31.8244722,
+    longitude: 115.7412655,
     transportNote: 'On the boardwalk at Hillarys Boat Harbour, next to Breakwater',
     capacity: 300,
     amenities: ['Ocean views', 'Live music', 'Fresh seafood', 'Family friendly', 'Parking', 'Outdoor seating'],
@@ -75,19 +82,28 @@ export const VENUES = [
  * IBU is gone. No source has ever carried it, so every figure on the site was
  * fabricated. Blank is honest; a number is not.
  *
- * Where the two sources disagree the can wins, since it is what the drinker is
- * holding. Untappd lists Hazy Mid at 3.8%; its can says 3.5%.
+ * The seven beers that did have shop descriptions were checked the same way,
+ * and their styles were guesses too: Phatatron was listed as a Double IPA and
+ * its can says Nectaron Oatcream IPA, Xtra Phat Ale as an Amber Ale when it is
+ * an XPA. Two ABVs were out as well.
+ *
+ * Where sources disagree the can wins, since it is what the drinker is holding.
+ * Untappd lists Hazy Mid at 3.8% and its can says 3.5%. OG Pale is the awkward
+ * one: the 2025 can says 5.5%, while the shop listing and Untappd both say 5%,
+ * and the shop description we display says "(5% ABV)" in the brewery's own
+ * words. The can is taken as current and the brewery should be asked which is
+ * right.
  */
 export const BEERS: [string, string, number, number | null, string, string, string][] = [
-  ['West Is Best', 'Australian Lager', 4.2, null, 'core', 'phat-core-west-is-best-decal-2025.png', ''],
-  ['Culture of Good Times', 'Hazy IPA', 6.0, null, 'core', 'phat-core-culture-of-good-times-decal-2025.png', ''],
+  ['West Is Best', 'Lager', 4.2, null, 'core', 'phat-core-west-is-best-decal-2025.png', ''],
+  ['Culture of Good Times', 'DDH Hazy IPA', 6.5, null, 'core', 'phat-core-culture-of-good-times-decal-2025.png', ''],
   ['Risky Business', 'West Coast IPA', 7.0, null, 'core', 'phat-core-risky-business-decal-2025.png', ''],
-  ['OG Pale Ale', 'Pale Ale', 5.0, null, 'core', 'phat-core-og-pale-ale-decal-2025.png', ''],
-  ['Phubba Bubba', 'Bubblegum Sour', 5.5, null, 'core', 'phat-core-phubba-bubba-bubblegum-decal-2025.png', ''],
+  ['OG Pale Ale', 'Pale Ale', 5.5, null, 'core', 'phat-core-og-pale-ale-decal-2025.png', ''],
+  ['Phubba Bubba', 'Strawberry Bubblegum Sour', 5.5, null, 'core', 'phat-core-phubba-bubba-bubblegum-decal-2025.png', ''],
   ['Hazy Mid', 'Mid Strength Hazy Pale', 3.5, null, 'core', 'phat-core-hazy-mid-decal.png',
     'Pineapple and citrus notes deliver on the El Dorado and Galaxy Hop promise. Designed for day drinking, this one satisfy a thirst.'],
-  ['Xtra Phat Ale', 'Amber Ale', 5.0, null, 'core', 'phat-core-xtra-phat-ale-decal.png', ''],
-  ['Phatatron', 'Double IPA', 7.0, null, 'limited', 'phat-limited-edition-phatatron-decal-2025.png', ''],
+  ['Xtra Phat Ale', 'XPA', 5.0, null, 'core', 'phat-core-xtra-phat-ale-decal.png', ''],
+  ['Phatatron', 'Nectaron Oatcream IPA', 7.0, null, 'limited', 'phat-limited-edition-phatatron-decal-2025.png', ''],
   ['Yuzu WCIPA', 'West Coast IPA', 6.7, null, 'limited', 'phat-limited-edition-yuzu-wcipa-decal2.png',
     '6.7% West Coast IPA fruited with tonnes of Yuzu. Strong notes of citrus zest, with a hefty amount of bitterness'],
   ['Boat Party', 'NZ Hazy IPA', 6.0, null, 'limited', 'phat-limited-edition-boat-party-decal.png',
