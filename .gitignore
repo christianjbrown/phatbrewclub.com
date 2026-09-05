@@ -5,3 +5,6 @@ node_modules/
 assets/original/
 mocks/shots/
 .DS_Store
+.next/
+apps/*/.next/
+apps/*/node_modules/

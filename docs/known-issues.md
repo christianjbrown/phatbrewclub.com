@@ -1,22 +1,26 @@
 # Known issues and decisions
 
-## Timezone: events and hours are stored UTC, business is AWST
+## Timezone: resolved
 
-Payload stores dates as UTC. Phat Brew Club is in Perth (AWST, UTC+8, no DST),
-and the people authoring events are in Perth. Right now a 6:30pm quiz seeds as
-`17:30Z`, which is correct but renders as the wrong time unless the front end
-converts it.
+Payload stores dates as UTC and the business is in Perth (AWST, UTC+8, no DST).
+This was live-caught by the structured data: a 6:30pm quiz was emitting
+`2026-09-10T01:30:00+08:00` because the seed called `setHours()`, which uses
+whatever timezone the script runs in — London, in this case.
 
-Decide in Phase 4:
+Fixed on three fronts:
 
-- The front end must format every date in `Australia/Perth`, not the viewer's
-  locale. A Sydney customer looking at a Perth gig wants Perth time.
-- `schema.org/Event` must emit the offset explicitly (`2026-09-09T18:30:00+08:00`),
-  not a bare UTC stamp, or Google shows the wrong time in event results.
-- The admin date picker should be pinned to Perth so staff type what they mean.
+- The seed builds instants explicitly with `Date.UTC(..., hour - 8, ...)`, so
+  seed times mean Perth wall-clock times.
+- `lib/time.ts` formats every date with `timeZone: 'Australia/Perth'`, so a
+  customer in Sydney sees Perth time for a Perth gig, not their own.
+- `schema.org/Event` emits an explicit `+08:00` offset via `toPerthIso()`
+  rather than a bare UTC stamp, so Google shows the right time.
 
-Not a bug in the model, but it will silently produce wrong times on the public
-site if it is skipped.
+Verified: quiz night renders "6:30pm" and emits `2026-09-09T18:30:00+08:00`.
+
+Still to do before launch: pin the admin date picker to Perth so staff type
+what they mean, and add a test that fails if a seeded 6:30pm event ever
+serialises to anything other than `18:30+08:00`.
 
 ## Hours are stored as strings
 

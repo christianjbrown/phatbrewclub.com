@@ -113,13 +113,34 @@ const run = async () => {
     console.log(`  tap list  ${slug}`)
   }
 
-  // 6. Events, dated relative to today so the seed never looks stale
-  const today = new Date()
+  // 6. Events, dated relative to today so the seed never looks stale.
+  //
+  // Times in the seed data are Perth wall-clock times, because that is what the
+  // venue means by "6:30pm". Perth is UTC+8 with no daylight saving, so the
+  // instant is built explicitly rather than via setHours(), which would use
+  // whatever timezone this script happens to run in.
+  const PERTH_OFFSET_HOURS = 8
+  const perthParts = new Intl.DateTimeFormat('en-CA', {
+    timeZone: 'Australia/Perth', year: 'numeric', month: '2-digit', day: '2-digit', weekday: 'short',
+  }).formatToParts(new Date())
+  const part = (t: string) => perthParts.find((p) => p.type === t)!.value
+  const WEEKDAYS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
+  const todayPerth = { y: Number(part('year')), m: Number(part('month')), d: Number(part('day')) }
+  const todayDow = WEEKDAYS.indexOf(part('weekday'))
+
   for (const [title, weekday, hour, recurrence, slugs, category, isFree, price] of EVENTS) {
-    const startsAt = new Date(today)
-    const delta = (weekday - today.getDay() + 7) % 7 || 7
-    startsAt.setDate(today.getDate() + delta)
-    startsAt.setHours(Math.floor(hour), (hour % 1) * 60, 0, 0)
+    const delta = (weekday - todayDow + 7) % 7 || 7
+    const startsAt = new Date(
+      Date.UTC(
+        todayPerth.y,
+        todayPerth.m - 1,
+        todayPerth.d + delta,
+        Math.floor(hour) - PERTH_OFFSET_HOURS,
+        (hour % 1) * 60,
+        0,
+        0,
+      ),
+    )
     const slug = title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '')
     const data = {
       title, slug,

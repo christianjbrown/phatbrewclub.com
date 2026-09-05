@@ -1,0 +1,72 @@
+import type { Metadata } from 'next'
+import { Footer, Header } from '@/components/Chrome'
+import { getVenues } from '@/lib/payload'
+
+export const metadata: Metadata = {
+  title: 'Contact',
+  description: 'Contact Phat Brew Club: bookings, functions, wholesale and general enquiries.',
+}
+
+export default async function ContactPage() {
+  const venues = await getVenues()
+  return (
+    <>
+      <Header current="/contact" />
+      <main id="main">
+        <section>
+          <div className="wrap">
+            <h1>Get in touch</h1>
+            <div className="grid g2">
+              <div>
+                <h2>Call us</h2>
+                {venues.map((v) => (
+                  <div className="card" style={{ marginBottom: 14 }} key={v.id}>
+                    <div className="pad">
+                      <h3>{v.shortName}</h3>
+                      {v.phone ? (
+                        <p style={{ margin: 0 }}>
+                          <a href={`tel:${v.phone.replace(/\s/g, '')}`}
+                            style={{ color: 'var(--orange)', fontSize: 19, fontWeight: 700 }}>{v.phone}</a>
+                        </p>
+                      ) : <p style={{ margin: 0, color: '#8a8a8a' }}>Phone number to be supplied</p>}
+                      <p style={{ margin: '6px 0 0', fontSize: 15 }}>
+                        {v.address.street}, {v.address.suburb} {v.address.state} {v.address.postcode}
+                      </p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+              <div>
+                <h2>Or send a message</h2>
+                <form action="/api/enquiry" method="post">
+                  <label htmlFor="name">Your name</label>
+                  <input id="name" name="name" autoComplete="name" required />
+                  <label htmlFor="email">Email address</label>
+                  <input id="email" name="email" type="email" autoComplete="email" required />
+                  <label htmlFor="venue">Which venue</label>
+                  <select id="venue" name="venue">
+                    {venues.map((v) => <option key={v.id}>{v.shortName}</option>)}
+                    <option>Either</option>
+                  </select>
+                  <label htmlFor="topic">What is it about</label>
+                  <select id="topic" name="topic">
+                    <option>Booking</option>
+                    <option>Function or private hire</option>
+                    <option>Wholesale</option>
+                    <option>Something else</option>
+                  </select>
+                  <label htmlFor="message">Your message</label>
+                  <textarea id="message" name="message" rows={4} required />
+                  <button className="btn" type="submit" style={{ border: 0, cursor: 'pointer' }}>
+                    Send message
+                  </button>
+                </form>
+              </div>
+            </div>
+          </div>
+        </section>
+      </main>
+      <Footer venues={venues} />
+    </>
+  )
+}
