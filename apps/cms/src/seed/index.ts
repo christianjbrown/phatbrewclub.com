@@ -104,14 +104,26 @@ const run = async () => {
       console.log(`  media     ${file} not present, creating record without artwork`)
       return undefined
     }
+    /**
+     * Match on the name without its extension.
+     *
+     * Uploads are converted to WebP, so `og-pale-ale.jpg` on disk is stored as
+     * `og-pale-ale.webp`. Comparing the full filename therefore never matched
+     * anything after the first run: the seed decided the image was new, tried
+     * to create it again, and Payload rejected the duplicate filename. `like`
+     * is a contains match, so the stem is re-checked exactly here — otherwise
+     * `beer-og-pale-ale-1` would also match `beer-og-pale-ale-10`.
+     */
+    const stem = file.replace(/\.[^.]+$/, '')
     const found = await payload.find({
       collection: 'media',
-      where: { filename: { equals: file } },
-      limit: 1,
+      where: { filename: { like: stem } },
+      limit: 50,
     })
-    if (found.totalDocs > 0) {
-      media.set(file, found.docs[0].id)
-      return found.docs[0].id
+    const match = found.docs.find((d) => (d.filename ?? '').replace(/\.[^.]+$/, '') === stem)
+    if (match) {
+      media.set(file, match.id)
+      return match.id
     }
     const doc = await payload.create({
       collection: 'media',
