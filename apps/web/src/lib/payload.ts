@@ -82,8 +82,10 @@ export const getPage = (slug: string) =>
   api<Paginated<Page>>('pages', { depth: 2, limit: 1, 'where[slug][equals]': slug }, ['pages'])
     .then((r) => r.docs[0] ?? null)
 
+// depth 2, not 0: menu item photos are an upload relationship two levels down,
+// and at depth 0 they come back as bare ids with no derivatives to pick from.
 export const getMenus = (venueId: number | string) =>
-  api<Paginated<Menu>>('menus', { depth: 0, limit: 10, 'where[venue][equals]': String(venueId) }, ['menus'])
+  api<Paginated<Menu>>('menus', { depth: 2, limit: 10, 'where[venue][equals]': String(venueId) }, ['menus'])
     .then((r) => r.docs)
 
 export const getPosts = () =>

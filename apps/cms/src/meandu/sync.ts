@@ -1,3 +1,6 @@
+import { mkdtempSync, writeFileSync, rmSync } from 'fs'
+import { tmpdir } from 'os'
+import path from 'path'
 import { getPayload } from 'payload'
 import config from '../payload.config.js'
 import { MENU_QUERY, VENUE_QUERY, type MenuCategory } from './queries.js'
@@ -43,6 +46,57 @@ const assertUsable = (cat: MenuCategory | null | undefined, where: string): Menu
  *  "West is Best Lager"), so compare on letters and digits only. */
 const norm = (v: string) => v.toLowerCase().replace(/[^a-z0-9]/g, '')
 
+/**
+ * Bring a me&u photo into our own media library.
+ *
+ * Linking their CDN directly would be less code, but it hotlinks a third party
+ * and, more to the point, serves the untouched original — the whole reason the
+ * rest of the site generates derivatives. Copying it in once means menu photos
+ * get the same WebP resizing as everything else.
+ *
+ * Keyed on me&u's own image id, so re-running the sync reuses the file rather
+ * than uploading it again. A failure here returns undefined: a menu without
+ * photos is fine, a sync that dies because one image 404d is not.
+ */
+const importImage = async (
+  payload: Awaited<ReturnType<typeof getPayload>>,
+  image: { id: string; originalImageUrl?: string | null } | null | undefined,
+  alt: string,
+): Promise<number | string | undefined> => {
+  if (!image?.originalImageUrl) return undefined
+  const stem = `menu-${image.id}`
+
+  const found = await payload.find({
+    collection: 'media',
+    where: { filename: { like: stem } },
+    limit: 50,
+  })
+  const match = found.docs.find((d) => (d.filename ?? '').replace(/\.[^.]+$/, '') === stem)
+  if (match) return match.id
+
+  let dir: string | undefined
+  try {
+    const res = await fetch(image.originalImageUrl, { headers: { 'User-Agent': UA } })
+    if (!res.ok) throw new Error(`HTTP ${res.status}`)
+    const type = res.headers.get('content-type') ?? ''
+    if (!type.startsWith('image/')) throw new Error(`not an image (${type || 'no content-type'})`)
+    const bytes = Buffer.from(await res.arrayBuffer())
+    // Sharp decides the real format on upload; the extension only has to be
+    // something it recognises.
+    const ext = type.includes('png') ? '.png' : '.jpg'
+    dir = mkdtempSync(path.join(tmpdir(), 'meandu-'))
+    const file = path.join(dir, stem + ext)
+    writeFileSync(file, bytes)
+    const doc = await payload.create({ collection: 'media', data: { alt }, filePath: file })
+    return doc.id
+  } catch (err) {
+    console.log(`  image ${stem}: ${err instanceof Error ? err.message : String(err)}`)
+    return undefined
+  } finally {
+    if (dir) rmSync(dir, { recursive: true, force: true })
+  }
+}
+
 const run = async () => {
   if (!ENABLED) {
     console.log('meandu-sync: disabled (MEANDU_SYNC_ENABLED is not "true") — exiting without writing')
@@ -80,19 +134,24 @@ const run = async () => {
           )
           const cat = assertUsable(guestMenuCategory, `${venue.shortName}/${categorySlug}`)
 
-          const sections = cat.menuSections
-            .filter((s) => !s.isUnavailable)
-            .map((s) => ({
-              name: s.name,
-              items: (s.menuItems ?? [])
-                .filter((i) => i.isAvailable !== false)
-                .map((i) => ({
-                  name: i.name,
-                  price: i.priceData?.displayPrice ?? '',
-                  dietary: (i.dietaryTags ?? []).join(', '),
-                  description: i.descriptionPlain ?? '',
-                })),
-            }))
+          // Sequential rather than Promise.all: this fetches images from
+          // someone else's CDN, and a burst of parallel requests is not how to
+          // treat an undocumented service we are already a guest of.
+          const sections = []
+          for (const s of cat.menuSections.filter((sec) => !sec.isUnavailable)) {
+            const items = []
+            for (const i of (s.menuItems ?? []).filter((it) => it.isAvailable !== false)) {
+              items.push({
+                name: i.name,
+                price: i.priceData?.displayPrice ?? '',
+                dietary: (i.dietaryTags ?? []).join(', '),
+                description: i.descriptionPlain ?? '',
+                image: await importImage(payload, i.image, `${i.name} at ${venue.shortName}`),
+                imageCredit: i.imageCredit ?? '',
+              })
+            }
+            sections.push({ name: s.name, items })
+          }
 
           const data = {
             name: `${venue.shortName} — ${cat.name}`,

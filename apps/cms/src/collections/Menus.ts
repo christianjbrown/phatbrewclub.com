@@ -40,6 +40,11 @@ export const Menus: CollectionConfig = {
               ],
             },
             { name: 'description', type: 'textarea' },
+            // Copied into our own media library on sync rather than linked to
+            // me&u's CDN, so the photo goes through the same resizing as
+            // everything else instead of shipping a full-size original.
+            { name: 'image', type: 'upload', relationTo: 'media' },
+            { name: 'imageCredit', type: 'text' },
           ],
         },
       ],

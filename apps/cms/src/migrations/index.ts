@@ -5,6 +5,7 @@ import * as migration_20260905_110200_add_venue_hours_label_and_faqs from './202
 import * as migration_20260905_112240_allow_guest_taps from './20260905_112240_allow_guest_taps';
 import * as migration_20260905_133656_add_can_image_size from './20260905_133656_add_can_image_size';
 import * as migration_20260905_154916_add_merch from './20260905_154916_add_merch';
+import * as migration_20260905_180844_add_menu_item_images from './20260905_180844_add_menu_item_images';
 
 export const migrations = [
   {
@@ -40,6 +41,11 @@ export const migrations = [
   {
     up: migration_20260905_154916_add_merch.up,
     down: migration_20260905_154916_add_merch.down,
-    name: '20260905_154916_add_merch'
+    name: '20260905_154916_add_merch',
+  },
+  {
+    up: migration_20260905_180844_add_menu_item_images.up,
+    down: migration_20260905_180844_add_menu_item_images.down,
+    name: '20260905_180844_add_menu_item_images'
   },
 ];

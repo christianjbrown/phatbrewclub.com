@@ -296,7 +296,7 @@ export interface Media {
   focalX?: number | null;
   focalY?: number | null;
   sizes?: {
-    can?: {
+    thumbnail?: {
       url?: string | null;
       width?: number | null;
       height?: number | null;
@@ -304,7 +304,7 @@ export interface Media {
       filesize?: number | null;
       filename?: string | null;
     };
-    thumbnail?: {
+    can?: {
       url?: string | null;
       width?: number | null;
       height?: number | null;
@@ -321,14 +321,6 @@ export interface Media {
       filename?: string | null;
     };
     hero?: {
-      url?: string | null;
-      width?: number | null;
-      height?: number | null;
-      mimeType?: string | null;
-      filesize?: number | null;
-      filename?: string | null;
-    };
-    square?: {
       url?: string | null;
       width?: number | null;
       height?: number | null;
@@ -528,6 +520,8 @@ export interface Menu {
               price?: string | null;
               dietary?: string | null;
               description?: string | null;
+              image?: (number | null) | Media;
+              imageCredit?: string | null;
               id?: string | null;
             }[]
           | null;
@@ -1135,6 +1129,8 @@ export interface MenusSelect<T extends boolean = true> {
               price?: T;
               dietary?: T;
               description?: T;
+              image?: T;
+              imageCredit?: T;
               id?: T;
             };
         id?: T;
@@ -1351,7 +1347,7 @@ export interface MediaSelect<T extends boolean = true> {
   sizes?:
     | T
     | {
-        can?:
+        thumbnail?:
           | T
           | {
               url?: T;
@@ -1361,7 +1357,7 @@ export interface MediaSelect<T extends boolean = true> {
               filesize?: T;
               filename?: T;
             };
-        thumbnail?:
+        can?:
           | T
           | {
               url?: T;
@@ -1382,16 +1378,6 @@ export interface MediaSelect<T extends boolean = true> {
               filename?: T;
             };
         hero?:
-          | T
-          | {
-              url?: T;
-              width?: T;
-              height?: T;
-              mimeType?: T;
-              filesize?: T;
-              filename?: T;
-            };
-        square?:
           | T
           | {
               url?: T;

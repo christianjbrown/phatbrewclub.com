@@ -47,6 +47,11 @@ export const MENU_QUERY = /* GraphQL */ `
           dietaryTags
           isAvailable
           isPopular
+          imageCredit
+          image {
+            id
+            originalImageUrl
+          }
           priceData {
             displayPrice
             priceInCents
@@ -65,6 +70,8 @@ export type MenuItem = {
   dietaryTags?: string[] | null
   isAvailable?: boolean | null
   isPopular?: boolean | null
+  imageCredit?: string | null
+  image?: { id: string; originalImageUrl?: string | null } | null
   priceData?: { displayPrice?: string | null; priceInCents?: number | null } | null
 }
 

@@ -130,7 +130,14 @@ export type Post = {
   body?: unknown
 }
 
-export type MenuItem = { name?: string | null; price?: string | null; dietary?: string | null; description?: string | null }
+export type MenuItem = {
+  name?: string | null
+  price?: string | null
+  dietary?: string | null
+  description?: string | null
+  image?: Media | null
+  imageCredit?: string | null
+}
 export type MenuSection = { name?: string | null; items?: MenuItem[] | null }
 export type Menu = {
   id: number | string

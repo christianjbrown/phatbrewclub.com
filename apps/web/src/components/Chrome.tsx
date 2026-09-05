@@ -66,7 +66,9 @@ export const Footer = ({ venues }: { venues: Venue[] }) => (
             <p style={{ fontSize: 15, color: 'var(--muted)', margin: '0 0 8px' }}>
               {v.address.street}, {v.address.suburb} {v.address.state} {v.address.postcode}
             </p>
-            <Link href={`/venues/${v.slug}`}>Hours and menus</Link>
+            <Link href={`/venues/${v.slug}`}>Hours</Link>
+            {' · '}
+            <Link href={`/venues/${v.slug}/menu`}>Menu</Link>
           </div>
         ))}
         <div>

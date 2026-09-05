@@ -239,3 +239,14 @@ a.card-link:focus-visible{outline:3px solid var(--orange);outline-offset:2px}
 .shop-price{font:700 18px Rubik;color:var(--orange);margin:0 0 14px}
 .shop-card .btn{margin:auto 0 0;align-self:flex-start}
 .shop-note{margin-top:auto;color:var(--muted);font-size:14px}
+
+/* Menu items, with the photo me&u carries for some of them. The row collapses
+   to text when there is no picture, which is most of them. */
+.menu-item{display:flex;gap:14px;align-items:flex-start;padding:14px 0;border-bottom:1px solid var(--line)}
+.menu-shot{width:112px;height:auto;border-radius:8px;flex-shrink:0;background:#0d0d0d}
+.menu-text{flex:1;min-width:0}
+.menu-item .menu-row{display:flex;justify-content:space-between;gap:16px;align-items:baseline;border:0;padding:0}
+.menu-item .menu-name{font:600 16px Rubik}
+.menu-item .menu-price{font:700 15px Rubik;color:var(--orange);white-space:nowrap}
+.menu-desc{color:var(--muted);font-size:14px;margin:4px 0 0}
+.menu-diet{color:#8a8a8a;font-size:13px;margin:4px 0 0;text-transform:uppercase;letter-spacing:.04em}

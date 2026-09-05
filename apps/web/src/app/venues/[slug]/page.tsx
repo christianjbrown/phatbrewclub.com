@@ -1,3 +1,4 @@
+import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import type { Metadata } from 'next'
 import { Footer, Header } from '@/components/Chrome'
@@ -103,35 +104,19 @@ export default async function VenuePage({ params }: { params: Promise<{ slug: st
         {menus.length ? (
           <section id="menus">
             <div className="wrap">
-              {/* The menus were being synced from me&u into the CMS and then
-                  rendered nowhere, so "Hours and menus" led to a page with no
-                  menu on it. */}
+              {/* The menu lives on its own page. It is one of the two things
+                  people arrive for, and it was the least reachable thing on the
+                  site as a section below hours, taps and events. */}
               <h2>Menus</h2>
-              {menus.map((m) => (
-                <div key={m.id} style={{ marginBottom: 34 }}>
-                  <h3>{m.name.replace(/^.*—\s*/, '')}</h3>
-                  {(m.sections ?? []).map((sec) => (
-                    <div key={sec.name} style={{ marginTop: 18 }}>
-                      <p className="eyebrow" style={{ marginBottom: 8 }}>{sec.name}</p>
-                      {(sec.items ?? []).map((it) => (
-                        <div className="menu-row" key={`${sec.name}-${it.name}`}>
-                          <span className="menu-name">{it.name}</span>
-                          {it.description ? <span className="menu-desc">{it.description}</span> : null}
-                          <span className="menu-price">{it.price}</span>
-                        </div>
-                      ))}
-                    </div>
-                  ))}
-                </div>
-              ))}
-              {menus[0]?.syncedAt ? (
-                <p style={{ color: '#777', fontSize: 14 }}>
-                  Synced from me&amp;u ·{' '}
-                  {new Date(menus[0].syncedAt).toLocaleString('en-AU', {
-                    timeZone: 'Australia/Perth', dateStyle: 'medium', timeStyle: 'short',
-                  })}
-                </p>
-              ) : null}
+              <p className="lede" style={{ marginBottom: 18 }}>
+                {menus
+                  .map((m) => m.name.replace(/^.*—\s*/, ''))
+                  .join(' and ')}
+                , served at {venue.shortName}.
+              </p>
+              <Link className="btn" href={`/venues/${venue.slug}/menu`}>
+                See the menu
+              </Link>
             </div>
           </section>
         ) : null}
