@@ -43,42 +43,45 @@ The existing hero streams at 852x480 and is stretched full-bleed on desktop. It
 needs a higher-resolution master or a re-shoot; the mocks use a still frame.
 
 
-## Performance: 89, one point under the budget
+## Performance: resolved, 94
 
-Lighthouse budget is 90; the median of three warm runs is 89 on the homepage.
-Reported as-is rather than by moving the budget.
+Lighthouse budget is 90. Median of three warm runs on the homepage is 94, and
+every other page clears it too: West Perth 97, what's on 99, beers 93.
 
-Measured against the old site, on the same tool:
+Measured against the old site with the same tool:
 
 | | Old (Square Online) | New |
 |---|---|---|
-| Performance | not scored (see note) | 89 |
+| Performance | not scorable, see note | 94 |
 | Accessibility | multiple AA failures | 100 |
 | SEO | 100 | 100 |
-| CLS | 0.539 | 0.061 |
-| Requests | 227 | 35 |
-| Transfer | 2.34 MB | 0.58 MB |
+| FCP | 1.18 s | 0.8 s |
+| CLS | 0.539 | 0.000 |
+| Requests | 227 | 34 |
+| Transfer | 2.34 MB | 0.57 MB |
 
-Three real gains came out of chasing this, each a genuine defect at the time:
+Five real defects came out of chasing this, each genuine at the time:
 
-1. The hero was a CSS `background-image`. Browsers only discover those after
-   CSS resolves, so LCP sat at 5.5s. As a real `<img>` with `fetchpriority=high`
-   it dropped to 3.4s.
-2. The `hero` derivative was configured at 1920x1080 but the sources are 1600px
-   wide, and Payload does not upscale — so the variant was silently never
-   generated and every caller fell back to the full-size original. Now 1600x900.
-3. Mobile was downloading the 1600px hero. A `srcset` across the existing
+1. The hero was a CSS `background-image`. Browsers only discover those once CSS
+   resolves, so LCP sat at 5.5 s. A real `<img>` with `fetchpriority="high"`
+   took it to 3.4 s.
+2. The `hero` derivative was configured at 1920x1080 against 1600px sources.
+   Payload does not upscale, so the variant was silently never generated and
+   every caller fell back to the full-size original. Now 1600x900.
+3. Mobile downloaded the 1600px hero. A `srcset` across the existing
    derivatives took the homepage from 79 to 88.
+4. `logo.png` was a 512px, 66 KB PNG rendering at 58px — the same mistake the
+   audit criticised the old site for with its 2400px logo. Now 20 KB.
+5. **Google Fonts was the last thing on the critical path.** Self-hosting Rubik
+   as a variable woff2 took FCP from 2.3 s to 0.8 s and performance from 89 to
+   94. It also took CLS from 0.061 to **0.000**: the residual shift was the
+   font swapping in late, and a preloaded same-origin font removes it entirely.
 
-What is left, in order of likely gain:
+Rubik is SIL Open Font License 1.1, which permits redistribution. The licence
+ships alongside the files at `public/fonts/OFL.txt`.
 
-- **Google Fonts is render-blocking.** FCP is 2.3s under simulated slow 4G and
-  the font stylesheet is the main external dependency on the critical path.
-  Self-hosting Rubik as a woff2 with `font-display: swap` is the obvious next
-  step and should clear 90 on its own.
-- **Images are JPEG/PNG.** Payload can emit AVIF/WebP; roughly 30-50% smaller
-  at the same quality.
-- Note the old site cannot be given a fair Lighthouse performance score for
-  comparison, because it loads an autoplaying video and about forty Instagram
-  images from third-party CDNs. Its CLS, request count and transfer size are
-  directly measured and are the honest comparison.
+Note the old site cannot be given a fair Lighthouse performance score for
+comparison, because it autoplays a video and pulls about forty Instagram images
+from third-party CDNs. Its CLS, request count and transfer size were directly
+measured and are the honest comparison.
+

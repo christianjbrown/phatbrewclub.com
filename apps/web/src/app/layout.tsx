@@ -31,11 +31,14 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en-AU">
       <head>
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
+        {/* Self-hosted, so no preconnect to a third-party font host is needed.
+            Preloaded because the first paint depends on it. */}
         <link
-          href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;700;800&display=swap"
-          rel="stylesheet"
+          rel="preload"
+          href="/fonts/rubik-latin.woff2"
+          as="font"
+          type="font/woff2"
+          crossOrigin="anonymous"
         />
       </head>
       <body>
