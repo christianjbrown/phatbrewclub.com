@@ -56,6 +56,43 @@ const run = async () => {
     console.log(`  user      ${ADMIN_EMAIL} (exists)`)
   }
 
+  /**
+   * Regenerate stale derivatives.
+   *
+   * Media is looked up by filename and reused, which makes the seed idempotent
+   * but also means a change to the image pipeline never reaches files that are
+   * already uploaded. When the derivatives moved to WebP, production carried on
+   * serving the PNGs generated under the old config: eighteen 400x300 thumbs
+   * for 3.2MB on /beers alone.
+   *
+   * Deleting through Payload rather than truncating the table is what removes
+   * the objects from storage and nulls the references. Everything below
+   * re-attaches media by filename, so the relationships come back.
+   *
+   * Only stale documents are deleted, which matters because the job has a 900s
+   * timeout and two retries: a blanket purge that ran out of time would purge
+   * again on the retry and never converge. Regenerated files are already WebP,
+   * so a resumed run skips them and finishes the remainder.
+   */
+  if (process.env.SEED_PURGE_MEDIA === 'true') {
+    const all = await payload.find({ collection: 'media', limit: 0, pagination: false })
+    const isStale = (doc: { mimeType?: string | null; sizes?: Record<string, { url?: string | null }> }) => {
+      // PDFs have no derivatives to regenerate.
+      if (!doc.mimeType?.startsWith('image/')) return false
+      const generated = Object.values(doc.sizes ?? {}).filter((v) => v?.url)
+      // Nothing generated at all, or generated in the old format.
+      if (generated.length === 0) return true
+      return generated.some((v) => !v.url!.endsWith('.webp'))
+    }
+    let purged = 0
+    for (const doc of all.docs) {
+      if (!isStale(doc as never)) continue
+      await payload.delete({ collection: 'media', id: doc.id })
+      purged++
+    }
+    console.log(`  purged    ${purged} stale of ${all.docs.length} media documents`)
+  }
+
   // 2. Media — uploads go through the S3 adapter into MinIO
   const media = new Map<string, number | string>()
   const upload = async (file: string, alt: string) => {
