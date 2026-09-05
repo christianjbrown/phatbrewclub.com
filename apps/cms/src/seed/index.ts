@@ -4,6 +4,7 @@ import { fileURLToPath } from 'url'
 import { getPayload } from 'payload'
 import config from '../payload.config.js'
 import { BEERS, EVENTS, VENUES } from './data.js'
+import { richText } from './lexical.js'
 
 const dirname = path.dirname(fileURLToPath(import.meta.url))
 const IMG = path.resolve(dirname, '../../../../mocks/img')
@@ -135,7 +136,7 @@ const run = async () => {
   const todayPerth = { y: Number(part('year')), m: Number(part('month')), d: Number(part('day')) }
   const todayDow = WEEKDAYS.indexOf(part('weekday'))
 
-  for (const [title, weekday, hour, recurrence, slugs, category, isFree, price] of EVENTS) {
+  for (const [title, weekday, hour, recurrence, slugs, category, isFree, price, description] of EVENTS) {
     const delta = (weekday - todayDow + 7) % 7 || 7
     const startsAt = new Date(
       Date.UTC(
@@ -148,11 +149,15 @@ const run = async () => {
         0,
       ),
     )
-    const slug = title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '')
+    // Two venues run a steak night on different days, so the slug has to carry
+    // the venue or the second one silently overwrites the first.
+    const base = title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '')
+    const slug = slugs.length === 1 ? `${base}-${slugs[0]}` : base
     const data = {
       title, slug,
       startsAt: startsAt.toISOString(),
       recurrence, category, isFree, price,
+      body: richText(description),
       venues: slugs.map((s) => venueIds.get(s)!),
       _status: 'published' as const,
     }
@@ -160,7 +165,90 @@ const run = async () => {
     if (found.totalDocs) await payload.update({ collection: 'events', id: found.docs[0].id, data })
     else await payload.create({ collection: 'events', data })
   }
-  console.log(`  events    ${EVENTS.length}`)
+  /**
+   * Reconcile: remove seeded events that are no longer in the fixture set.
+   *
+   * Without this, changing a slug scheme orphans the old records and the site
+   * shows both — which is exactly what happened when event slugs gained a venue
+   * suffix and "Mondo's Steak Night" appeared twice.
+   *
+   * This deletes any event not in the fixture list, so it is a FIXTURE LOADER
+   * for local and preview environments only. Never point it at an environment
+   * where staff have created real events.
+   */
+  const expected = new Set(
+    EVENTS.map(([title, , , , slugs]) => {
+      const base = title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '')
+      return slugs.length === 1 ? `${base}-${slugs[0]}` : base
+    }),
+  )
+  const allEvents = await payload.find({ collection: 'events', limit: 200, depth: 0 })
+  let pruned = 0
+  for (const doc of allEvents.docs) {
+    const slug = (doc as { slug?: string }).slug
+    if (slug && !expected.has(slug)) {
+      await payload.delete({ collection: 'events', id: doc.id })
+      pruned++
+    }
+  }
+  console.log(`  events    ${EVENTS.length}${pruned ? ` (${pruned} stale removed)` : ''}`)
+
+  // 7. Pages. The homebrew comp is a block-built page rather than a hard-coded
+  //    route, so the brewery can update it — and retire it — without a deploy.
+  const compBlocks = [
+    {
+      blockType: 'hero',
+      eyebrow: '2026 · ENTRIES CLOSED',
+      heading: 'The Great Aussie Homebrew Comp',
+      lede:
+        'Entries closed on 10 May and the awards night was 23 May. The 2027 competition opens in April.',
+      actions: [
+        { label: 'Tell me when 2027 opens', url: '/contact' },
+        { label: 'See the beers', url: '/beers' },
+      ],
+    },
+    {
+      blockType: 'richText',
+      heading: 'Turn your homebrew into something real',
+      body: richText(
+        'Most competitions give you a score. This one gives you a pathway: every entry is judged by working commercial brewers, and the winning beer gets brewed and poured across Perth and the South West.',
+        { h: 'How it runs', tag: 'h3' },
+        'Register your beer online, drop it off at any of the three breweries during the drop-off window, and let the judges do the rest. Entry is free.',
+        { h: 'The 2026 dates', tag: 'h3' },
+        'Entries opened 6 April and closed 10 May. Drop-off was 12 May at all three breweries. Judging took place on Saturday 16 May at Phat Brew Club, with the awards night at 6pm on Saturday 23 May.',
+      ),
+    },
+    {
+      blockType: 'faq',
+      heading: 'Questions',
+      questions: [
+        { question: 'Who can enter?', answer: richText('Any homebrewer. You do not need to have entered a competition before, and there is no membership requirement.') },
+        { question: 'Does it cost anything?', answer: richText('No. Entry is free.') },
+        { question: 'How many beers can I submit?', answer: richText('Check the entry form when registrations reopen in April, as the limit can change year to year.') },
+        { question: 'What happens if I win?', answer: richText('The winning beer is brewed commercially and poured across Perth and the South West, with the brewer credited.') },
+        { question: 'When do entries open for 2027?', answer: richText('April 2027. Get in touch and we will let you know the moment the form goes live.') },
+      ],
+    },
+  ]
+
+  const compData = {
+    title: 'The Great Aussie Homebrew Comp',
+    slug: 'homebrew-comp',
+    layout: compBlocks,
+    seo: {
+      title: 'The Great Aussie Homebrew Comp',
+      description:
+        'Phat Brew Club\'s homebrew competition. Judged by commercial brewers, with the winning beer brewed and poured across WA.',
+    },
+    _status: 'published' as const,
+  }
+  const foundPage = await payload.find({ collection: 'pages', where: { slug: { equals: 'homebrew-comp' } }, limit: 1 })
+  if (foundPage.totalDocs) {
+    await payload.update({ collection: 'pages', id: foundPage.docs[0].id, data: compData as never })
+  } else {
+    await payload.create({ collection: 'pages', data: compData as never })
+  }
+  console.log('  page      homebrew-comp')
 
   // 7. Settings
   await payload.updateGlobal({

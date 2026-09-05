@@ -250,6 +250,32 @@
     ]
   },
   {
+    "file": "icon-180x180-ios-ote1mj.png",
+    "bytes": 28669,
+    "sha256": "c84640f2e8f3a77b",
+    "sourceUrl": "https://www.phatbrewclub.com/uploads/b/eb253520-afe6-11f0-9266-195e8c2247a6/icon_180x180_ios_OTE1Mj.png",
+    "usedOn": [
+      "/",
+      "/locations",
+      "/west-perth",
+      "/hillarys-boardwalk",
+      "/beers",
+      "/events",
+      "/shop-all",
+      "/about",
+      "/contact",
+      "/wp-functions",
+      "/hl-functions",
+      "/great-aussie-homebrew-comp-2026",
+      "/great-aussie-homebrew-comp-2026-faq",
+      "/shop/merch/O23UDKFVXVG4CJPHZL6V2FO5",
+      "/shop/mens/2",
+      "/shop/womens/3",
+      "/shop/headwear/4",
+      "/shop/beer-cube-16-x-375ml-cans-/5"
+    ]
+  },
+  {
     "file": "img-7952-1647848790.png",
     "bytes": 1588092,
     "sha256": "b7c73a4f02a05814",
@@ -477,6 +503,32 @@
     ]
   },
   {
+    "file": "phat-brew-club-favicon.png",
+    "bytes": 7408,
+    "sha256": "ed85464edf997e4e",
+    "sourceUrl": "https://www.phatbrewclub.com/uploads/b/eb253520-afe6-11f0-9266-195e8c2247a6/Phat%20Brew%20Club%20Favicon.png",
+    "usedOn": [
+      "/",
+      "/locations",
+      "/west-perth",
+      "/hillarys-boardwalk",
+      "/beers",
+      "/events",
+      "/shop-all",
+      "/about",
+      "/contact",
+      "/wp-functions",
+      "/hl-functions",
+      "/great-aussie-homebrew-comp-2026",
+      "/great-aussie-homebrew-comp-2026-faq",
+      "/shop/merch/O23UDKFVXVG4CJPHZL6V2FO5",
+      "/shop/mens/2",
+      "/shop/womens/3",
+      "/shop/headwear/4",
+      "/shop/beer-cube-16-x-375ml-cans-/5"
+    ]
+  },
+  {
     "file": "phat-brew-club-functions-and-events-mzm1nd.pdf",
     "bytes": 1899411,
     "sha256": "2c89b20102db0a26",
@@ -554,6 +606,32 @@
     "sourceUrl": "https://136461278.cdn6.editmysite.com/uploads/1/3/6/4/136461278/RKFIYSP3DK3ZGQC5226YHEX6.jpeg",
     "usedOn": [
       "/shop/merch/O23UDKFVXVG4CJPHZL6V2FO5"
+    ]
+  },
+  {
+    "file": "splash-2048x4435-nzgwnz.jpg",
+    "bytes": 201723,
+    "sha256": "6bd95f8d38963205",
+    "sourceUrl": "https://www.phatbrewclub.com/uploads/b/eb253520-afe6-11f0-9266-195e8c2247a6/splash_2048x4435_NzgwNz.jpg",
+    "usedOn": [
+      "/",
+      "/locations",
+      "/west-perth",
+      "/hillarys-boardwalk",
+      "/beers",
+      "/events",
+      "/shop-all",
+      "/about",
+      "/contact",
+      "/wp-functions",
+      "/hl-functions",
+      "/great-aussie-homebrew-comp-2026",
+      "/great-aussie-homebrew-comp-2026-faq",
+      "/shop/merch/O23UDKFVXVG4CJPHZL6V2FO5",
+      "/shop/mens/2",
+      "/shop/womens/3",
+      "/shop/headwear/4",
+      "/shop/beer-cube-16-x-375ml-cans-/5"
     ]
   },
   {

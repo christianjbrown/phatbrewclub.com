@@ -11,6 +11,13 @@ const NAV: [string, string, [string, string][]?][] = [
   ['Contact', '/contact'],
 ]
 
+/**
+ * The homebrew comp sits in the footer, not the primary nav. On the old site it
+ * held a top-level slot on every page for four months after it finished; it
+ * belongs in the nav while it is running and nowhere else, which is a content
+ * decision the CMS can now make rather than a deploy.
+ */
+
 export const Header = ({ current }: { current?: string }) => (
   <header>
     <div className="hd">
@@ -71,7 +78,8 @@ export const Footer = ({ venues }: { venues: Venue[] }) => (
         <div>
           <h2 className="fh">ENQUIRIES</h2>
           <Link href="/functions/west-perth">Functions</Link><br />
-          <Link href="/contact">Contact</Link>
+          <Link href="/contact">Contact</Link><br />
+          <Link href="/homebrew-comp">Homebrew comp</Link>
         </div>
       </div>
       <p className="legal">Phat Brew Club · Independent brewery, Western Australia</p>

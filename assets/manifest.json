@@ -47,7 +47,8 @@
       "/locations"
     ],
     "discoveredVia": [
-      "network"
+      "network",
+      "dom"
     ]
   },
   {
@@ -154,7 +155,8 @@
       "/west-perth"
     ],
     "discoveredVia": [
-      "network"
+      "network",
+      "dom"
     ]
   },
   {
@@ -356,6 +358,35 @@
     ]
   },
   {
+    "url": "https://www.phatbrewclub.com/uploads/b/eb253520-afe6-11f0-9266-195e8c2247a6/icon_180x180_ios_OTE1Mj.png",
+    "withParams": "https://www.phatbrewclub.com/uploads/b/eb253520-afe6-11f0-9266-195e8c2247a6/icon_180x180_ios_OTE1Mj.png?width=180",
+    "firstParty": true,
+    "filename": "icon_180x180_ios_OTE1Mj.png",
+    "pages": [
+      "/",
+      "/locations",
+      "/west-perth",
+      "/hillarys-boardwalk",
+      "/beers",
+      "/events",
+      "/shop-all",
+      "/about",
+      "/contact",
+      "/wp-functions",
+      "/hl-functions",
+      "/great-aussie-homebrew-comp-2026",
+      "/great-aussie-homebrew-comp-2026-faq",
+      "/shop/merch/O23UDKFVXVG4CJPHZL6V2FO5",
+      "/shop/mens/2",
+      "/shop/womens/3",
+      "/shop/headwear/4",
+      "/shop/beer-cube-16-x-375ml-cans-/5"
+    ],
+    "discoveredVia": [
+      "dom"
+    ]
+  },
+  {
     "url": "https://b79167d1cd5d6ba416b5.cdn6.editmysite.com/uploads/b/b79167d1cd5d6ba416b526b27b4c5c8bbc6addf4e0dd8a708bd0c43f47ff237f/IMG_7952_1647848790_1761270721.png",
     "withParams": "https://b79167d1cd5d6ba416b5.cdn6.editmysite.com/uploads/b/b79167d1cd5d6ba416b526b27b4c5c8bbc6addf4e0dd8a708bd0c43f47ff237f/IMG_7952_1647848790_1761270721.png?width=2400&optimize=medium",
     "firstParty": true,
@@ -377,7 +408,8 @@
       "/hillarys-boardwalk"
     ],
     "discoveredVia": [
-      "network"
+      "network",
+      "dom"
     ]
   },
   {
@@ -682,6 +714,35 @@
     ]
   },
   {
+    "url": "https://www.phatbrewclub.com/uploads/b/eb253520-afe6-11f0-9266-195e8c2247a6/Phat%20Brew%20Club%20Favicon.png",
+    "withParams": "https://www.phatbrewclub.com/uploads/b/eb253520-afe6-11f0-9266-195e8c2247a6/Phat%20Brew%20Club%20Favicon.png",
+    "firstParty": true,
+    "filename": "Phat Brew Club Favicon.png",
+    "pages": [
+      "/",
+      "/locations",
+      "/west-perth",
+      "/hillarys-boardwalk",
+      "/beers",
+      "/events",
+      "/shop-all",
+      "/about",
+      "/contact",
+      "/wp-functions",
+      "/hl-functions",
+      "/great-aussie-homebrew-comp-2026",
+      "/great-aussie-homebrew-comp-2026-faq",
+      "/shop/merch/O23UDKFVXVG4CJPHZL6V2FO5",
+      "/shop/mens/2",
+      "/shop/womens/3",
+      "/shop/headwear/4",
+      "/shop/beer-cube-16-x-375ml-cans-/5"
+    ],
+    "discoveredVia": [
+      "dom"
+    ]
+  },
+  {
     "url": "https://www.phatbrewclub.com/uploads/b/eb253520-afe6-11f0-9266-195e8c2247a6/Phat%20Brew%20Club%20Functions%20and%20Events_MzM1ND.pdf",
     "withParams": "https://www.phatbrewclub.com/uploads/b/eb253520-afe6-11f0-9266-195e8c2247a6/Phat%20Brew%20Club%20Functions%20and%20Events_MzM1ND.pdf",
     "firstParty": true,
@@ -784,6 +845,35 @@
     ],
     "discoveredVia": [
       "network",
+      "dom"
+    ]
+  },
+  {
+    "url": "https://www.phatbrewclub.com/uploads/b/eb253520-afe6-11f0-9266-195e8c2247a6/splash_2048x4435_NzgwNz.jpg",
+    "withParams": "https://www.phatbrewclub.com/uploads/b/eb253520-afe6-11f0-9266-195e8c2247a6/splash_2048x4435_NzgwNz.jpg?width=750&height=1334&fit=crop",
+    "firstParty": true,
+    "filename": "splash_2048x4435_NzgwNz.jpg",
+    "pages": [
+      "/",
+      "/locations",
+      "/west-perth",
+      "/hillarys-boardwalk",
+      "/beers",
+      "/events",
+      "/shop-all",
+      "/about",
+      "/contact",
+      "/wp-functions",
+      "/hl-functions",
+      "/great-aussie-homebrew-comp-2026",
+      "/great-aussie-homebrew-comp-2026-faq",
+      "/shop/merch/O23UDKFVXVG4CJPHZL6V2FO5",
+      "/shop/mens/2",
+      "/shop/womens/3",
+      "/shop/headwear/4",
+      "/shop/beer-cube-16-x-375ml-cans-/5"
+    ],
+    "discoveredVia": [
       "dom"
     ]
   },
@@ -965,8 +1055,8 @@
     ]
   },
   {
-    "url": "https://customer-ugajlzvkncemhxjh.cloudflarestream.com/5d98f47d21f8f40e6ceb321b1cbd5541/audio/131/seg_10.mp4",
-    "withParams": "https://customer-ugajlzvkncemhxjh.cloudflarestream.com/5d98f47d21f8f40e6ceb321b1cbd5541/audio/131/seg_10.mp4?p=eyJ0eXBlIjoic2VnbWVudCIsInZpZGVvSUQiOiI1ZDk4ZjQ3ZDIxZjhmNDBlNmNlYjMyMWIxY2JkNTU0MSIsIm93bmVySUQiOjU4ODMyMTA3LCJjcmVhdG9ySUQiOiIxMzY0NjEyNzgiLCJzZWdtZW50RHVyYXRpb25TZWNzIjo0LjAwNzgyMjIyMjIyMjIyMiwic3RvcmFnZVByb3ZpZGVyIjo0LCJ0cmFjayI6IjIwOWY1ZjNhMDRjNTU3NDA0MmI1ZWY0YmQ4MWNmZmFiIiwicmVuZGl0aW9uIjoiMTMxODEwNjc4MCIsIm11eGluZyI6IjEzNzY4NDI1NjEifQ&s=aDETwrtVZywlwq1bHio5eMKqwrxrNcK8G3xkahJbw7ZFw7TDlTkoDA",
+    "url": "https://customer-ugajlzvkncemhxjh.cloudflarestream.com/5d98f47d21f8f40e6ceb321b1cbd5541/video/720/seg_10.mp4",
+    "withParams": "https://customer-ugajlzvkncemhxjh.cloudflarestream.com/5d98f47d21f8f40e6ceb321b1cbd5541/video/720/seg_10.mp4?p=eyJ0eXBlIjoic2VnbWVudCIsInZpZGVvSUQiOiI1ZDk4ZjQ3ZDIxZjhmNDBlNmNlYjMyMWIxY2JkNTU0MSIsIm93bmVySUQiOjU4ODMyMTA3LCJjcmVhdG9ySUQiOiIxMzY0NjEyNzgiLCJzZWdtZW50RHVyYXRpb25TZWNzIjo0LjAwNCwic3RvcmFnZVByb3ZpZGVyIjo0LCJ0cmFjayI6IjdiMzhkOTcwZTQ3MTAzNjE1YWQzNjY5ZTA2ZWUwMTNiIiwicmVuZGl0aW9uIjoiMTMxODEwNjkxMyIsIm11eGluZyI6IjEzNzY4NDI2OTQifQ&s=OMOAcD3Co8KYRHzCtSBZAsKCw6IIIsK2w6zCuk9sZH3CnsKnw4zCuyvCh3jDk8OO",
     "firstParty": false,
     "filename": "seg_10.mp4",
     "pages": [
@@ -977,8 +1067,8 @@
     ]
   },
   {
-    "url": "https://customer-ugajlzvkncemhxjh.cloudflarestream.com/5d98f47d21f8f40e6ceb321b1cbd5541/video/720/seg_10.mp4",
-    "withParams": "https://customer-ugajlzvkncemhxjh.cloudflarestream.com/5d98f47d21f8f40e6ceb321b1cbd5541/video/720/seg_10.mp4?p=eyJ0eXBlIjoic2VnbWVudCIsInZpZGVvSUQiOiI1ZDk4ZjQ3ZDIxZjhmNDBlNmNlYjMyMWIxY2JkNTU0MSIsIm93bmVySUQiOjU4ODMyMTA3LCJjcmVhdG9ySUQiOiIxMzY0NjEyNzgiLCJzZWdtZW50RHVyYXRpb25TZWNzIjo0LjAwNCwic3RvcmFnZVByb3ZpZGVyIjo0LCJ0cmFjayI6IjdiMzhkOTcwZTQ3MTAzNjE1YWQzNjY5ZTA2ZWUwMTNiIiwicmVuZGl0aW9uIjoiMTMxODEwNjkxMyIsIm11eGluZyI6IjEzNzY4NDI2OTQifQ&s=OMOAcD3Co8KYRHzCtSBZAsKCw6IIIsK2w6zCuk9sZH3CnsKnw4zCuyvCh3jDk8OO",
+    "url": "https://customer-ugajlzvkncemhxjh.cloudflarestream.com/5d98f47d21f8f40e6ceb321b1cbd5541/audio/131/seg_10.mp4",
+    "withParams": "https://customer-ugajlzvkncemhxjh.cloudflarestream.com/5d98f47d21f8f40e6ceb321b1cbd5541/audio/131/seg_10.mp4?p=eyJ0eXBlIjoic2VnbWVudCIsInZpZGVvSUQiOiI1ZDk4ZjQ3ZDIxZjhmNDBlNmNlYjMyMWIxY2JkNTU0MSIsIm93bmVySUQiOjU4ODMyMTA3LCJjcmVhdG9ySUQiOiIxMzY0NjEyNzgiLCJzZWdtZW50RHVyYXRpb25TZWNzIjo0LjAwNzgyMjIyMjIyMjIyMiwic3RvcmFnZVByb3ZpZGVyIjo0LCJ0cmFjayI6IjIwOWY1ZjNhMDRjNTU3NDA0MmI1ZWY0YmQ4MWNmZmFiIiwicmVuZGl0aW9uIjoiMTMxODEwNjc4MCIsIm11eGluZyI6IjEzNzY4NDI1NjEifQ&s=aDETwrtVZywlwq1bHio5eMKqwrxrNcK8G3xkahJbw7ZFw7TDlTkoDA",
     "firstParty": false,
     "filename": "seg_10.mp4",
     "pages": [
@@ -1037,18 +1127,6 @@
     ]
   },
   {
-    "url": "https://customer-ugajlzvkncemhxjh.cloudflarestream.com/5d98f47d21f8f40e6ceb321b1cbd5541/audio/131/seg_4.mp4",
-    "withParams": "https://customer-ugajlzvkncemhxjh.cloudflarestream.com/5d98f47d21f8f40e6ceb321b1cbd5541/audio/131/seg_4.mp4?p=eyJ0eXBlIjoic2VnbWVudCIsInZpZGVvSUQiOiI1ZDk4ZjQ3ZDIxZjhmNDBlNmNlYjMyMWIxY2JkNTU0MSIsIm93bmVySUQiOjU4ODMyMTA3LCJjcmVhdG9ySUQiOiIxMzY0NjEyNzgiLCJzZWdtZW50RHVyYXRpb25TZWNzIjo0LjAwNzgyMjIyMjIyMjIyMiwic3RvcmFnZVByb3ZpZGVyIjo0LCJ0cmFjayI6IjIwOWY1ZjNhMDRjNTU3NDA0MmI1ZWY0YmQ4MWNmZmFiIiwicmVuZGl0aW9uIjoiMTMxODEwNjc4MCIsIm11eGluZyI6IjEzNzY4NDI1NjEifQ&s=aDETwrtVZywlwq1bHio5eMKqwrxrNcK8G3xkahJbw7ZFw7TDlTkoDA",
-    "firstParty": false,
-    "filename": "seg_4.mp4",
-    "pages": [
-      "/"
-    ],
-    "discoveredVia": [
-      "network"
-    ]
-  },
-  {
     "url": "https://customer-ugajlzvkncemhxjh.cloudflarestream.com/5d98f47d21f8f40e6ceb321b1cbd5541/video/720/seg_4.mp4",
     "withParams": "https://customer-ugajlzvkncemhxjh.cloudflarestream.com/5d98f47d21f8f40e6ceb321b1cbd5541/video/720/seg_4.mp4?p=eyJ0eXBlIjoic2VnbWVudCIsInZpZGVvSUQiOiI1ZDk4ZjQ3ZDIxZjhmNDBlNmNlYjMyMWIxY2JkNTU0MSIsIm93bmVySUQiOjU4ODMyMTA3LCJjcmVhdG9ySUQiOiIxMzY0NjEyNzgiLCJzZWdtZW50RHVyYXRpb25TZWNzIjo0LjAwNCwic3RvcmFnZVByb3ZpZGVyIjo0LCJ0cmFjayI6IjdiMzhkOTcwZTQ3MTAzNjE1YWQzNjY5ZTA2ZWUwMTNiIiwicmVuZGl0aW9uIjoiMTMxODEwNjkxMyIsIm11eGluZyI6IjEzNzY4NDI2OTQifQ&s=OMOAcD3Co8KYRHzCtSBZAsKCw6IIIsK2w6zCuk9sZH3CnsKnw4zCuyvCh3jDk8OO",
     "firstParty": false,
@@ -1061,10 +1139,10 @@
     ]
   },
   {
-    "url": "https://customer-ugajlzvkncemhxjh.cloudflarestream.com/5d98f47d21f8f40e6ceb321b1cbd5541/audio/131/seg_5.mp4",
-    "withParams": "https://customer-ugajlzvkncemhxjh.cloudflarestream.com/5d98f47d21f8f40e6ceb321b1cbd5541/audio/131/seg_5.mp4?p=eyJ0eXBlIjoic2VnbWVudCIsInZpZGVvSUQiOiI1ZDk4ZjQ3ZDIxZjhmNDBlNmNlYjMyMWIxY2JkNTU0MSIsIm93bmVySUQiOjU4ODMyMTA3LCJjcmVhdG9ySUQiOiIxMzY0NjEyNzgiLCJzZWdtZW50RHVyYXRpb25TZWNzIjo0LjAwNzgyMjIyMjIyMjIyMiwic3RvcmFnZVByb3ZpZGVyIjo0LCJ0cmFjayI6IjIwOWY1ZjNhMDRjNTU3NDA0MmI1ZWY0YmQ4MWNmZmFiIiwicmVuZGl0aW9uIjoiMTMxODEwNjc4MCIsIm11eGluZyI6IjEzNzY4NDI1NjEifQ&s=aDETwrtVZywlwq1bHio5eMKqwrxrNcK8G3xkahJbw7ZFw7TDlTkoDA",
+    "url": "https://customer-ugajlzvkncemhxjh.cloudflarestream.com/5d98f47d21f8f40e6ceb321b1cbd5541/audio/131/seg_4.mp4",
+    "withParams": "https://customer-ugajlzvkncemhxjh.cloudflarestream.com/5d98f47d21f8f40e6ceb321b1cbd5541/audio/131/seg_4.mp4?p=eyJ0eXBlIjoic2VnbWVudCIsInZpZGVvSUQiOiI1ZDk4ZjQ3ZDIxZjhmNDBlNmNlYjMyMWIxY2JkNTU0MSIsIm93bmVySUQiOjU4ODMyMTA3LCJjcmVhdG9ySUQiOiIxMzY0NjEyNzgiLCJzZWdtZW50RHVyYXRpb25TZWNzIjo0LjAwNzgyMjIyMjIyMjIyMiwic3RvcmFnZVByb3ZpZGVyIjo0LCJ0cmFjayI6IjIwOWY1ZjNhMDRjNTU3NDA0MmI1ZWY0YmQ4MWNmZmFiIiwicmVuZGl0aW9uIjoiMTMxODEwNjc4MCIsIm11eGluZyI6IjEzNzY4NDI1NjEifQ&s=aDETwrtVZywlwq1bHio5eMKqwrxrNcK8G3xkahJbw7ZFw7TDlTkoDA",
     "firstParty": false,
-    "filename": "seg_5.mp4",
+    "filename": "seg_4.mp4",
     "pages": [
       "/"
     ],
@@ -1075,6 +1153,18 @@
   {
     "url": "https://customer-ugajlzvkncemhxjh.cloudflarestream.com/5d98f47d21f8f40e6ceb321b1cbd5541/video/720/seg_5.mp4",
     "withParams": "https://customer-ugajlzvkncemhxjh.cloudflarestream.com/5d98f47d21f8f40e6ceb321b1cbd5541/video/720/seg_5.mp4?p=eyJ0eXBlIjoic2VnbWVudCIsInZpZGVvSUQiOiI1ZDk4ZjQ3ZDIxZjhmNDBlNmNlYjMyMWIxY2JkNTU0MSIsIm93bmVySUQiOjU4ODMyMTA3LCJjcmVhdG9ySUQiOiIxMzY0NjEyNzgiLCJzZWdtZW50RHVyYXRpb25TZWNzIjo0LjAwNCwic3RvcmFnZVByb3ZpZGVyIjo0LCJ0cmFjayI6IjdiMzhkOTcwZTQ3MTAzNjE1YWQzNjY5ZTA2ZWUwMTNiIiwicmVuZGl0aW9uIjoiMTMxODEwNjkxMyIsIm11eGluZyI6IjEzNzY4NDI2OTQifQ&s=OMOAcD3Co8KYRHzCtSBZAsKCw6IIIsK2w6zCuk9sZH3CnsKnw4zCuyvCh3jDk8OO",
+    "firstParty": false,
+    "filename": "seg_5.mp4",
+    "pages": [
+      "/"
+    ],
+    "discoveredVia": [
+      "network"
+    ]
+  },
+  {
+    "url": "https://customer-ugajlzvkncemhxjh.cloudflarestream.com/5d98f47d21f8f40e6ceb321b1cbd5541/audio/131/seg_5.mp4",
+    "withParams": "https://customer-ugajlzvkncemhxjh.cloudflarestream.com/5d98f47d21f8f40e6ceb321b1cbd5541/audio/131/seg_5.mp4?p=eyJ0eXBlIjoic2VnbWVudCIsInZpZGVvSUQiOiI1ZDk4ZjQ3ZDIxZjhmNDBlNmNlYjMyMWIxY2JkNTU0MSIsIm93bmVySUQiOjU4ODMyMTA3LCJjcmVhdG9ySUQiOiIxMzY0NjEyNzgiLCJzZWdtZW50RHVyYXRpb25TZWNzIjo0LjAwNzgyMjIyMjIyMjIyMiwic3RvcmFnZVByb3ZpZGVyIjo0LCJ0cmFjayI6IjIwOWY1ZjNhMDRjNTU3NDA0MmI1ZWY0YmQ4MWNmZmFiIiwicmVuZGl0aW9uIjoiMTMxODEwNjc4MCIsIm11eGluZyI6IjEzNzY4NDI1NjEifQ&s=aDETwrtVZywlwq1bHio5eMKqwrxrNcK8G3xkahJbw7ZFw7TDlTkoDA",
     "firstParty": false,
     "filename": "seg_5.mp4",
     "pages": [

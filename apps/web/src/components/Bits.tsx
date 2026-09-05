@@ -1,6 +1,6 @@
 import Link from 'next/link'
 import type { Beer, PhatEvent, TapList, Venue } from '@/lib/types'
-import { mediaSize } from '@/lib/payload'
+import { mediaSize, mediaSrcSet } from '@/lib/payload'
 import { DAY_LABEL, eventDay, eventMonth, eventTime, formatHuman, openState } from '@/lib/time'
 
 export const OpenBadge = ({ venue }: { venue: Venue }) => {
@@ -43,7 +43,15 @@ export const BeerCard = ({ beer }: { beer: Beer }) => {
     <article className="card beer">
       {img ? (
         // eslint-disable-next-line @next/next/no-img-element
-        <img src={img} alt={beer.canArtwork?.alt ?? `${beer.name} can artwork`} loading="lazy" width={520} height={650} />
+        <img
+          src={img}
+          srcSet={mediaSrcSet(beer.canArtwork, ['thumbnail', 'square'])}
+          sizes="(min-width: 900px) 215px, 45vw"
+          alt={beer.canArtwork?.alt ?? `${beer.name} can artwork`}
+          loading="lazy"
+          width={520}
+          height={650}
+        />
       ) : null}
       <div className="pad">
         <h3><Link href={`/beers/${beer.slug}`}>{beer.name}</Link></h3>

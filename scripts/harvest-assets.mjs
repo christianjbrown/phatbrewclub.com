@@ -76,8 +76,19 @@ const run = async () => {
         [...document.querySelectorAll('img')]
           .map((i) => i.currentSrc || i.src)
           .filter(Boolean)
+          .concat([...document.querySelectorAll('a[href*="/uploads/"]')].map((a) => a.href))
+          // Favicons, apple-touch icons and iOS splash screens live in <link>,
+          // not <img>, so the first pass missed every one of them.
           .concat(
-            [...document.querySelectorAll('a[href*="/uploads/"]')].map((a) => a.href),
+            [...document.querySelectorAll('link[rel*="icon"],link[rel*="apple"]')].map((l) => l.href),
+          )
+          // CSS background images.
+          .concat(
+            [...document.querySelectorAll('*')]
+              .map((el) => getComputedStyle(el).backgroundImage)
+              .filter((b) => b && b.includes('/uploads/'))
+              .map((b) => (b.match(/url\("?([^")]+)"?\)/) || [])[1])
+              .filter(Boolean),
           ),
       );
       dom.forEach((u) => record(u, path, 'dom'));

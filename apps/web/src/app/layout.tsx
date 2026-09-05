@@ -25,6 +25,18 @@ export const metadata: Metadata = {
     'Independent Perth brewery with two venues: Phat HQ in West Perth and The Trophy Room at Hillarys Boat Harbour. Twenty taps, brewed on site.',
   openGraph: { type: 'website', locale: 'en_AU', siteName: 'Phat Brew Club' },
   twitter: { card: 'summary_large_image' },
+  // The brand's own icons, at the sizes each surface actually asks for.
+  icons: {
+    icon: [
+      { url: '/icon-32.png', sizes: '32x32', type: 'image/png' },
+      { url: '/favicon.png', sizes: '64x64', type: 'image/png' },
+      { url: '/icon-192.png', sizes: '192x192', type: 'image/png' },
+      { url: '/icon-512.png', sizes: '512x512', type: 'image/png' },
+    ],
+    apple: [{ url: '/apple-touch-icon.png', sizes: '180x180', type: 'image/png' }],
+  },
+  manifest: '/manifest.webmanifest',
+  appleWebApp: { title: 'Phat Brew Club', statusBarStyle: 'black-translucent' },
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

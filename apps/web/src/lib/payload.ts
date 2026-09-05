@@ -1,4 +1,4 @@
-import type { Beer, Paginated, PhatEvent, TapList, Venue } from './types'
+import type { Beer, Page, Paginated, PhatEvent, TapList, Venue } from './types'
 
 /**
  * Two different addresses for the same service, deliberately.
@@ -74,6 +74,13 @@ export const safeList = async <T>(fn: () => Promise<T[]>): Promise<T[]> => {
 }
 
 const absolute = (url: string) => (url.startsWith('http') ? url : `${CMS_PUBLIC}${url}`)
+
+export const getPages = () =>
+  api<Paginated<Page>>('pages', { depth: 2, limit: 50 }, ['pages']).then((r) => r.docs)
+
+export const getPage = (slug: string) =>
+  api<Paginated<Page>>('pages', { depth: 2, limit: 1, 'where[slug][equals]': slug }, ['pages'])
+    .then((r) => r.docs[0] ?? null)
 
 /** Media URLs come back relative to the CMS; make them absolute. */
 export const mediaUrl = (m?: { url?: string } | null): string | null => {

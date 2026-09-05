@@ -83,3 +83,20 @@ export type PhatEvent = {
 }
 
 export type Paginated<T> = { docs: T[]; totalDocs: number }
+
+export type Block =
+  | { blockType: 'hero'; eyebrow?: string | null; heading: string; lede?: string | null; image?: Media | null; actions?: { label: string; url: string }[] | null }
+  | { blockType: 'richText'; heading?: string | null; body?: unknown }
+  | { blockType: 'venueCards'; heading?: string | null; venues?: Venue[] | null }
+  | { blockType: 'beerGrid'; heading?: string | null; filterBy?: string | null; limit?: number | null }
+  | { blockType: 'eventList'; heading?: string | null; venue?: Venue | null; limit?: number | null }
+  | { blockType: 'tapList'; heading?: string | null; venue?: Venue | null }
+  | { blockType: 'faq'; heading?: string | null; questions?: { question: string; answer?: unknown }[] | null }
+
+export type Page = {
+  id: number | string
+  title: string
+  slug: string
+  layout?: Block[] | null
+  seo?: { title?: string | null; description?: string | null } | null
+}

@@ -64,15 +64,46 @@ export const BEERS: [string, string, number, number, string, string, string][] =
 ]
 
 /**
- * weekday: 0 = Sunday .. 6 = Saturday. The seed schedules each event on its
- * next real occurrence of that weekday, so a "Roast Sunday" is never seeded
- * onto a Friday.
- * title, weekday, hour, recurrence, venueSlugs, category, free, price
+ * Every recurring special and event currently running at both venues.
+ *
+ * weekday: 0 = Sunday .. 6 = Saturday. The seed schedules each on its next real
+ * occurrence of that weekday, so a "Roast Sunday" is never seeded onto a Friday.
+ * title, weekday, hour, recurrence, venueSlugs, category, free, price, description
  */
-export const EVENTS: [string, number, number, string, string[], string, boolean, string][] = [
-  ['Quiz night', 3, 18.5, 'weekly', ['west-perth', 'hillarys'], 'Quiz', true, ''],
-  ['All-you-can-eat ribs', 4, 17, 'weekly', ['hillarys'], 'Food special', false, '$50'],
-  ["Mondo's steak night", 4, 17, 'weekly', ['west-perth'], 'Food special', false, 'From $29'],
-  ['Live on the boardwalk', 6, 19, 'once', ['hillarys'], 'Live music', true, ''],
-  ['Roast Sunday', 0, 12, 'weekly', ['west-perth', 'hillarys'], 'Food special', false, '$35'],
+export const EVENTS: [string, number, number, string, string[], string, boolean, string, string][] = [
+  // Both venues
+  ['Quiz Night', 3, 18.5, 'weekly', ['west-perth', 'hillarys'], 'Quiz', true, '',
+    'Run by the Bamboozled team. Prizes on the night and the kitchen stays open throughout. Tables fill fast, so book ahead.'],
+  ['Happy Hour', 1, 17, 'weekly', ['west-perth', 'hillarys'], 'Food special', false, '$9 pints',
+    'Monday to Friday, 5pm to 6pm. $9 pints of West is Best and $7 house wines at both venues.'],
+
+  // West Perth
+  ['Mega Burger Monday', 1, 17, 'weekly', ['west-perth'], 'Food special', false, '$25',
+    'Your choice of the Double Oklahoma Smash Burger or the Nashville Chicken Burger, both served with chips.'],
+  ['Big Schnitty Energy', 2, 17, 'weekly', ['west-perth'], 'Food special', false, '$25',
+    'A proper pub schnitty loaded with prosciutto, olive tapenade and goat feta, with crispy chips alongside.'],
+  ['Phat Pasta Party', 3, 17, 'weekly', ['west-perth'], 'Food special', false, '$25',
+    'Choose from spaghetti bolognese, gnocchi alla Norma or orecchiette. Selected jugs from $20 after 5pm.'],
+  ["Mondo's Steak Night", 4, 17, 'weekly', ['west-perth'], 'Food special', false, 'From $29',
+    'Premium cuts from Mondo Butcher & Grocer, flame grilled. Flank from $29, rostbiff rump, sirloin and rump cap also available.'],
+  ['Roast Sunday', 0, 12, 'weekly', ['west-perth'], 'Food special', false, '$35',
+    'Slow-roasted pork belly with a house-made scotch egg, minted peas, roasted spring onion and gravy. The roast changes monthly.'],
+
+  // Hillarys
+  ['Big Phat Sandos', 1, 17, 'weekly', ['hillarys'], 'Food special', false, '$35',
+    'The Handlebar Beef Rib Double Cheeseburger with a West is Best middy. Big, messy, worth it.'],
+  ['Taco Tuesday', 2, 17, 'weekly', ['hillarys'], 'Food special', false, '$15',
+    'Three loaded tacos, best enjoyed with a cold one looking out over the water.'],
+  ["Mondo's Steak Night", 3, 17, 'weekly', ['hillarys'], 'Food special', false, 'From $29',
+    'Premium cuts from Mondo Butcher & Grocer, cooked to order. One of the best steak nights in the northern suburbs.'],
+  ['All-You-Can-Eat Ribs', 4, 17, 'weekly', ['hillarys'], 'Food special', false, '$50',
+    'Unlimited ribs for ninety minutes. Bring an appetite and take the napkins.'],
+  ['Friday Cocktails', 5, 20, 'weekly', ['hillarys'], 'Food special', false, '$15',
+    'A rotating selection of cocktails for $15 from 8pm, overlooking the marina.'],
+  ['Roast Sundays', 0, 12, 'weekly', ['hillarys'], 'Food special', false, '$35',
+    'A proper Sunday roast with all the trimmings, best enjoyed with a fresh Phat beer and a view of the harbour.'],
+
+  // One-offs
+  ['Live on the Boardwalk', 6, 19, 'once', ['hillarys'], 'Live music', true, '',
+    'Live music on the boardwalk as the sun goes down. Free entry, no bookings needed.'],
 ]

@@ -43,10 +43,22 @@ The existing hero streams at 852x480 and is stretched full-bleed on desktop. It
 needs a higher-resolution master or a re-shoot; the mocks use a still frame.
 
 
-## Performance: resolved, 94
+## Performance: 93 with full media
 
-Lighthouse budget is 90. Median of three warm runs on the homepage is 94, and
-every other page clears it too: West Perth 97, what's on 99, beers 93.
+Lighthouse budget is 90. Median of three warm runs on the homepage is 93, with
+the hero video, favicon set and all fourteen events in place.
+
+It briefly hit 94 before the media went in, dropped to 87 when the video and
+poster arrived, and came back to 93. Worth recording what actually caused that
+dip, because the obvious suspect was wrong: **the video was not the problem.**
+Excluding it entirely still left the score at 87. The real cause was that
+replacing the hero `<img>` with the video poster dropped the `srcset` that image
+had, so phones pulled a 1280px JPEG. Restoring responsive variants fixed it.
+
+The video is now a desktop enhancement: it is skipped under
+prefers-reduced-motion, on save-data or 2G/3G connections, and below 1024px.
+A phone gets the poster, which is the thing that actually paints. Verified:
+one playing video element at 1440px, zero at 390px.
 
 Measured against the old site with the same tool:
 

@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import { Footer, Header } from '@/components/Chrome'
+import { HeroVideo } from '@/components/HeroVideo'
 import { BeerCard, EventCard, OpenBadge, TapRows } from '@/components/Bits'
 import { JsonLd, organisationSchema, venueSchema } from '@/lib/jsonld'
 import { getBeers, getEvents, getTapList, getVenues, mediaSize, mediaSrcSet } from '@/lib/payload'
@@ -20,20 +21,7 @@ export default async function Home() {
         {venues.map((v) => <JsonLd key={v.id} data={venueSchema(v)} />)}
 
         <div className="hero">
-          {hero ? (
-            /* A real element rather than a CSS background: background images are
-               discovered only after CSS resolves, which pushed LCP out by seconds. */
-            // eslint-disable-next-line @next/next/no-img-element
-            <img
-              className="hero-img"
-              src={hero}
-              srcSet={mediaSrcSet(venues.find((v) => v.slug === 'hillarys')?.heroImage, ['card', 'hero'])}
-              sizes="100vw"
-              alt=""
-              fetchPriority="high"
-              decoding="async"
-            />
-          ) : null}
+          <HeroVideo poster="/video/hero-poster.jpg" />
           <div className="wrap">
             <p className="eyebrow">WEST PERTH · HILLARYS</p>
             <h1>
