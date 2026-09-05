@@ -369,10 +369,7 @@ const run = async () => {
       heading: 'The Great Aussie Homebrew Comp',
       lede:
         'Entries closed on 10 May and the awards night was 23 May. The 2027 competition opens in April.',
-      actions: [
-        { label: 'Tell me when 2027 opens', url: '/contact' },
-        { label: 'See the beers', url: '/beers' },
-      ],
+      actions: [{ label: 'Tell me when 2027 opens', url: '/contact' }],
     },
     {
       blockType: 'richText',

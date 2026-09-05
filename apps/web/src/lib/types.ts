@@ -129,3 +129,13 @@ export type Post = {
   heroImage?: Media | null
   body?: unknown
 }
+
+export type MenuItem = { name?: string | null; price?: string | null; dietary?: string | null; description?: string | null }
+export type MenuSection = { name?: string | null; items?: MenuItem[] | null }
+export type Menu = {
+  id: number | string
+  name: string
+  venue: Venue | number | string
+  syncedAt?: string | null
+  sections?: MenuSection[] | null
+}

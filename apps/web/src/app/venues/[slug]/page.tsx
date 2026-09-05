@@ -4,7 +4,7 @@ import { Footer, Header } from '@/components/Chrome'
 import { EventCard, HoursTable, OpenBadge, TapRows } from '@/components/Bits'
 import { VenueMap } from '@/components/VenueMap'
 import { JsonLd, faqSchema, tapMenuSchema, venueSchema } from '@/lib/jsonld'
-import { getEvents, getTapList, getVenue, getVenues, mediaSize, mediaSrcSet } from '@/lib/payload'
+import { getEvents, getMenus, getTapList, getVenue, getVenues, mediaSize, mediaSrcSet } from '@/lib/payload'
 
 export const generateMetadata = async ({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> => {
   const { slug } = await params
@@ -21,7 +21,12 @@ export default async function VenuePage({ params }: { params: Promise<{ slug: st
   const venue = await getVenue(slug)
   if (!venue) notFound()
 
-  const [venues, tapList, events] = await Promise.all([getVenues(), getTapList(venue.id), getEvents(50)])
+  const [venues, tapList, events, menus] = await Promise.all([
+    getVenues(),
+    getTapList(venue.id),
+    getEvents(50),
+    getMenus(venue.id),
+  ])
   const hero = mediaSize(venue.heroImage, 'hero')
   const mine = events.filter(
     (e) => new Date(e.startsAt) >= new Date() && (e.venues ?? []).some((v) => v.slug === venue.slug),
@@ -91,6 +96,42 @@ export default async function VenuePage({ params }: { params: Promise<{ slug: st
             <div className="wrap">
               <h2>{venue.tapCount ?? 20} taps, poured today at {venue.shortName}</h2>
               <TapRows list={tapList} />
+            </div>
+          </section>
+        ) : null}
+
+        {menus.length ? (
+          <section id="menus">
+            <div className="wrap">
+              {/* The menus were being synced from me&u into the CMS and then
+                  rendered nowhere, so "Hours and menus" led to a page with no
+                  menu on it. */}
+              <h2>Menus</h2>
+              {menus.map((m) => (
+                <div key={m.id} style={{ marginBottom: 34 }}>
+                  <h3>{m.name.replace(/^.*—\s*/, '')}</h3>
+                  {(m.sections ?? []).map((sec) => (
+                    <div key={sec.name} style={{ marginTop: 18 }}>
+                      <p className="eyebrow" style={{ marginBottom: 8 }}>{sec.name}</p>
+                      {(sec.items ?? []).map((it) => (
+                        <div className="menu-row" key={`${sec.name}-${it.name}`}>
+                          <span className="menu-name">{it.name}</span>
+                          {it.description ? <span className="menu-desc">{it.description}</span> : null}
+                          <span className="menu-price">{it.price}</span>
+                        </div>
+                      ))}
+                    </div>
+                  ))}
+                </div>
+              ))}
+              {menus[0]?.syncedAt ? (
+                <p style={{ color: '#777', fontSize: 14 }}>
+                  Synced from me&amp;u ·{' '}
+                  {new Date(menus[0].syncedAt).toLocaleString('en-AU', {
+                    timeZone: 'Australia/Perth', dateStyle: 'medium', timeStyle: 'short',
+                  })}
+                </p>
+              ) : null}
             </div>
           </section>
         ) : null}

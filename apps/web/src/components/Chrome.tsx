@@ -8,6 +8,7 @@ const NAV: [string, string, [string, string][]?][] = [
   ['News', '/news'],
   ['Functions', '/functions', [['West Perth', '/functions/west-perth'], ['Hillarys', '/functions/hillarys']]],
   ['Shop', '/shop'],
+  ['Homebrew', '/homebrew-comp'],
   ['About', '/about'],
   ['Contact', '/contact'],
 ]

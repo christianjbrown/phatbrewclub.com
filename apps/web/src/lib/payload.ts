@@ -1,4 +1,4 @@
-import type { Beer, Page, Paginated, PhatEvent, Post, TapList, Venue } from './types'
+import type { Beer, Menu, Page, Paginated, PhatEvent, Post, TapList, Venue } from './types'
 
 /**
  * Two different addresses for the same service, deliberately.
@@ -81,6 +81,10 @@ export const getPages = () =>
 export const getPage = (slug: string) =>
   api<Paginated<Page>>('pages', { depth: 2, limit: 1, 'where[slug][equals]': slug }, ['pages'])
     .then((r) => r.docs[0] ?? null)
+
+export const getMenus = (venueId: number | string) =>
+  api<Paginated<Menu>>('menus', { depth: 0, limit: 10, 'where[venue][equals]': String(venueId) }, ['menus'])
+    .then((r) => r.docs)
 
 export const getPosts = () =>
   api<Paginated<Post>>('posts', { depth: 1, limit: 50, sort: '-publishedAt' }, ['posts']).then((r) => r.docs)

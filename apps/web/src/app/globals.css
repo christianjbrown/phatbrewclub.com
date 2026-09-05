@@ -209,3 +209,7 @@ a.card-link:focus-visible{outline:3px solid var(--orange);outline-offset:2px}
 .page-hero{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.1fr);gap:44px;align-items:center}
 .page-hero-img{width:100%;height:auto;border-radius:16px;display:block;border:1px solid var(--line)}
 @media(max-width:900px){.page-hero{grid-template-columns:1fr;gap:24px}}
+.menu-row{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:6px 18px;padding:11px 0;border-bottom:1px solid #1c1c1c;align-items:baseline}
+.menu-name{font:700 16px Rubik}
+.menu-desc{grid-column:1;font-size:14px;color:var(--muted);line-height:1.5}
+.menu-price{font:800 16px Rubik;color:var(--orange);white-space:nowrap;grid-row:1;grid-column:2}

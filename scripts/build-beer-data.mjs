@@ -14,6 +14,24 @@ const MAP = {
 
 const run = async () => {
   const products = JSON.parse(await readFile('assets/products.json', 'utf8'))
+
+  /**
+   * Product pages carry a "Similar Items" carousel, and the scraper collected
+   * those alongside the product's own photography. On OG Pale Ale that meant
+   * four of six images were other beers.
+   *
+   * The distribution is cleanly bimodal: 36 images appear on exactly one
+   * product, and 11 appear on six to fourteen. Nothing sits in between. So an
+   * image is this product's own if and only if it appears once.
+   *
+   * Some beers legitimately end up with no gallery — Phatatron's page carries
+   * only carousel images. An empty gallery is correct; another beer's
+   * photograph on a page about this one is not.
+   */
+  const seen = new Map()
+  for (const p of products) for (const u of p.images) seen.set(u, (seen.get(u) ?? 0) + 1)
+  const isOwnPhoto = (u) => (seen.get(u) ?? 0) === 1
+
   const out = []
   for (const p of products) {
     const beerSlug = MAP[p.slug]
@@ -23,15 +41,17 @@ const run = async () => {
     // pack detail that follows it is not captured. Every cube is the same
     // format, stated in the product titles themselves.
     const packLine = /cube/i.test(p.slug) ? '16 x 375ml cans' : null
+    const own = p.images.filter(isOwnPhoto)
     out.push({
       beerSlug,
+      sourceImages: own,
       productSlug: p.slug,
       price: p.price ? Number(p.price.replace(/[^0-9.]/g, '')) : null,
       packSize: packLine,
       allergens: p.allergens ? p.allergens.split(/[,\n]/).map((s) => s.trim()).filter(Boolean) : [],
       description: desc[0] || null,
       shopUrl: p.url,
-      images: p.images.map((_, i) => `beer-${beerSlug}-${i + 1}.jpg`),
+      images: p.images.filter(isOwnPhoto).map((_, i) => `beer-${beerSlug}-${i + 1}.jpg`),
     })
   }
   await mkdir('apps/cms/src/seed', { recursive: true })
