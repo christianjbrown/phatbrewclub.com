@@ -75,6 +75,7 @@ export interface Config {
     'function-packages': FunctionPackage;
     pages: Page;
     posts: Post;
+    merch: Merch;
     media: Media;
     users: User;
     'payload-kv': PayloadKv;
@@ -92,6 +93,7 @@ export interface Config {
     'function-packages': FunctionPackagesSelect<false> | FunctionPackagesSelect<true>;
     pages: PagesSelect<false> | PagesSelect<true>;
     posts: PostsSelect<false> | PostsSelect<true>;
+    merch: MerchSelect<false> | MerchSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
     users: UsersSelect<false> | UsersSelect<true>;
     'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>;
@@ -783,6 +785,38 @@ export interface Post {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "merch".
+ */
+export interface Merch {
+  id: number;
+  title: string;
+  /**
+   * Used in the page URL. Change with care once live.
+   */
+  slug: string;
+  /**
+   * In dollars. The site adds the currency, so enter 40 rather than A$40.00.
+   */
+  price?: number | null;
+  /**
+   * Hides the buy link and marks the item, rather than removing it.
+   */
+  soldOut?: boolean | null;
+  /**
+   * Where "Buy" goes. Empty means in-venue only.
+   */
+  shopUrl?: string | null;
+  description?: string | null;
+  /**
+   * First image is the one shown in the shop grid. The rest appear on the item.
+   */
+  images?: (number | Media)[] | null;
+  updatedAt: string;
+  createdAt: string;
+  _status?: ('draft' | 'published') | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "users".
  */
 export interface User {
@@ -866,6 +900,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'posts';
         value: number | Post;
+      } | null)
+    | ({
+        relationTo: 'merch';
+        value: number | Merch;
       } | null)
     | ({
         relationTo: 'media';
@@ -1272,6 +1310,22 @@ export interface PostsSelect<T extends boolean = true> {
         description?: T;
         image?: T;
       };
+  updatedAt?: T;
+  createdAt?: T;
+  _status?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "merch_select".
+ */
+export interface MerchSelect<T extends boolean = true> {
+  title?: T;
+  slug?: T;
+  price?: T;
+  soldOut?: T;
+  shopUrl?: T;
+  description?: T;
+  images?: T;
   updatedAt?: T;
   createdAt?: T;
   _status?: T;

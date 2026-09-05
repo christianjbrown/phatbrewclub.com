@@ -1,14 +1,21 @@
 import type { Metadata } from 'next'
 import { Footer, Header } from '@/components/Chrome'
-import { getVenues } from '@/lib/payload'
+import { getMerch, getVenues, mediaSize, mediaSrcSet } from '@/lib/payload'
 
 export const metadata: Metadata = {
   title: 'Shop',
-  description: 'Phat Brew Club beer cubes, merch, headwear and gift cards.',
+  description: 'Phat Brew Club merch: beanies, caps, hoodies, glassware and the West is Best footy jumper.',
 }
 
+const money = new Intl.NumberFormat('en-AU', {
+  style: 'currency',
+  currency: 'AUD',
+  minimumFractionDigits: 0,
+})
+
 export default async function ShopPage() {
-  const venues = await getVenues()
+  const [venues, merch] = await Promise.all([getVenues(), getMerch()])
+
   return (
     <>
       <Header current="/shop" />
@@ -17,12 +24,55 @@ export default async function ShopPage() {
           <div className="wrap">
             <h1>Shop</h1>
             <p className="lede">
-              Beer cubes, merch and gift cards.
+              Merch from both venues. Beer cubes have a page each over on{' '}
+              <a href="/beers">the beers</a>.
             </p>
-            <p className="note">
-              Online ordering is coming soon. In the meantime, cubes and merch are
-              available at both venues.
-            </p>
+
+            {merch.length === 0 ? (
+              <p className="note">
+                Nothing listed at the moment. Merch is available at both venues.
+              </p>
+            ) : (
+              <div className="grid g3 shop-grid">
+                {merch.map((m) => {
+                  const first = m.images?.[0] ?? null
+                  const img = mediaSize(first, 'card')
+                  return (
+                    <article key={m.id} className="shop-card">
+                      {img ? (
+                        <img
+                          src={img}
+                          srcSet={mediaSrcSet(first, ['thumbnail', 'card'])}
+                          sizes="(min-width: 900px) 300px, 45vw"
+                          alt={first?.alt ?? m.title}
+                          loading="lazy"
+                          width={800}
+                          height={600}
+                        />
+                      ) : null}
+                      <div className="shop-card-body">
+                        <h2>{m.title}</h2>
+                        {m.description ? <p className="shop-desc">{m.description}</p> : null}
+                        <p className="shop-price">
+                          {typeof m.price === 'number' ? money.format(m.price) : 'In venue'}
+                        </p>
+                        {/* Ordering stays on the brewery's own checkout. Nothing
+                            here takes a payment. */}
+                        {m.shopUrl && !m.soldOut ? (
+                          <a className="btn" href={m.shopUrl} target="_blank" rel="noopener noreferrer">
+                            Buy
+                          </a>
+                        ) : (
+                          <span className="shop-note">
+                            {m.soldOut ? 'Sold out' : 'Available in venue'}
+                          </span>
+                        )}
+                      </div>
+                    </article>
+                  )
+                })}
+              </div>
+            )}
           </div>
         </section>
       </main>

@@ -1,0 +1,142 @@
+[
+  {
+    "slug": "bar-mat",
+    "title": "Bar Mat",
+    "price": 40,
+    "description": "Bar Mat",
+    "shopUrl": "https://www.phatbrewclub.com/product/bar-mat/1536",
+    "images": [
+      "merch-bar-mat-1.jpeg"
+    ]
+  },
+  {
+    "slug": "beanie-cuff",
+    "title": "BEANIE - CUFF",
+    "price": 30,
+    "description": null,
+    "shopUrl": "https://www.phatbrewclub.com/product/beanie-cuff/32",
+    "images": [
+      "merch-beanie-cuff-1.jpeg"
+    ]
+  },
+  {
+    "slug": "black-beanie",
+    "title": "BLACK BEANIE",
+    "price": 30,
+    "description": "Phat Blew Club Classic Black Beanie",
+    "shopUrl": "https://www.phatbrewclub.com/product/black-beanie/1829",
+    "images": [
+      "merch-black-beanie-1.jpeg"
+    ]
+  },
+  {
+    "slug": "cap-embroidered",
+    "title": "Cap - Embroidered",
+    "price": 40,
+    "description": "Fully embroidered baseball cap",
+    "shopUrl": "https://www.phatbrewclub.com/product/cap-embroidered/30",
+    "images": [
+      "merch-cap-embroidered-1.jpeg",
+      "merch-cap-embroidered-2.jpeg"
+    ]
+  },
+  {
+    "slug": "green-beanie",
+    "title": "GREEN BEANIE",
+    "price": 30,
+    "description": "Phat Blew Club Classic Green Beanie",
+    "shopUrl": "https://www.phatbrewclub.com/product/green-beanie/1831",
+    "images": [
+      "merch-green-beanie-1.jpeg"
+    ]
+  },
+  {
+    "slug": "growler",
+    "title": "Growler",
+    "price": 50,
+    "description": "Double insulated Growler - keeps your beer cold for hours whilst not having to be kept in the fridge",
+    "shopUrl": "https://www.phatbrewclub.com/product/growler/15",
+    "images": [
+      "merch-growler-1.jpeg"
+    ]
+  },
+  {
+    "slug": "hoodie-black",
+    "title": "Hoodie (Black)",
+    "price": 75,
+    "description": "Get your hands on one of our Phat Brew Club logo branded Hoodies to let the world know you're a connoisseur of the world's best beer. They're made by AS Colour, so you know they're quality and they'll last.",
+    "shopUrl": "https://www.phatbrewclub.com/product/hoodie-black-/23",
+    "images": [
+      "merch-hoodie-black-1.jpeg",
+      "merch-hoodie-black-2.jpeg",
+      "merch-hoodie-black-3.jpeg",
+      "merch-hoodie-black-4.jpeg"
+    ]
+  },
+  {
+    "slug": "oktoberfest-investor-special-only",
+    "title": "OKTOBERFEST INVESTOR SPECIAL ONLY",
+    "price": 49,
+    "description": "🎉 Investor Exclusive — Oktoberfest at Phat 🎉",
+    "shopUrl": "https://www.phatbrewclub.com/product/oktoberfest-investor-special-only/1962",
+    "images": [
+      "merch-oktoberfest-investor-special-only-1.png",
+      "merch-oktoberfest-investor-special-only-2.jpeg",
+      "merch-oktoberfest-investor-special-only-3.jpeg",
+      "merch-oktoberfest-investor-special-only-4.jpeg",
+      "merch-oktoberfest-investor-special-only-5.jpeg",
+      "merch-oktoberfest-investor-special-only-6.jpeg",
+      "merch-oktoberfest-investor-special-only-7.jpeg"
+    ]
+  },
+  {
+    "slug": "orange-beanie",
+    "title": "ORANGE BEANIE",
+    "price": 30,
+    "description": "Phat Blew Club Classic Orange Beanie",
+    "shopUrl": "https://www.phatbrewclub.com/product/orange-beanie/1832",
+    "images": [
+      "merch-orange-beanie-1.jpeg"
+    ]
+  },
+  {
+    "slug": "pink-beanie",
+    "title": "PINK BEANIE",
+    "price": 30,
+    "description": "Phat Blew Club Classic Pink Beanie",
+    "shopUrl": "https://www.phatbrewclub.com/product/pink-beanie/1830",
+    "images": []
+  },
+  {
+    "slug": "stubby-holder",
+    "title": "Stubby Holder",
+    "price": 12,
+    "description": null,
+    "shopUrl": "https://www.phatbrewclub.com/product/stubby-holder/16",
+    "images": []
+  },
+  {
+    "slug": "t-shirt-pink-mens",
+    "title": "T-Shirt Pink Mens",
+    "price": 40,
+    "description": null,
+    "shopUrl": "https://www.phatbrewclub.com/product/t-shirt-pink-mens/7",
+    "images": [
+      "merch-t-shirt-pink-mens-1.jpeg"
+    ]
+  },
+  {
+    "slug": "west-is-best-footy-jumper",
+    "title": "West is Best Footy Jumper",
+    "price": 70,
+    "description": "Limited Edition | $70",
+    "shopUrl": "https://www.phatbrewclub.com/product/west-is-best-footy-jumper/1776",
+    "images": [
+      "merch-west-is-best-footy-jumper-1.jpeg",
+      "merch-west-is-best-footy-jumper-2.jpeg",
+      "merch-west-is-best-footy-jumper-3.jpeg",
+      "merch-west-is-best-footy-jumper-4.jpeg",
+      "merch-west-is-best-footy-jumper-5.png"
+    ]
+  }
+]

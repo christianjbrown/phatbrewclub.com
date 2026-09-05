@@ -139,3 +139,14 @@ export type Menu = {
   syncedAt?: string | null
   sections?: MenuSection[] | null
 }
+
+export type Merch = {
+  id: number | string
+  title: string
+  slug: string
+  price?: number | null
+  soldOut?: boolean | null
+  shopUrl?: string | null
+  description?: string | null
+  images?: Media[] | null
+}

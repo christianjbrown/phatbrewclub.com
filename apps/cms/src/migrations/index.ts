@@ -4,6 +4,7 @@ import * as migration_20260905_104539_add_beer_product_data from './20260905_104
 import * as migration_20260905_110200_add_venue_hours_label_and_faqs from './20260905_110200_add_venue_hours_label_and_faqs';
 import * as migration_20260905_112240_allow_guest_taps from './20260905_112240_allow_guest_taps';
 import * as migration_20260905_133656_add_can_image_size from './20260905_133656_add_can_image_size';
+import * as migration_20260905_154916_add_merch from './20260905_154916_add_merch';
 
 export const migrations = [
   {
@@ -34,6 +35,11 @@ export const migrations = [
   {
     up: migration_20260905_133656_add_can_image_size.up,
     down: migration_20260905_133656_add_can_image_size.down,
-    name: '20260905_133656_add_can_image_size'
+    name: '20260905_133656_add_can_image_size',
+  },
+  {
+    up: migration_20260905_154916_add_merch.up,
+    down: migration_20260905_154916_add_merch.down,
+    name: '20260905_154916_add_merch'
   },
 ];

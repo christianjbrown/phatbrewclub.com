@@ -223,3 +223,15 @@ a.card-link:focus-visible{outline:3px solid var(--orange);outline-offset:2px}
 .menu-name{font:700 16px Rubik}
 .menu-desc{grid-column:1;font-size:14px;color:var(--muted);line-height:1.5}
 .menu-price{font:800 16px Rubik;color:var(--orange);white-space:nowrap;grid-row:1;grid-column:2}
+
+/* Shop. auto-fill rather than auto-fit so a short last row keeps card width
+   instead of stretching two beanies across the whole page. */
+.shop-grid{grid-template-columns:repeat(auto-fill,minmax(260px,1fr))}
+.shop-card{background:#101010;border:1px solid #1e1e1e;border-radius:12px;overflow:hidden;display:flex;flex-direction:column}
+.shop-card img{width:100%;height:auto;aspect-ratio:4/3;object-fit:cover;display:block;background:#161616}
+.shop-card-body{padding:16px 18px 18px;display:flex;flex-direction:column;flex:1}
+.shop-card h2{font:700 17px Rubik;margin:0 0 6px;letter-spacing:.01em}
+.shop-desc{color:var(--muted);font-size:14px;margin:0 0 10px}
+.shop-price{font:700 18px Rubik;color:var(--orange);margin:0 0 14px}
+.shop-card .btn{margin:auto 0 0;align-self:flex-start}
+.shop-note{margin-top:auto;color:var(--muted);font-size:14px}

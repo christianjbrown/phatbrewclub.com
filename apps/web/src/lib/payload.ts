@@ -1,4 +1,4 @@
-import type { Beer, Menu, Page, Paginated, PhatEvent, Post, TapList, Venue } from './types'
+import type { Beer, Menu, Merch, Page, Paginated, PhatEvent, Post, TapList, Venue } from './types'
 
 /**
  * Two different addresses for the same service, deliberately.
@@ -92,6 +92,9 @@ export const getPosts = () =>
 export const getPost = (slug: string) =>
   api<Paginated<Post>>('posts', { depth: 1, limit: 1, 'where[slug][equals]': slug }, ['posts'])
     .then((r) => r.docs[0] ?? null)
+
+export const getMerch = () =>
+  api<Paginated<Merch>>('merch', { depth: 1, limit: 50, sort: 'title' }, ['merch']).then((r) => r.docs)
 
 /** Media URLs come back relative to the CMS; make them absolute. */
 export const mediaUrl = (m?: { url?: string } | null): string | null => {

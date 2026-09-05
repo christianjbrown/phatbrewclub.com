@@ -12,3 +12,6 @@ final-shots/
 
 # TypeScript incremental build cache
 *.tsbuildinfo
+
+# scratch output from build-merch-data.mjs
+scripts/.merch-missing.json

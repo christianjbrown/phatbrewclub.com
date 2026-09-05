@@ -15,6 +15,7 @@ import { Media } from './collections/Media'
 import { Menus } from './collections/Menus'
 import { Pages } from './collections/Pages'
 import { Posts } from './collections/Posts'
+import { Merch } from './collections/Merch'
 import { TapLists } from './collections/TapLists'
 import { Users } from './collections/Users'
 import { Venues } from './collections/Venues'
@@ -32,7 +33,7 @@ export default buildConfig({
       titleSuffix: '— Phat Brew Club',
     },
   },
-  collections: [Venues, Beers, TapLists, Events, Menus, FunctionPackages, Pages, Posts, Media, Users],
+  collections: [Venues, Beers, TapLists, Events, Menus, FunctionPackages, Pages, Posts, Merch, Media, Users],
   globals: [Settings],
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || '',

@@ -9,6 +9,7 @@ import { AWARDS, POSTS } from './content.js'
 import BEER_PRODUCTS from './beer-products.json' with { type: 'json' }
 import NEWS from './news.json' with { type: 'json' }
 import UNTAPPD_LINKS from './untappd-links.json' with { type: 'json' }
+import MERCH from './merch.json' with { type: 'json' }
 
 const dirname = path.dirname(fileURLToPath(import.meta.url))
 const IMG = path.resolve(dirname, '../../../../mocks/img')
@@ -217,6 +218,35 @@ const run = async () => {
     linked++
   }
   console.log(`  untappd   ${linked} beers linked`)
+
+  // 4d. Merch. Beer cubes are deliberately excluded — they already have a page
+  //     each under /beers, and listing them here too would give one product two
+  //     homes. Photography is filtered upstream in build-merch-data.mjs, which
+  //     drops the "Similar Items" carousel the shop renders on every product.
+  let merchCount = 0
+  for (const m of MERCH as {
+    slug: string; title: string; price: number | null
+    description: string | null; shopUrl: string; images: string[]
+  }[]) {
+    const images = (
+      await Promise.all(m.images.map((f, i) => upload(f, `${m.title} product photograph ${i + 1}`)))
+    ).filter(Boolean)
+    const data = {
+      title: m.title,
+      slug: m.slug,
+      ...(m.price ? { price: m.price } : {}),
+      ...(m.description ? { description: m.description } : {}),
+      shopUrl: m.shopUrl,
+      images,
+      _status: 'published' as const,
+    }
+    const found = await payload.find({ collection: 'merch', where: { slug: { equals: m.slug } }, limit: 1 })
+    if (found.totalDocs)
+      await payload.update({ collection: 'merch', id: found.docs[0].id, data: data as never })
+    else await payload.create({ collection: 'merch', data: data as never })
+    merchCount++
+  }
+  console.log(`  merch     ${merchCount} items`)
 
   // 5. Tap lists — first six beers per venue, with one keg blown at West Perth
   for (const [slug, venueId] of venueIds) {
