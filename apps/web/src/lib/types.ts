@@ -37,6 +37,9 @@ export type Venue = {
   menuUrl?: string | null
   meanduSlug?: string | null
   heroImage?: Media | null
+  hoursLabel?: string | null
+  publicHolidayNote?: string | null
+  faqs?: { question: string; answer: string }[] | null
   openingHours?: OpeningHour[] | null
   hoursOverrides?: { date: string; label?: string | null; opens?: string | null; closes?: string | null; closed?: boolean | null }[] | null
 }

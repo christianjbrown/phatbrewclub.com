@@ -169,6 +169,14 @@ export interface Venue {
   phone?: string | null;
   email?: string | null;
   /**
+   * Shown above the hours, e.g. "Spring/Summer". The venues run seasonal hours, so say which season these are.
+   */
+  hoursLabel?: string | null;
+  /**
+   * One line about public holiday trading.
+   */
+  publicHolidayNote?: string | null;
+  /**
    * One row per day. Leave open/close blank and tick Closed if you are shut that day.
    */
   openingHours?:
@@ -229,6 +237,16 @@ export interface Venue {
     | null;
   capacity?: number | null;
   tapCount?: number | null;
+  /**
+   * Answered on the venue page and marked up for Google.
+   */
+  faqs?:
+    | {
+        question: string;
+        answer: string;
+        id?: string | null;
+      }[]
+    | null;
   /**
    * nowbookit booking URL. Opened in a modal on the site.
    */
@@ -903,6 +921,8 @@ export interface VenuesSelect<T extends boolean = true> {
   transportNote?: T;
   phone?: T;
   email?: T;
+  hoursLabel?: T;
+  publicHolidayNote?: T;
   openingHours?:
     | T
     | {
@@ -928,6 +948,13 @@ export interface VenuesSelect<T extends boolean = true> {
   amenities?: T;
   capacity?: T;
   tapCount?: T;
+  faqs?:
+    | T
+    | {
+        question?: T;
+        answer?: T;
+        id?: T;
+      };
   bookingUrl?: T;
   meanduSlug?: T;
   menuUrl?: T;

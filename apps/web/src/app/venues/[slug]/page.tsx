@@ -3,7 +3,7 @@ import type { Metadata } from 'next'
 import { Footer, Header } from '@/components/Chrome'
 import { EventCard, HoursTable, OpenBadge, TapRows } from '@/components/Bits'
 import { VenueMap } from '@/components/VenueMap'
-import { JsonLd, tapMenuSchema, venueSchema } from '@/lib/jsonld'
+import { JsonLd, faqSchema, tapMenuSchema, venueSchema } from '@/lib/jsonld'
 import { getEvents, getTapList, getVenue, getVenues, mediaSize, mediaSrcSet } from '@/lib/payload'
 
 export const generateMetadata = async ({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> => {
@@ -33,6 +33,7 @@ export default async function VenuePage({ params }: { params: Promise<{ slug: st
       <main id="main">
         <JsonLd data={venueSchema(venue)} />
         {tapList ? <JsonLd data={tapMenuSchema(venue, tapList)} /> : null}
+        {venue.faqs?.length ? <JsonLd data={faqSchema(venue)} /> : null}
 
         <div className="hero" style={{ minHeight: 420 }}>
           {hero ? (
@@ -59,7 +60,15 @@ export default async function VenuePage({ params }: { params: Promise<{ slug: st
             <div className="grid g2">
               <div>
                 <h2>Opening hours</h2>
+                {venue.hoursLabel ? (
+                  <p className="eyebrow" style={{ marginBottom: 10 }}>{venue.hoursLabel.toUpperCase()} HOURS</p>
+                ) : null}
                 <HoursTable venue={venue} />
+                {venue.publicHolidayNote ? (
+                  <p style={{ marginTop: 14, fontSize: 15, color: '#9a9a9a', maxWidth: 380 }}>
+                    {venue.publicHolidayNote}
+                  </p>
+                ) : null}
               </div>
               <div>
                 <h2>Find us</h2>
@@ -82,6 +91,22 @@ export default async function VenuePage({ params }: { params: Promise<{ slug: st
             <div className="wrap">
               <h2>{venue.tapCount ?? 20} taps, poured today</h2>
               <TapRows list={tapList} />
+            </div>
+          </section>
+        ) : null}
+
+        {venue.faqs?.length ? (
+          <section>
+            <div className="wrap">
+              <h2>Common questions</h2>
+              <div style={{ maxWidth: 760 }}>
+                {venue.faqs.map((f) => (
+                  <details key={f.question} style={{ borderBottom: '1px solid #222', padding: '16px 0' }}>
+                    <summary style={{ font: '700 18px Rubik', cursor: 'pointer' }}>{f.question}</summary>
+                    <p style={{ margin: '12px 0 0' }}>{f.answer}</p>
+                  </details>
+                ))}
+              </div>
             </div>
           </section>
         ) : null}

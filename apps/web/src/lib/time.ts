@@ -53,9 +53,13 @@ const perthNow = () => {
     year: 'numeric', month: '2-digit', day: '2-digit',
   }).formatToParts(new Date())
   const get = (t: string) => parts.find((p) => p.type === t)?.value ?? ''
+  // Some ICU builds report midnight as hour "24" rather than "00" under
+  // hour12:false. This build does not, but the server container may differ, and
+  // 24 would put "now" past every closing time and report the venue shut all day.
+  const hour = Number(get('hour')) % 24
   return {
     dayKey: DAY_KEYS[new Date(`${get('year')}-${get('month')}-${get('day')}T00:00:00`).getDay()]!,
-    minutes: Number(get('hour')) * 60 + Number(get('minute')),
+    minutes: hour * 60 + Number(get('minute')),
     date: `${get('year')}-${get('month')}-${get('day')}`,
   }
 }

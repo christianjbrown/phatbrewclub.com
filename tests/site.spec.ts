@@ -92,3 +92,25 @@ test('a broken slug 404s rather than 500ing', async ({ page }) => {
   const res = await page.goto('/beers/does-not-exist')
   expect(res?.status()).toBe(404)
 })
+
+test('open now reflects Perth time, not the viewer’s timezone', async ({ page }) => {
+  // A venue that shuts at 10pm in Perth is shut, whether you are looking from
+  // Sydney, London or New York. The badge must never reflect the viewer's clock.
+  const perthHour = Number(
+    new Intl.DateTimeFormat('en-GB', {
+      timeZone: 'Australia/Perth', hour: '2-digit', hour12: false,
+    }).format(new Date()),
+  ) % 24
+
+  await page.goto('/venues/west-perth')
+  const badge = page.locator('.open').first()
+  await expect(badge).toBeVisible()
+  const text = (await badge.innerText()).toLowerCase()
+
+  // West Perth's earliest opening is 11am and its latest close is midnight, so
+  // outside 11:00-24:00 Perth time it must never claim to be open.
+  if (perthHour < 11) {
+    expect(text, `Perth hour is ${perthHour}, venue cannot be open`).toContain('closed')
+  }
+  expect(text).toMatch(/open now|closed/)
+})

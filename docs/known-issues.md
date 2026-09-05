@@ -1,5 +1,28 @@
 # Known issues and decisions
 
+## Corrections to the original audit
+
+Three findings in the first audit were wrong. They came from text extraction
+that truncated before reaching the relevant part of the page, and they were only
+caught when the client pushed back. Recorded here because the rebuild was
+partly justified on them.
+
+| Claimed | Actually |
+|---|---|
+| "No opening hours anywhere on the site" | Both venue pages carry a full Location & Hours block, day by day, with public holiday guidance |
+| "The address is effectively invisible, only in an iframe title" | Both venue pages show the address as readable text. Hillarys is fuller than first found: 222/58 Southside Drive, Sorrento Quay |
+| "The beer pages carry no beer data" | Each beer links to a product page with a full description, hop bill, ABV and price |
+
+Also missed entirely on the first pass: a five-question FAQ on the West Perth
+page, and the fact that hours are seasonal, labelled Spring/Summer.
+
+The seeded hours had been invented from those wrong findings, so the "open now"
+badge was showing times the venues do not trade. Now taken from the live site.
+
+Lesson for any future audit here: scroll and extract the whole page before
+concluding something is absent. `innerText` on a partially-rendered
+JavaScript page is not evidence of absence.
+
 ## Timezone: resolved
 
 Payload stores dates as UTC and the business is in Perth (AWST, UTC+8, no DST).

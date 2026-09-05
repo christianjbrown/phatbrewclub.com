@@ -118,6 +118,17 @@ export const tapMenuSchema = (venue: Venue, list: TapList) => ({
   },
 })
 
+/** Venue FAQs, marked up so they can appear as rich results in search. */
+export const faqSchema = (v: Venue) => ({
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: (v.faqs ?? []).map((f) => ({
+    '@type': 'Question',
+    name: f.question,
+    acceptedAnswer: { '@type': 'Answer', text: f.answer },
+  })),
+})
+
 export const organisationSchema = (venues: Venue[]) => ({
   '@context': 'https://schema.org',
   '@type': 'Organization',

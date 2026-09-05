@@ -57,7 +57,24 @@ export const Venues: CollectionConfig = {
         },
         {
           label: 'Hours',
-          fields: [openingHours, hoursOverrides],
+          fields: [
+            {
+              name: 'hoursLabel',
+              type: 'text',
+              admin: {
+                description:
+                  'Shown above the hours, e.g. "Spring/Summer". The venues run seasonal hours, so say which season these are.',
+                placeholder: 'Spring/Summer',
+              },
+            },
+            {
+              name: 'publicHolidayNote',
+              type: 'text',
+              admin: { description: 'One line about public holiday trading.' },
+            },
+            openingHours,
+            hoursOverrides,
+          ],
         },
         {
           label: 'Presentation',
@@ -77,6 +94,16 @@ export const Venues: CollectionConfig = {
             },
             { name: 'capacity', type: 'number' },
             { name: 'tapCount', type: 'number', defaultValue: 20 },
+            {
+              name: 'faqs',
+              type: 'array',
+              label: 'Frequently asked questions',
+              admin: { description: 'Answered on the venue page and marked up for Google.' },
+              fields: [
+                { name: 'question', type: 'text', required: true },
+                { name: 'answer', type: 'textarea', required: true },
+              ],
+            },
           ],
         },
         {
