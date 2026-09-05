@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import { Footer, Header } from '@/components/Chrome'
+import { VenueMap } from '@/components/VenueMap'
 import { getVenues } from '@/lib/payload'
 
 export const metadata: Metadata = {
@@ -29,6 +30,7 @@ export default async function ContactPage() {
                       {v.transportNote ? (
                         <p style={{ margin: '4px 0 0', fontSize: 15, color: '#8a8a8a' }}>{v.transportNote}</p>
                       ) : null}
+                      <VenueMap venue={v} />
                     </div>
                   </div>
                 ))}

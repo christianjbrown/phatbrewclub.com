@@ -41,10 +41,11 @@ test('opening hours and address are readable text, not hidden in an iframe title
 
 test('beers carry style and ABV, and link to a detail page', async ({ page }) => {
   await page.goto('/beers')
-  const cards = page.locator('article.beer')
+  // The whole card is the link, not just the heading.
+  const cards = page.locator('a.card.beer')
   expect(await cards.count()).toBeGreaterThanOrEqual(18)
-  await expect(page.locator('article.beer .spec').first()).toContainText('%')
-  await page.locator('article.beer h3 a').first().click()
+  await expect(page.locator('a.card.beer .spec').first()).toContainText('%')
+  await cards.first().click()
   await expect(page.locator('h1')).toBeVisible()
 })
 

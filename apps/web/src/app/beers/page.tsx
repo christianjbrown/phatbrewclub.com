@@ -37,7 +37,7 @@ export default async function BeersPage() {
             <section key={key}>
               <div className="wrap">
                 <h2>{label}</h2>
-                <div className="grid g4">
+                <div className="grid g4 fill">
                   {group.map((b) => <BeerCard beer={b} key={b.id} />)}
                 </div>
               </div>

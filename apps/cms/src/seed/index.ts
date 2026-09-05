@@ -7,6 +7,7 @@ import { BEERS, EVENTS, VENUES } from './data.js'
 import { richText } from './lexical.js'
 import { AWARDS, POSTS } from './content.js'
 import BEER_PRODUCTS from './beer-products.json' with { type: 'json' }
+import NEWS from './news.json' with { type: 'json' }
 
 const dirname = path.dirname(fileURLToPath(import.meta.url))
 const IMG = path.resolve(dirname, '../../../../mocks/img')
@@ -187,11 +188,20 @@ const run = async () => {
     // the venue or the second one silently overwrites the first.
     const base = title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '')
     const slug = slugs.length === 1 ? `${base}-${slugs[0]}` : base
+    // Give the recurring specials and quiz the brewery's own promo graphics.
+    const artFor = /quiz/i.test(title)
+      ? 'news-quiz-night.jpg'
+      : slugs.includes('hillarys') && !slugs.includes('west-perth')
+        ? 'news-hillarys-specials.jpg'
+        : 'news-west-perth-specials.jpg'
+    const heroImage = await upload(artFor, `${title} at Phat Brew Club`)
+
     const data = {
       title, slug,
       startsAt: startsAt.toISOString(),
       recurrence, category, isFree, price,
-      body: richText(description),
+      ...(heroImage ? { heroImage } : {}),
+      body: description ? richText(description) : undefined,
       venues: slugs.map((s) => venueIds.get(s)!),
       _status: 'published' as const,
     }
@@ -227,19 +237,36 @@ const run = async () => {
   }
   console.log(`  events    ${EVENTS.length}${pruned ? ` (${pruned} stale removed)` : ''}`)
 
-  // 7a. News posts
-  for (const [title, slug, excerpt, paras] of POSTS) {
+  // 7a. News posts, using the brewery's own copy extracted from their events
+  //     page rather than anything written here.
+  for (const post of NEWS as { title: string; slug: string; image: string; excerpt: string; paragraphs: string[] }[]) {
+    const heroImage = await upload(post.image, `${post.title} promotional graphic`)
     const data = {
-      title, slug, excerpt,
+      title: post.title,
+      slug: post.slug,
+      excerpt: post.excerpt,
       publishedAt: new Date().toISOString(),
-      body: richText(...paras),
+      body: richText(...post.paragraphs),
+      ...(heroImage ? { heroImage } : {}),
       _status: 'published' as const,
     }
-    const found = await payload.find({ collection: 'posts', where: { slug: { equals: slug } }, limit: 1 })
-    if (found.totalDocs) await payload.update({ collection: 'posts', id: found.docs[0].id, data: data as never })
+    const found = await payload.find({ collection: 'posts', where: { slug: { equals: post.slug } }, limit: 1 })
+    if (found.totalDocs) await payload.update({ collection: 'posts', id: found.docs[0]!.id, data: data as never })
     else await payload.create({ collection: 'posts', data: data as never })
   }
-  console.log(`  posts     ${POSTS.length}`)
+  // Drop posts that are no longer in the fixture set, so replacing the written
+  // copy with the brewery's own does not leave both versions live.
+  const expectedPosts = new Set((NEWS as { slug: string }[]).map((p) => p.slug))
+  const allPosts = await payload.find({ collection: 'posts', limit: 200, depth: 0 })
+  let prunedPosts = 0
+  for (const doc of allPosts.docs) {
+    const slug = (doc as { slug?: string }).slug
+    if (slug && !expectedPosts.has(slug)) {
+      await payload.delete({ collection: 'posts', id: doc.id })
+      prunedPosts++
+    }
+  }
+  console.log(`  posts     ${(NEWS as unknown[]).length}${prunedPosts ? ` (${prunedPosts} stale removed)` : ''}`)
 
   // 7b. About page, built from blocks so the brewery can add the next award
   //     themselves rather than asking for a deploy.

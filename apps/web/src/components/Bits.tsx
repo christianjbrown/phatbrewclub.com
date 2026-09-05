@@ -40,7 +40,11 @@ export const HoursTable = ({ venue }: { venue: Venue }) => {
 export const BeerCard = ({ beer }: { beer: Beer }) => {
   const img = mediaSize(beer.canArtwork, 'square')
   return (
-    <article className="card beer">
+    // The whole card is the link, not just the heading. A 40px text target
+    // inside a 300px card is a needlessly small thing to hit, especially on a
+    // phone. The card holds no other interactive element, so wrapping it is
+    // safe and keeps a single tab stop.
+    <Link className="card beer card-link" href={`/beers/${beer.slug}`}>
       {img ? (
         // eslint-disable-next-line @next/next/no-img-element
         <img
@@ -54,14 +58,14 @@ export const BeerCard = ({ beer }: { beer: Beer }) => {
         />
       ) : null}
       <div className="pad">
-        <h3><Link href={`/beers/${beer.slug}`}>{beer.name}</Link></h3>
+        <h3>{beer.name}</h3>
         <p style={{ fontSize: 15, marginBottom: 0 }}>{beer.style}</p>
         <div className="spec">
           <div><b>{beer.abv}%</b><span>ABV</span></div>
           {beer.ibu ? <div><b>{beer.ibu}</b><span>IBU</span></div> : null}
         </div>
       </div>
-    </article>
+    </Link>
   )
 }
 
@@ -71,17 +75,19 @@ export const TapRows = ({ list }: { list: TapList }) => (
       // A tap is either a beer we know about or a guest keg. Both pour.
       const name = t.beer?.name ?? t.guestName ?? 'Guest tap'
       const style = t.beer?.style ?? t.guestStyle ?? ''
-      const strength = t.beer?.abv ? `${t.beer.abv}%` : (t.price ?? '')
       return (
         <div className={`tap${t.kegBlown ? ' out' : ''}`} key={t.tapNumber}>
           <span className="tapn">{t.tapNumber}</span>
-          {t.beer ? (
-            <strong><Link href={`/beers/${t.beer.slug}`}>{name}</Link></strong>
-          ) : (
-            <strong>{name}</strong>
-          )}
+          <span className="tap-name">
+            {t.beer ? <Link href={`/beers/${t.beer.slug}`}>{name}</Link> : name}
+          </span>
           <span className="st">{t.kegBlown ? 'Keg blown' : style}</span>
-          <span className="ab">{t.kegBlown ? '—' : strength}</span>
+          {/* ABV and price are different units and get their own columns.
+              Putting whichever one we happened to have in a single column made
+              the numbers unreadable. Either can be missing: guest kegs have no
+              ABV, and a hand-edited tap list has no price. */}
+          <span className="abv">{!t.kegBlown && t.beer?.abv ? `${t.beer.abv}%` : ''}</span>
+          <span className="ab">{t.kegBlown ? '—' : (t.price ?? '')}</span>
         </div>
       )
     })}
@@ -96,19 +102,29 @@ export const TapRows = ({ list }: { list: TapList }) => (
   </div>
 )
 
-export const EventCard = ({ event }: { event: PhatEvent }) => {
+/**
+ * `as` sets the card's heading level. On the homepage these sit under a section
+ * h2 so h3 is right; on /whats-on they follow the h1 directly, where an h3
+ * would skip a level and break the document outline.
+ */
+export const EventCard = ({ event, as: Heading = 'h3' }: { event: PhatEvent; as?: 'h2' | 'h3' }) => {
   const past = new Date(event.startsAt) < new Date()
   const hillarysOnly = (event.venues ?? []).length === 1 && event.venues[0]?.slug === 'hillarys'
+  const img = mediaSize(event.heroImage, 'thumbnail')
   return (
     <article className={`ev${past ? ' past' : ''}`}>
+      {img ? (
+        // eslint-disable-next-line @next/next/no-img-element
+        <img className="ev-img" src={img} alt={event.heroImage?.alt ?? ''} loading="lazy" width={120} height={90} />
+      ) : null}
       <div className={`dt${hillarysOnly ? ' hil' : ''}`}>
         <span>{eventMonth(event.startsAt)}</span>
         <b>{eventDay(event.startsAt)}</b>
       </div>
       <div style={{ flex: 1 }}>
-        <h3 style={{ marginBottom: 4 }}>
+        <Heading className="ev-title" style={{ marginBottom: 4 }}>
           <Link href={`/whats-on/${event.slug}`}>{event.title}</Link>
-        </h3>
+        </Heading>
         <p style={{ margin: 0, fontSize: 15 }}>
           {eventTime(event.startsAt)} · {(event.venues ?? []).map((v) => v.shortName).join(' and ')} ·{' '}
           {event.isFree ? 'Free entry' : event.price}

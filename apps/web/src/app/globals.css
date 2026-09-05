@@ -70,6 +70,12 @@ section{padding:56px 0;border-top:1px solid #171717}
 .g2{grid-template-columns:repeat(auto-fit,minmax(320px,1fr))}
 .g3{grid-template-columns:repeat(auto-fit,minmax(260px,1fr))}
 .g4{grid-template-columns:repeat(auto-fit,minmax(215px,1fr))}
+/* auto-fit collapses empty tracks, so a two-item row stretches those two cards
+   across the full width. Card grids that render partial rows (a two-beer collab
+   group next to a seven-beer core range) need auto-fill, which keeps the track
+   size and leaves the remainder empty. */
+.g4.fill{grid-template-columns:repeat(auto-fill,minmax(215px,1fr))}
+.g3.fill{grid-template-columns:repeat(auto-fill,minmax(260px,1fr))}
 .card{background:var(--card);border:1px solid var(--line);border-radius:14px;overflow:hidden}
 .card .pad{padding:20px}
 .card img{width:100%;aspect-ratio:16/10;object-fit:cover}
@@ -85,10 +91,13 @@ table.hours{width:100%;border-collapse:collapse;max-width:380px}
 .hours td{text-align:right;font:400 15px Rubik;padding:9px 0;border-bottom:1px solid #222;color:var(--muted)}
 .hours tr.today th,.hours tr.today td{color:var(--orange);font-weight:700}
 
-.tap{display:flex;align-items:center;gap:16px;padding:14px 0;border-bottom:1px solid #1e1e1e}
+.tap{display:flex;align-items:baseline;gap:14px;padding:14px 0;border-bottom:1px solid #1e1e1e}
+.tap-name{font-weight:700;min-width:0}
+.tap .abv{margin-left:auto;font:500 15px Rubik;color:var(--muted);white-space:nowrap}
+.tap .abv:empty{margin-left:auto}
 .tapn{width:30px;height:30px;border-radius:50%;background:var(--orange);color:#000;font:800 14px Rubik;display:flex;align-items:center;justify-content:center;flex-shrink:0}
-.tap .st{color:var(--muted);font-size:15px}
-.tap .ab{margin-left:auto;font:800 17px Rubik;color:var(--orange)}
+.tap .st{color:var(--muted);font-size:15px;flex:1;min-width:0}
+.tap .ab{font:800 17px Rubik;color:var(--orange);white-space:nowrap;min-width:68px;text-align:right}
 .tap.out strong{color:#8f8f8f;font-weight:500}
 .tap.out .st,.tap.out .ab{color:#8f8f8f}
 .tap.out .tapn{background:#4a4a4a;color:#e0e0e0}
@@ -158,3 +167,10 @@ footer a:hover{color:#fff;text-decoration:underline}
 .map iframe{width:100%;height:300px;border:1px solid var(--line);border-radius:14px;display:block;background:#111}
 .map-actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
 .map-actions .btn{margin:0;font-size:14px;min-height:42px;padding:0 16px}
+.ev-img{width:104px;height:78px;object-fit:cover;border-radius:8px;flex-shrink:0}
+@media(max-width:600px){.ev-img{display:none}}
+a.card-link{display:block;color:inherit;text-decoration:none;transition:border-color .15s,transform .15s}
+a.card-link:hover{border-color:var(--orange)}
+a.card-link:hover h3{color:var(--orange)}
+a.card-link:focus-visible{outline:3px solid var(--orange);outline-offset:2px}
+.ev-title{font:700 20px/1.25 Rubik;margin:0 0 4px}
