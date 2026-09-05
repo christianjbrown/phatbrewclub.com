@@ -25,9 +25,15 @@ const NAV: [string, string, [string, string][]?][] = [
 export const Header = ({ current }: { current?: string }) => (
   <header>
     <div className="hd">
-      <Link href="/" aria-label="Phat Brew Club home">
+      <Link className="brand" href="/" aria-label="Phat Brew Club home">
         {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src="/logo.png" alt="Phat Brew Club" width={58} height={58} />
+        {/* 240px source for a 120px slot, so it stays sharp on dense screens.
+            WebP with a PNG fallback: both carry the transparent background the
+            mark needs against the orange bar. */}
+        <picture>
+          <source srcSet="/logo.webp" type="image/webp" />
+          <img src="/logo.png" alt="Phat Brew Club" width={120} height={120} />
+        </picture>
       </Link>
       <nav aria-label="Main">
         <ul>

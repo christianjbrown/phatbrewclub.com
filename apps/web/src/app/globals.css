@@ -39,9 +39,16 @@ a{color:inherit;text-decoration:none}
 .skip{position:absolute;left:-9999px;top:0;background:var(--orange);color:#000;padding:12px 20px;font-weight:700;z-index:100}
 .skip:focus{left:0}
 
-header{background:var(--orange);position:sticky;top:0;z-index:50}
+header{background:var(--orange);position:sticky;top:0;z-index:50;overflow:visible}
 .hd{display:flex;align-items:center;gap:28px;padding:10px 0;max-width:var(--max);margin:0 auto;padding-left:24px;padding-right:24px}
-.hd img{width:58px;height:58px}
+/* The mark hangs below the orange bar rather than sitting inside it: the bar
+   keeps the height it had, and the logo is drawn twice the size out of a fixed
+   box so it overlaps whatever is underneath. Absolute positioning is what keeps
+   the bar from growing to fit it. */
+.hd .brand{position:relative;display:block;flex:0 0 auto;width:120px;height:58px}
+.hd .brand picture{position:absolute;top:-6px;left:0;display:block;line-height:0}
+.hd .brand img{width:120px;height:120px;display:block;
+  filter:drop-shadow(0 8px 16px rgba(0,0,0,.32))}
 nav ul{display:flex;gap:22px;list-style:none;margin:0;padding:0}
 nav a{color:#000;font:500 15px Rubik;padding:10px 2px;display:block;border-bottom:2px solid transparent}
 nav a:hover,nav a:focus,nav a[aria-current=page]{border-bottom-color:#000}
@@ -151,6 +158,11 @@ footer .news-signup button:hover{filter:brightness(1.08)}
 
 @media(max-width:860px){
   .hd{flex-wrap:wrap;gap:14px;padding-top:12px;padding-bottom:12px}
+  /* The nav wraps to its own row here, so a full-size overhang would
+     cover it. Smaller mark, still overhanging. */
+  .hd .brand{width:88px;height:52px}
+  .hd .brand picture{top:-4px}
+  .hd .brand img{width:88px;height:88px}
   nav{order:3;width:100%;overflow-x:auto}
   nav ul{gap:18px}
   .book{margin-left:0}
