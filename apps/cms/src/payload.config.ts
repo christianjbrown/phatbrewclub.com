@@ -18,6 +18,7 @@ import { TapLists } from './collections/TapLists'
 import { Users } from './collections/Users'
 import { Venues } from './collections/Venues'
 import { Settings } from './globals/Settings'
+import { commercePlugins } from './commerce'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -42,6 +43,8 @@ export default buildConfig({
   cors: [process.env.PAYLOAD_PUBLIC_SITE_URL || 'http://localhost:3000'].filter(Boolean),
   csrf: [process.env.PAYLOAD_PUBLIC_SITE_URL || 'http://localhost:3000'].filter(Boolean),
   plugins: [
+    // Empty unless COMMERCE_ENABLED=true. See src/commerce.ts.
+    ...commercePlugins(),
     /**
      * Media goes to object storage rather than the container filesystem.
      * Locally that is MinIO; in production the same code path points at a

@@ -23,6 +23,9 @@ configMapGenerator:
       - SMTP_PORT=1025
       - MAIL_FROM=website@phatbrewclub.local
       - MAIL_TO=bookings@phatbrewclub.local
+      # Commerce ships dark. Square keeps taking real orders until the
+      # Stripe checkout has been proven end to end with test cards.
+      - COMMERCE_ENABLED=false
       - MEANDU_SYNC_ENABLED=false
       - MEANDU_GATEWAY=https://ap1-guest-gateway.meandu.app/graphql
 

@@ -40,3 +40,13 @@ export const publishedOrSignedIn: Access = ({ req: { user } }) => {
 }
 
 export const anyone: Access = () => true
+
+/**
+ * A customer may only read their own carts, orders and addresses. Admins see
+ * everything. Without this, one customer could read another's order history.
+ */
+export const isDocumentOwner: Access = ({ req: { user } }) => {
+  if (!user) return false
+  if (rolesOf(user).includes('admin')) return true
+  return { customer: { equals: user.id } }
+}
