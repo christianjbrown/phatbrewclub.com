@@ -54,7 +54,8 @@ export default async function VenuesPage() {
                         ))}
                       </p>
                       <a className="btn" href={v.bookingUrl ?? '/contact'}>Book {v.shortName}</a>
-                      <Link className="btn btn-o" href={`/venues/${v.slug}`}>Hours and menu</Link>
+                      <Link className="btn btn-o" href={`/venues/${v.slug}`}>Hours</Link>
+                      <Link className="btn btn-o" href={`/venues/${v.slug}/menu`}>Menu</Link>
                     </div>
                   </div>
                 </article>
