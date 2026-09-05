@@ -20,7 +20,13 @@ export default async function Home() {
         <JsonLd
           data={organisationSchema(
             venues,
-            [settings.instagram, settings.facebook, settings.untappd].filter(
+            [
+              settings.instagram,
+              settings.facebook,
+              settings.tiktok,
+              settings.youtube,
+              settings.untappd,
+            ].filter(
               (u): u is string => Boolean(u),
             ),
           )}

@@ -265,5 +265,6 @@ a.card-link:focus-visible{outline:3px solid var(--orange);outline-offset:2px}
 
 /* Social links. rel="me" as well as noopener, since these are identity links. */
 .socials{display:flex;gap:18px;flex-wrap:wrap;margin:26px 0 0}
-.socials a{font:600 15px Rubik;color:var(--muted)}
+.socials a{display:inline-flex;align-items:center;gap:8px;font:600 15px Rubik;color:var(--muted)}
+.socials svg{flex:0 0 auto}
 .socials a:hover{color:var(--orange)}

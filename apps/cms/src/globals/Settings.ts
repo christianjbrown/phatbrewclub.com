@@ -43,6 +43,8 @@ export const Settings: GlobalConfig = {
           fields: [
             { name: 'instagram', type: 'text' },
             { name: 'facebook', type: 'text' },
+            { name: 'tiktok', type: 'text' },
+            { name: 'youtube', type: 'text' },
             { name: 'untappd', type: 'text' },
           ],
         },

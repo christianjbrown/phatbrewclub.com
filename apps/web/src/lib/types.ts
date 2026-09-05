@@ -162,5 +162,7 @@ export type Merch = {
 export type Settings = {
   instagram?: string | null
   facebook?: string | null
+  tiktok?: string | null
+  youtube?: string | null
   untappd?: string | null
 }

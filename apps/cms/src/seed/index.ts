@@ -556,11 +556,14 @@ const run = async () => {
         { label: 'About', url: '/about' },
         { label: 'Contact', url: '/contact' },
       ],
-      // The two the brewery actually links from its own site, taken from the
-      // sameAs block in its markup. No Untappd: it has beer pages there but no
-      // brewery page we found, and a guessed URL is worse than none.
+      // The four the brewery actually uses. Instagram and Facebook came from
+      // the sameAs block; TikTok is only in the rendered footer, so it needed
+      // the page running to find. No Untappd: it has beer pages there but no
+      // brewery page, and a guessed URL is worse than none.
       instagram: 'https://www.instagram.com/phatbrewclub',
       facebook: 'https://www.facebook.com/phatbrewclub',
+      tiktok: 'https://www.tiktok.com/@phatbrewclubbrewery',
+      youtube: 'https://www.youtube.com/@PhatBrewClub',
       defaultTitle: 'Phat Brew Club',
       defaultDescription:
         'Independent Perth brewery with two venues: Phat HQ in West Perth and The Trophy Room at Hillarys.',

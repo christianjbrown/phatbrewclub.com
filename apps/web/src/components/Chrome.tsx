@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import { Newsletter } from './Newsletter'
 import { getSettings } from '@/lib/payload'
+import { FacebookIcon, InstagramIcon, TikTokIcon, UntappdIcon, YouTubeIcon } from './SocialIcons'
 import type { Venue } from '@/lib/types'
 
 const NAV: [string, string, [string, string][]?][] = [
@@ -69,6 +70,8 @@ export const Footer = async ({ venues }: { venues: Venue[] }) => {
     [
       ['Instagram', settings.instagram],
       ['Facebook', settings.facebook],
+      ['TikTok', settings.tiktok],
+      ['YouTube', settings.youtube],
       ['Untappd', settings.untappd],
     ] as [string, string | null | undefined][]
   )
@@ -108,11 +111,21 @@ export const Footer = async ({ venues }: { venues: Venue[] }) => {
       <Newsletter />
       {socials.length ? (
         <p className="socials">
-          {socials.map(([label, url]) => (
-            <a key={label} href={url} target="_blank" rel="noopener noreferrer me">
-              {label}
-            </a>
-          ))}
+          {socials.map(([label, url]) => {
+            const Icon = {
+              Instagram: InstagramIcon,
+              Facebook: FacebookIcon,
+              TikTok: TikTokIcon,
+              YouTube: YouTubeIcon,
+              Untappd: UntappdIcon,
+            }[label] ?? UntappdIcon
+            return (
+              <a key={label} href={url} target="_blank" rel="noopener noreferrer me">
+                <Icon />
+                {label}
+              </a>
+            )
+          })}
         </p>
       ) : null}
       <p className="legal">Phat Brew Club · Independent brewery, Western Australia</p>
