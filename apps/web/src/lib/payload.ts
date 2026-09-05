@@ -101,7 +101,7 @@ export const mediaUrl = (m?: { url?: string } | null): string | null => {
 
 type Sized = {
   url?: string
-  sizes?: Record<string, { url?: string | null; width?: number | null } | undefined>
+  sizes?: Record<string, { url?: string | null; width?: number | null; height?: number | null } | undefined>
 }
 
 /** Largest first, so a fallback walks down rather than off the edge. */
@@ -137,11 +137,46 @@ export const mediaSize = (
   return m.url ? absolute(m.url) : null
 }
 
+/**
+ * Candidates in one srcset must be the same shape.
+ *
+ * The browser picks a candidate on width alone and then draws it into the box
+ * the layout has already reserved, so a differently-proportioned candidate is
+ * silently stretched. The beer cards shipped `['thumbnail', 'can']`, which
+ * offered a 400x300 landscape crop and a 440x550 portrait one for the same
+ * 520x650 slot: every 1x screen got a squashed, top-and-bottom-cropped decal.
+ * `['card', 'hero']` had the same fault at 4:3 against 16:9.
+ *
+ * Rather than trusting each call site to pair them correctly, drop any
+ * candidate whose aspect ratio does not match the largest one — that is the
+ * shape the layout was built around, and the one `mediaSize` returns for `src`.
+ */
+const ASPECT_TOLERANCE = 0.02
+
 export const mediaSrcSet = (m: Sized | null | undefined, sizes: string[]): string | undefined => {
   if (!m?.sizes) return undefined
-  const parts = sizes
+  const found = sizes
     .map((key) => m.sizes?.[key])
-    .filter((v): v is { url?: string | null; width?: number | null } => Boolean(v?.url && v?.width))
+    .filter((v): v is { url?: string | null; width?: number | null; height?: number | null } =>
+      Boolean(v?.url && v?.width),
+    )
+  if (found.length < 2) return undefined
+
+  const ratio = (v: { width?: number | null; height?: number | null }) =>
+    v.width && v.height ? v.width / v.height : null
+
+  const largest = found.reduce((a, b) => ((b.width ?? 0) > (a.width ?? 0) ? b : a))
+  const target = ratio(largest)
+
+  const parts = found
+    .filter((v) => {
+      const r = ratio(v)
+      // A derivative with no recorded height cannot be checked, so keep it
+      // rather than dropping a usable candidate on missing metadata.
+      if (target === null || r === null) return true
+      return Math.abs(r - target) / target <= ASPECT_TOLERANCE
+    })
     .map((v) => `${absolute(v.url!)} ${v.width}w`)
+
   return parts.length > 1 ? parts.join(', ') : undefined
 }
