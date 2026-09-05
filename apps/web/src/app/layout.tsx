@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import './globals.css'
+import { LiveChat } from '@/components/LiveChat'
 
 const SITE = process.env.NEXT_PUBLIC_SITE_URL ?? 'http://localhost:3000'
 
@@ -40,6 +41,11 @@ export const metadata: Metadata = {
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
+  // Read per request, not through NEXT_PUBLIC_, which is inlined at build time.
+  // Both must be present: half a pair points the widget at nothing.
+  const tawkProperty = process.env.TAWK_PROPERTY_ID
+  const tawkWidget = process.env.TAWK_WIDGET_ID
+
   return (
     <html lang="en-AU">
       <head>
@@ -56,6 +62,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body>
         <a className="skip" href="#main">Skip to content</a>
         {children}
+        {tawkProperty && tawkWidget ? (
+          <LiveChat propertyId={tawkProperty} widgetId={tawkWidget} />
+        ) : null}
       </body>
     </html>
   )

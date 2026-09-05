@@ -9,3 +9,6 @@ mocks/shots/
 apps/*/.next/
 apps/*/node_modules/
 final-shots/
+
+# TypeScript incremental build cache
+*.tsbuildinfo
