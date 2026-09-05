@@ -65,10 +65,34 @@ export const Events: CollectionConfig = {
         {
           name: 'price',
           type: 'text',
-          admin: { width: '35%', placeholder: '$25', condition: (_, s) => !s?.isFree },
+          label: 'Admission',
+          admin: {
+            width: '35%',
+            placeholder: '$25',
+            description: 'Only what it costs to get in. Leave blank for a free-entry event.',
+            condition: (_, s) => !s?.isFree,
+          },
         },
         { name: 'bookingUrl', type: 'text', admin: { width: '40%' } },
       ],
+    },
+    /**
+     * What the money actually buys, when it is not admission.
+     *
+     * Every priced event here is a food or drink special: the $25 on Mega
+     * Burger Monday is the burger, not the door. Showing that under a heading
+     * reading ENTRY told people they had to pay to walk in, and the Event
+     * schema was quoting it to search engines as the cost of attending.
+     */
+    {
+      name: 'priceNote',
+      type: 'text',
+      label: 'What it costs',
+      admin: {
+        placeholder: 'Burgers $25',
+        description:
+          'The deal, in the venue\'s own words. Shown instead of an entry price. Leave blank if there is nothing to pay beyond admission.',
+      },
     },
     seo,
   ],

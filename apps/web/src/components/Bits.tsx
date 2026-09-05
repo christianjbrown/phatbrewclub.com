@@ -144,7 +144,11 @@ export const EventCard = ({ event, as: Heading = 'h3' }: { event: PhatEvent; as?
           {eventTime(event.startsAt)} · {(event.venues ?? []).map((v) => v.shortName).join(' and ')}
         </p>
         <p className="evc-foot">
-          <span className="evc-price">{event.isFree ? 'Free entry' : event.price}</span>
+          {/* The note is what the money buys — a burger, a schnitty — and is
+              shown in place of an entry price, not beside it. */}
+          <span className="evc-price">
+            {event.priceNote || (event.isFree ? 'Free entry' : event.price)}
+          </span>
           <span className="chip">
             {event.recurrence === 'once' ? 'One-off' : past ? 'Past' : 'Weekly'}
           </span>

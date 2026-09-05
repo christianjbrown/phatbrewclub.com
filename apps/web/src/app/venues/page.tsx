@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import type { Metadata } from 'next'
 import { Footer, Header } from '@/components/Chrome'
+import { AmenityIcon } from '@/components/AmenityIcon'
 import { OpenBadge } from '@/components/Bits'
 import { JsonLd, venueSchema } from '@/lib/jsonld'
 import { getVenues, mediaSize } from '@/lib/payload'
@@ -38,7 +39,9 @@ export default async function VenuesPage() {
                       </p>
                       <p style={{ color: '#8a8a8a', marginBottom: 16 }}>{v.transportNote}</p>
                       <p style={{ marginBottom: 18 }}>
-                        {(v.amenities ?? []).map((a) => <span className="chip" key={a}>{a}</span>)}
+                        {(v.amenities ?? []).map((a) => (
+                          <span className="chip" key={a}><AmenityIcon label={a} />{a}</span>
+                        ))}
                       </p>
                       <a className="btn" href={v.bookingUrl ?? '/contact'}>Book {v.shortName}</a>
                       <Link className="btn btn-o" href={`/venues/${v.slug}`}>Hours and menu</Link>

@@ -133,38 +133,45 @@ export const BEERS: [string, string, number, number | null, string, string, stri
  * occurrence of that weekday, so a "Roast Sunday" is never seeded onto a Friday.
  * title, weekday, hour, recurrence, venueSlugs, category, free, price, description
  */
-export const EVENTS: [string, number, number, string, string[], string, boolean, string, string][] = [
+/**
+ * The price column is admission, and priceNote is what the money buys when it is
+ * not admission. Every priced event here turned out to be a food or drink
+ * special — the $25 on Mega Burger Monday is the burger — so entry is free and
+ * the deal goes in the note. Listing those under a heading reading ENTRY told
+ * people they had to pay to walk in.
+ */
+export const EVENTS: [string, number, number, string, string[], string, boolean, string, string, string?][] = [
   // Both venues
   ['Quiz Night', 3, 18.5, 'weekly', ['west-perth', 'hillarys'], 'Quiz', true, '',
     'Run by the Bamboozled team. Prizes on the night and the kitchen stays open throughout. Tables fill fast, so book ahead.'],
-  ['Happy Hour', 1, 17, 'weekly', ['west-perth', 'hillarys'], 'Food special', false, '$9 pints',
-    'Monday to Friday, 5pm to 6pm. $9 pints of West is Best and $7 house wines at both venues.'],
+  ['Happy Hour', 1, 17, 'weekly', ['west-perth', 'hillarys'], 'Food special', true, '',
+    'Monday to Friday, 5pm to 6pm. $9 pints of West is Best and $7 house wines at both venues.', '$9 pints'],
 
   // West Perth
-  ['Mega Burger Monday', 1, 17, 'weekly', ['west-perth'], 'Food special', false, '$25',
-    'Your choice of the Double Oklahoma Smash Burger or the Nashville Chicken Burger, both served with chips.'],
-  ['Big Schnitty Energy', 2, 17, 'weekly', ['west-perth'], 'Food special', false, '$25',
-    'A proper pub schnitty loaded with prosciutto, olive tapenade and goat feta, with crispy chips alongside.'],
-  ['Phat Pasta Party', 3, 17, 'weekly', ['west-perth'], 'Food special', false, '$25',
-    'Choose from spaghetti bolognese, gnocchi alla Norma or orecchiette. Selected jugs from $20 after 5pm.'],
-  ["Mondo's Steak Night", 4, 17, 'weekly', ['west-perth'], 'Food special', false, 'From $29',
-    'Premium cuts from Mondo Butcher & Grocer, flame grilled. Flank from $29, rostbiff rump, sirloin and rump cap also available.'],
-  ['Roast Sunday', 0, 12, 'weekly', ['west-perth'], 'Food special', false, '$35',
-    'Slow-roasted pork belly with a house-made scotch egg, minted peas, roasted spring onion and gravy. The roast changes monthly.'],
+  ['Mega Burger Monday', 1, 17, 'weekly', ['west-perth'], 'Food special', true, '',
+    'Your choice of the Double Oklahoma Smash Burger or the Nashville Chicken Burger, both served with chips.', '$25'],
+  ['Big Schnitty Energy', 2, 17, 'weekly', ['west-perth'], 'Food special', true, '',
+    'A proper pub schnitty loaded with prosciutto, olive tapenade and goat feta, with crispy chips alongside.', '$25'],
+  ['Phat Pasta Party', 3, 17, 'weekly', ['west-perth'], 'Food special', true, '',
+    'Choose from spaghetti bolognese, gnocchi alla Norma or orecchiette. Selected jugs from $20 after 5pm.', '$25'],
+  ["Mondo's Steak Night", 4, 17, 'weekly', ['west-perth'], 'Food special', true, '',
+    'Premium cuts from Mondo Butcher & Grocer, flame grilled. Flank from $29, rostbiff rump, sirloin and rump cap also available.', 'From $29'],
+  ['Roast Sunday', 0, 12, 'weekly', ['west-perth'], 'Food special', true, '',
+    'Slow-roasted pork belly with a house-made scotch egg, minted peas, roasted spring onion and gravy. The roast changes monthly.', '$35'],
 
   // Hillarys
-  ['Big Phat Sandos', 1, 17, 'weekly', ['hillarys'], 'Food special', false, '$35',
-    'The Handlebar Beef Rib Double Cheeseburger with a West is Best middy. Big, messy, worth it.'],
-  ['Taco Tuesday', 2, 17, 'weekly', ['hillarys'], 'Food special', false, '$15',
-    'Three loaded tacos, best enjoyed with a cold one looking out over the water.'],
-  ["Mondo's Steak Night", 3, 17, 'weekly', ['hillarys'], 'Food special', false, 'From $29',
-    'Premium cuts from Mondo Butcher & Grocer, cooked to order. One of the best steak nights in the northern suburbs.'],
-  ['All-You-Can-Eat Ribs', 4, 17, 'weekly', ['hillarys'], 'Food special', false, '$50',
-    'Unlimited ribs for ninety minutes. Bring an appetite and take the napkins.'],
-  ['Friday Cocktails', 5, 20, 'weekly', ['hillarys'], 'Food special', false, '$15',
-    'A rotating selection of cocktails for $15 from 8pm, overlooking the marina.'],
-  ['Roast Sundays', 0, 12, 'weekly', ['hillarys'], 'Food special', false, '$35',
-    'A proper Sunday roast with all the trimmings, best enjoyed with a fresh Phat beer and a view of the harbour.'],
+  ['Big Phat Sandos', 1, 17, 'weekly', ['hillarys'], 'Food special', true, '',
+    'The Handlebar Beef Rib Double Cheeseburger with a West is Best middy. Big, messy, worth it.', '$35'],
+  ['Taco Tuesday', 2, 17, 'weekly', ['hillarys'], 'Food special', true, '',
+    'Three loaded tacos, best enjoyed with a cold one looking out over the water.', '$15'],
+  ["Mondo's Steak Night", 3, 17, 'weekly', ['hillarys'], 'Food special', true, '',
+    'Premium cuts from Mondo Butcher & Grocer, cooked to order. One of the best steak nights in the northern suburbs.', 'From $29'],
+  ['All-You-Can-Eat Ribs', 4, 17, 'weekly', ['hillarys'], 'Food special', true, '',
+    'Unlimited ribs for ninety minutes. Bring an appetite and take the napkins.', '$50'],
+  ['Friday Cocktails', 5, 20, 'weekly', ['hillarys'], 'Food special', true, '',
+    'A rotating selection of cocktails for $15 from 8pm, overlooking the marina.', '$15'],
+  ['Roast Sundays', 0, 12, 'weekly', ['hillarys'], 'Food special', true, '',
+    'A proper Sunday roast with all the trimmings, best enjoyed with a fresh Phat beer and a view of the harbour.', '$35'],
 
   // One-offs
   ['Live on the Boardwalk', 6, 19, 'once', ['hillarys'], 'Live music', true, '',

@@ -132,14 +132,18 @@ const renderBlock = async (block: Block, key: string) => {
         <section key={key}>
           <div className="wrap">
             {block.heading ? <h2>{block.heading}</h2> : null}
-            <div style={{ maxWidth: 760 }}>
+            {/* Shown open, not folded away. An accordion earns its keep when
+                there are twenty long answers and somebody is hunting for one;
+                with five one-line answers it just makes people click five
+                times to read half a screen of text. */}
+            <dl className="faq">
               {(block.questions ?? []).map((q) => (
-                <details key={q.question} style={{ borderBottom: '1px solid #222', padding: '16px 0' }}>
-                  <summary style={{ font: '700 18px Rubik', cursor: 'pointer' }}>{q.question}</summary>
-                  <div style={{ marginTop: 12 }}><RichText value={q.answer} /></div>
-                </details>
+                <div key={q.question}>
+                  <dt>{q.question}</dt>
+                  <dd><RichText value={q.answer} /></dd>
+                </div>
               ))}
-            </div>
+            </dl>
           </div>
         </section>
       )

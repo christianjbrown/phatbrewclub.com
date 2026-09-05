@@ -59,6 +59,18 @@ export const Header = ({ current }: { current?: string }) => (
           )}
         </ul>
       </nav>
+      {/* Instagram is where this brewery actually lives, and it was buried in
+          the footer. Icon only in the bar, with a label for screen readers. */}
+      <a
+        className="hd-ig"
+        href="https://www.instagram.com/phatbrewclub"
+        target="_blank"
+        rel="noopener noreferrer me"
+        aria-label="Phat Brew Club on Instagram"
+      >
+        <InstagramIcon />
+      </a>
+
       {/* A plain GET form in the header, so search works with no JavaScript and
           a result is a shareable URL. */}
       <form className="hd-search" action="/search" method="get" role="search">

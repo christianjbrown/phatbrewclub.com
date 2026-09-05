@@ -96,6 +96,7 @@ export type PhatEvent = {
   venues: Venue[]
   heroImage?: Media | null
   isFree?: boolean | null
+  priceNote?: string | null
   price?: string | null
   bookingUrl?: string | null
 }

@@ -72,7 +72,8 @@ export default async function Home() {
                         <span style={{ color: '#8a8a8a' }}>{v.transportNote}</span>
                       </p>
                       <a className="btn" href={v.bookingUrl ?? '/venues'}>Book {v.shortName}</a>
-                      <Link className="btn btn-o" href={`/venues/${v.slug}`}>Hours and menu</Link>
+                      <Link className="btn btn-o" href={`/venues/${v.slug}`}>Hours</Link>
+                      <Link className="btn btn-o" href={`/venues/${v.slug}/menu`}>Menu</Link>
                     </div>
                   </article>
                 )

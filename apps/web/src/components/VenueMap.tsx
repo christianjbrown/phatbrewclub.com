@@ -1,4 +1,5 @@
 import type { Venue } from '@/lib/types'
+import { AppleIcon, GoogleIcon } from './SocialIcons'
 
 /**
  * Google Maps where a key is configured, OpenStreetMap where it is not.
@@ -46,15 +47,24 @@ export const VenueMap = ({ venue }: { venue: Venue }) => {
       />
       <div className="map-actions">
         <a className="btn btn-o" href={`https://www.google.com/maps/search/?api=1&query=${query}`}>
-          Directions (Google)
+          <GoogleIcon />
+          Directions
         </a>
-        <a className="btn btn-o" href={`https://maps.apple.com/?q=${query}`}>Directions (Apple)</a>
-        <a
-          className="btn btn-o"
-          href={`https://www.openstreetmap.org/?mlat=${lat}&mlon=${lng}#map=17/${lat}/${lng}`}
-        >
-          Larger map
+        <a className="btn btn-o" href={`https://maps.apple.com/?q=${query}`}>
+          <AppleIcon />
+          Directions
         </a>
+        {/* No "larger map" link when the Google embed is in use: it carries its
+            own fullscreen control, and sending people to OpenStreetMap from a
+            Google map was two maps for one question. */}
+        {key ? null : (
+          <a
+            className="btn btn-o"
+            href={`https://www.openstreetmap.org/?mlat=${lat}&mlon=${lng}#map=17/${lat}/${lng}`}
+          >
+            Larger map
+          </a>
+        )}
       </div>
     </div>
   )

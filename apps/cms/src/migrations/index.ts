@@ -10,6 +10,7 @@ import * as migration_20260905_182700_add_functions_pack from './20260905_182700
 import * as migration_20260905_190000_resize_ladder from './20260905_190000_resize_ladder';
 import * as migration_20260906_090000_social_links from './20260906_090000_social_links';
 import * as migration_20260906_100000_maps_query from './20260906_100000_maps_query';
+import * as migration_20260906_110000_event_price_note from './20260906_110000_event_price_note';
 
 export const migrations = [
   {
@@ -71,5 +72,10 @@ export const migrations = [
     up: migration_20260906_100000_maps_query.up,
     down: migration_20260906_100000_maps_query.down,
     name: '20260906_100000_maps_query',
+  },
+  {
+    up: migration_20260906_110000_event_price_note.up,
+    down: migration_20260906_110000_event_price_note.down,
+    name: '20260906_110000_event_price_note',
   },
 ];

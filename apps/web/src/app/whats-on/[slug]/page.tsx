@@ -57,7 +57,11 @@ export default async function EventPage({ params }: { params: Promise<{ slug: st
                 <div className="spec" style={{ maxWidth: 620 }}>
                   <div><b>{eventTime(event.startsAt)}</b><span>STARTS</span></div>
                   <div><b>{eventWeekday(event.startsAt)}</b><span>{event.recurrence === 'once' ? 'DATE' : 'WEEKLY'}</span></div>
-                  <div><b>{event.isFree ? 'Free' : event.price}</b><span>ENTRY</span></div>
+                  {event.priceNote ? (
+                    <div><b>{event.priceNote}</b><span>ON THE NIGHT</span></div>
+                  ) : (
+                    <div><b>{event.isFree ? 'Free' : event.price}</b><span>ENTRY</span></div>
+                  )}
                   <div>
                     <b>{(event.venues ?? []).length > 1 ? 'Both' : event.venues?.[0]?.shortName}</b>
                     <span>VENUE</span>

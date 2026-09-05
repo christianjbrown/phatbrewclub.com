@@ -306,19 +306,15 @@ const run = async () => {
   }
   console.log(`  merch     ${merchCount} items`)
 
-  // 5. Tap lists — first six beers per venue, with one keg blown at West Perth
-  for (const [slug, venueId] of venueIds) {
-    const taps = BEERS.slice(0, 6).map(([name], i) => ({
-      tapNumber: i + 1,
-      beer: beerIds.get(name)!,
-      kegBlown: slug === 'west-perth' && i === 5,
-    }))
-    const found = await payload.find({ collection: 'tap-lists', where: { venue: { equals: venueId } }, limit: 1 })
-    const data = { venue: venueId, taps, source: 'manual' as const }
-    if (found.totalDocs) await payload.update({ collection: 'tap-lists', id: found.docs[0].id, data })
-    else await payload.create({ collection: 'tap-lists', data })
-    console.log(`  tap list  ${slug}`)
-  }
+  /**
+   * No seeded tap lists.
+   *
+   * This used to write "the first six beers per venue", which put six beers on
+   * the Hillarys page as though they were pouring — a claim with no source
+   * behind it. Tap lists come from the me&u sync or not at all. me&u publishes
+   * a beers-and-ciders menu for West Perth and not for Hillarys, so West Perth
+   * gets a live list and Hillarys honestly gets none.
+   */
 
   // 6. Events, dated relative to today so the seed never looks stale.
   //
@@ -335,7 +331,7 @@ const run = async () => {
   const todayPerth = { y: Number(part('year')), m: Number(part('month')), d: Number(part('day')) }
   const todayDow = WEEKDAYS.indexOf(part('weekday'))
 
-  for (const [title, weekday, hour, recurrence, slugs, category, isFree, price, description] of EVENTS) {
+  for (const [title, weekday, hour, recurrence, slugs, category, isFree, price, description, priceNote] of EVENTS) {
     const delta = (weekday - todayDow + 7) % 7 || 7
     const startsAt = new Date(
       Date.UTC(
@@ -368,6 +364,7 @@ const run = async () => {
       title, slug,
       startsAt: startsAt.toISOString(),
       recurrence, category, isFree, price,
+      ...(priceNote ? { priceNote } : {}),
       ...(heroImage ? { heroImage } : {}),
       body: description ? richText(description) : undefined,
       venues: slugs.map((s) => venueIds.get(s)!),

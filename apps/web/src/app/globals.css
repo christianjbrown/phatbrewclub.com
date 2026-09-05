@@ -305,3 +305,26 @@ a.card-link:focus-visible{outline:3px solid var(--orange);outline-offset:2px}
 .ig-grid{list-style:none;margin:0;padding:0;display:grid;gap:10px;grid-template-columns:repeat(auto-fill,minmax(150px,1fr))}
 .ig-grid img{width:100%;aspect-ratio:1;object-fit:cover;display:block;border-radius:10px;background:#111}
 .ig-grid a:hover img{opacity:.85}
+
+/* Chips carrying an icon line the two up rather than letting the glyph sit on
+   the text baseline. */
+.chip{display:inline-flex;align-items:center;gap:6px}
+.chip svg{flex:0 0 auto;opacity:.85}
+
+/* Directions buttons carry a platform mark. */
+.map-actions .btn{display:inline-flex;align-items:center;gap:8px}
+.map-actions .btn svg{flex:0 0 auto}
+
+/* FAQ, shown rather than folded. */
+.faq{max-width:760px;margin:0}
+.faq > div{border-bottom:1px solid #222;padding:18px 0}
+.faq > div:last-child{border-bottom:0}
+.faq dt{font:700 18px Rubik;margin:0 0 8px}
+.faq dd{margin:0;color:#d8d8d8}
+.faq dd p:last-child{margin-bottom:0}
+
+/* Instagram in the header bar. */
+.hd-ig{margin-left:auto;display:inline-flex;align-items:center;justify-content:center;width:40px;height:40px;border-radius:9px;color:#111;background:rgba(0,0,0,.14)}
+.hd-ig:hover{background:#111;color:var(--orange)}
+.hd-ig + .hd-search{margin-left:10px}
+@media(max-width:860px){.hd-ig{margin-left:0;order:1}.hd-ig + .hd-search{margin-left:8px}}

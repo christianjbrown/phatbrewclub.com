@@ -13,6 +13,22 @@ const money = new Intl.NumberFormat('en-AU', {
   minimumFractionDigits: 0,
 })
 
+
+/**
+ * An outbound card. Ordering lives on the brewery's own checkout, so this is an
+ * external anchor rather than a Link — and an item with nothing to buy stays an
+ * article, because a card that looks clickable and is not is worse than a card
+ * that does not.
+ */
+const Card = ({ href, children }: { href?: string; children: React.ReactNode }) =>
+  href ? (
+    <a className="shop-card card-link" href={href} target="_blank" rel="noopener noreferrer">
+      {children}
+    </a>
+  ) : (
+    <article className="shop-card">{children}</article>
+  )
+
 export default async function ShopPage() {
   const [venues, merch] = await Promise.all([getVenues(), getMerch()])
 
@@ -38,8 +54,11 @@ export default async function ShopPage() {
                   const first = m.images?.[0] ?? null
                   const img = mediaSize(first, 'small')
                   const d = mediaDims(first, 'small')
+                  // The whole card is the link, as on beers, news and what's
+                  // on. Sold-out items have nowhere to go, so they stay a plain
+                  // card rather than a dead link.
                   return (
-                    <article key={m.id} className="shop-card">
+                    <Card key={m.id} href={m.shopUrl && !m.soldOut ? m.shopUrl : undefined}>
                       {img ? (
                         <img
                           src={img}
@@ -60,16 +79,14 @@ export default async function ShopPage() {
                         {/* Ordering stays on the brewery's own checkout. Nothing
                             here takes a payment. */}
                         {m.shopUrl && !m.soldOut ? (
-                          <a className="btn" href={m.shopUrl} target="_blank" rel="noopener noreferrer">
-                            Buy
-                          </a>
+                          <span className="btn">Buy</span>
                         ) : (
                           <span className="shop-note">
                             {m.soldOut ? 'Sold out' : 'Available in venue'}
                           </span>
                         )}
                       </div>
-                    </article>
+                    </Card>
                   )
                 })}
               </div>

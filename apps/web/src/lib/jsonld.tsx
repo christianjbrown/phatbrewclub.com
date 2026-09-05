@@ -94,6 +94,9 @@ export const eventSchema = (e: PhatEvent) => ({
   organizer: { '@type': 'Organization', name: 'Phat Brew Club', url: SITE },
   offers: {
     '@type': 'Offer',
+    // Only admission belongs here. A food special's price is what a burger
+    // costs, and quoting it as the cost of attending told search engines the
+    // event had a $25 door.
     price: e.isFree ? '0' : (e.price ?? '').replace(/[^0-9.]/g, '') || '0',
     priceCurrency: 'AUD',
     availability: 'https://schema.org/InStock',

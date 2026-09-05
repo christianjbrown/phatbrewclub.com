@@ -2,6 +2,7 @@ import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import type { Metadata } from 'next'
 import { Footer, Header } from '@/components/Chrome'
+import { AmenityIcon } from '@/components/AmenityIcon'
 import { EventCard, HoursTable, OpenBadge, TapRows } from '@/components/Bits'
 import { VenueMap } from '@/components/VenueMap'
 import { JsonLd, faqSchema, tapMenuSchema, venueSchema } from '@/lib/jsonld'
@@ -86,20 +87,50 @@ export default async function VenuePage({ params }: { params: Promise<{ slug: st
                 <p style={{ color: '#8a8a8a' }}>{venue.transportNote}</p>
                 <VenueMap venue={venue} />
                 <h3 style={{ marginTop: 26 }}>Good to know</h3>
-                <p>{(venue.amenities ?? []).map((a) => <span className="chip" key={a}>{a}</span>)}</p>
+                <p>{(venue.amenities ?? []).map((a) => (
+                  <span className="chip" key={a}><AmenityIcon label={a} />{a}</span>
+                ))}</p>
               </div>
             </div>
           </div>
         </section>
 
-        {tapList ? (
-          <section>
-            <div className="wrap">
-              <h2>{venue.tapCount ?? 20} taps, poured today at {venue.shortName}</h2>
-              <TapRows list={tapList} />
-            </div>
-          </section>
-        ) : null}
+        {/* The count is what is actually listed, not what the venue can pour.
+            This claimed 20 taps at Hillarys while showing six, because the
+            twenty is the bar's capacity and the six were seed data. */}
+        <section>
+          <div className="wrap">
+            {tapList && (tapList.taps ?? []).length > 0 ? (
+              <>
+                <h2>
+                  {(tapList.taps ?? []).length} on tap at {venue.shortName}
+                </h2>
+                <TapRows list={tapList} />
+              </>
+            ) : (
+              <>
+                <h2>What&apos;s pouring at {venue.shortName}</h2>
+                <p>
+                  {venue.shortName} pours up to {venue.tapCount ?? 20} taps, but does not publish a
+                  live list. The current lineup is on the me&amp;u menu, which is also how you order
+                  at the table.
+                </p>
+                {venue.meanduSlug ? (
+                  <p>
+                    <a
+                      className="btn"
+                      href={`https://meandu.app/${venue.meanduSlug}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      See what&apos;s on tap
+                    </a>
+                  </p>
+                ) : null}
+              </>
+            )}
+          </div>
+        </section>
 
         {menus.length ? (
           <section id="menus">
@@ -117,6 +148,16 @@ export default async function VenuePage({ params }: { params: Promise<{ slug: st
               <Link className="btn" href={`/venues/${venue.slug}/menu`}>
                 See the menu
               </Link>
+              {venue.meanduSlug ? (
+                <a
+                  className="btn btn-o"
+                  href={`https://meandu.app/${venue.meanduSlug}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  Order on me&amp;u
+                </a>
+              ) : null}
             </div>
           </section>
         ) : null}
