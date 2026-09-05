@@ -171,3 +171,56 @@ Product photography is served from the legacy Weebly store path
 first harvester only matched the second, so it silently returned one image
 across all 29 products — the logo. Both roots are now matched, which is where
 the other 169 images and 111 MB came from.
+
+## Images: a pre-generated ladder, not a live resizer
+
+**Decided. Do not revisit without new evidence.**
+
+Uploads keep their master exactly as supplied, and Payload derives five WebP
+widths from it on upload: micro 240, thumbnail 400, small 600, card 800, hero
+1600. Each surface asks for the rung its slot needs, and the `srcset` offers the
+ones below so a 1x screen takes less. Staff upload one file and choose nothing.
+
+A live resizer was considered and rejected. It buys arbitrary widths on demand;
+it costs Cloud Run compute on every cache miss, on a service that scales to
+zero, and needs Cloud CDN plus an external HTTPS load balancer (~$18/month
+against a total bill of ~$12-15) before that compute is worth doing. It also
+creates an abuse surface where there is currently none. The slots on this site
+are few and known, so the ladder covers them.
+
+Three things make the ladder cheap to change, which is what makes this
+defensible rather than merely convenient:
+
+- Masters are stored untouched, so a new rung is derived from the original
+  rather than from a lossy intermediate. A top-level `formatOptions` used to
+  re-encode the upload itself to WebP; that is gone.
+- Adding a rung is a line in `Media.ts`, a migration, and about ten minutes of
+  `SEED_PURGE_MEDIA=all`.
+- `mediaSize` walks down the ladder, so a missing rung degrades to the next one
+  down rather than falling back to the full-size master.
+
+### What went wrong before, so it is not repeated
+
+- **Sizes gave a width and a height at `position: 'centre'`, which crops.** The
+  posters are portrait; squaring them into 800x600 threw away the half of the
+  Hillarys quiz poster carrying the day, time and host. Widths only, always.
+- **The bottom rung was 400.** Menu thumbnails sat in a 112px slot, so every one
+  shipped roughly thirteen times the pixels the slot could show: 1.2MB on one
+  page, now 498KB.
+- **`<img>` hard-coded width and height** that did not match the artwork, so the
+  browser reserved a landscape box for the CSS to crop into. `mediaDims` reads
+  the real numbers from the CMS.
+- **Objects had `max-age=3600`.** GCS stamps that on anything uploaded without
+  an explicit value and the storage adapter exposes no way to set one, so an
+  `afterChange` hook patches it to a year. This helps repeat visits only; it was
+  never the reason a first load was slow.
+
+### Two caveats
+
+- `/_next/image` exists but nothing uses it. Its allow-list is static and narrow
+  because it was previously derived from `NEXT_PUBLIC_*`, which are inlined at
+  build time and absent from the container build, so production baked in
+  `localhost` and answered 400 to everything.
+- Deleted images can linger in Google's edge cache, because the objects are
+  served `immutable` for a year. `gcloud storage ls` is the authority, not an
+  HTTP 200. Replacements get a new filename, so this bites deletions only.
