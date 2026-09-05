@@ -1,9 +1,10 @@
 import { writeFile, readdir } from 'node:fs/promises';
 
 const NAV = [
-  ['Venues', 'venues.html'], ['Beers', 'beers.html'], ["What's on", 'whats-on.html'],
-  ['Functions', 'functions-west-perth.html'], ['Shop', 'shop.html'],
-  ['About', 'about.html'], ['Contact', 'contact.html'],
+  ['Venues', 'venues.html', [['West Perth', 'venue-west-perth.html'], ['Hillarys', 'venue-hillarys.html']]],
+  ['Beers', 'beers.html'], ["What's on", 'whats-on.html'],
+  ['Functions', 'functions-west-perth.html', [['West Perth', 'functions-west-perth.html'], ['Hillarys', 'functions-hillarys.html']]],
+  ['Shop', 'shop.html'], ['About', 'about.html'], ['Contact', 'contact.html'],
 ];
 
 const VENUES = {
@@ -73,8 +74,10 @@ const head = (title, desc) => `<!doctype html>
 const header = (cur) => `<header>
 <div class="hd">
 <a href="index.html" aria-label="Phat Brew Club home"><img src="img/logo.png" alt="Phat Brew Club" width="58" height="58"></a>
-<nav aria-label="Main"><ul>${NAV.map(([l, h]) =>
-  `<li><a href="${h}"${h === cur ? ' aria-current="page"' : ''}>${l}</a></li>`).join('')}</ul></nav>
+<nav aria-label="Main"><ul>${NAV.map(([l, h, sub]) => sub
+  ? `<li class="has-sub"><a href="${h}"${h === cur ? ' aria-current="page"' : ''} aria-expanded="false" aria-haspopup="true">${l}<span class="caret" aria-hidden="true">\u25be</span></a>
+<ul class="sub">${sub.map(([sl, sh]) => `<li><a href="${sh}">${sl}</a></li>`).join('')}</ul></li>`
+  : `<li><a href="${h}"${h === cur ? ' aria-current="page"' : ''}>${l}</a></li>`).join('')}</ul></nav>
 <a class="book" href="#book">Book a table</a>
 </div></header>
 <main id="main">`;

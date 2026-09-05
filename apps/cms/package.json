@@ -1,0 +1,43 @@
+{
+  "name": "@phatbrewclub/cms",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "cross-env NODE_OPTIONS=\"--no-deprecation --max-old-space-size=4000\" next build",
+    "dev": "cross-env NODE_OPTIONS=--no-deprecation next dev -p 3011",
+    "devsafe": "rm -rf .next && cross-env NODE_OPTIONS=--no-deprecation next dev -p 3011",
+    "start": "cross-env NODE_OPTIONS=--no-deprecation next start -p 3011",
+    "generate:types": "cross-env NODE_OPTIONS=--no-deprecation payload generate:types",
+    "generate:importmap": "cross-env NODE_OPTIONS=--no-deprecation payload generate:importmap",
+    "migrate": "cross-env NODE_OPTIONS=--no-deprecation payload migrate",
+    "migrate:create": "cross-env NODE_OPTIONS=--no-deprecation payload migrate:create",
+    "seed": "node --env-file=.env --no-deprecation --import=tsx/esm src/seed/index.ts",
+    "payload": "cross-env NODE_OPTIONS=--no-deprecation payload",
+    "lint": "cross-env NODE_OPTIONS=--no-deprecation eslint ."
+  },
+  "dependencies": {
+    "@payloadcms/db-postgres": "3.88.0",
+    "@payloadcms/next": "3.88.0",
+    "@payloadcms/richtext-lexical": "3.88.0",
+    "@payloadcms/storage-s3": "3.88.0",
+    "@payloadcms/ui": "3.88.0",
+    "cross-env": "^10.1.0",
+    "graphql": "^16.11.0",
+    "next": "16.3.3",
+    "payload": "3.88.0",
+    "react": "19.2.0",
+    "react-dom": "19.2.0",
+    "sharp": "0.34.2"
+  },
+  "devDependencies": {
+    "@types/node": "^22.15.0",
+    "@types/react": "19.2.0",
+    "@types/react-dom": "19.2.0",
+    "tsx": "^4.20.0",
+    "typescript": "5.7.3"
+  },
+  "engines": {
+    "node": "^18.20.2 || >=20.9.0"
+  }
+}
