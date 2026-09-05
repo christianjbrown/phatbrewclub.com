@@ -201,7 +201,28 @@ const run = async () => {
       : await payload.create({ collection: 'beers', data })
     beerIds.set(name, doc.id)
   }
-  console.log(`  beers     ${BEERS.length}`)
+
+  /**
+   * Reconcile, for the same reason the events below do: renaming a beer changes
+   * its slug, so the old record survives and the site lists the beer twice.
+   * Three names were corrected off the can artwork — Brightside to Mr
+   * Brightside, Passion to Phat Passion, Three Cheers to 3 Cheers — and each
+   * would otherwise have left its wrong-ABV twin behind.
+   *
+   * Like the events reconcile, this makes the seed a FIXTURE LOADER. Never
+   * point it at an environment where staff have added beers of their own.
+   */
+  const fixtureSlugs = new Set(
+    BEERS.map(([n]) => n.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '')),
+  )
+  const { docs: allBeerDocs } = await payload.find({ collection: 'beers', limit: 500, depth: 0 })
+  let removedBeers = 0
+  for (const doc of allBeerDocs as unknown as { id: number | string; slug: string }[]) {
+    if (fixtureSlugs.has(doc.slug)) continue
+    await payload.delete({ collection: 'beers', id: doc.id })
+    removedBeers++
+  }
+  console.log(`  beers     ${BEERS.length}${removedBeers ? `, removed ${removedBeers} renamed` : ''}`)
 
   // 4b. Enrich beers with the data that only existed on the shop's product
   //     pages: real tasting descriptions, allergen declarations, cube prices

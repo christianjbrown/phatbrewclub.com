@@ -61,25 +61,51 @@ export const VENUES = [
 ]
 
 /** name, style, abv, ibu, category, decal filename, description */
-export const BEERS: [string, string, number, number, string, string, string][] = [
-  ['West Is Best', 'Australian Lager', 4.2, 18, 'core', 'phat-core-west-is-best-decal-2025.png', ''],
-  ['Culture of Good Times', 'Hazy IPA', 6.0, 40, 'core', 'phat-core-culture-of-good-times-decal-2025.png', ''],
-  ['Risky Business', 'West Coast IPA', 7.0, 60, 'core', 'phat-core-risky-business-decal-2025.png', ''],
-  ['OG Pale Ale', 'Pale Ale', 5.0, 35, 'core', 'phat-core-og-pale-ale-decal-2025.png', ''],
-  ['Phubba Bubba', 'Bubblegum Sour', 5.5, 8, 'core', 'phat-core-phubba-bubba-bubblegum-decal-2025.png', ''],
-  ['Hazy Mid', 'Mid-strength Hazy', 3.5, 25, 'core', 'phat-core-hazy-mid-decal.png', ''],
-  ['Xtra Phat Ale', 'Amber Ale', 5.0, 30, 'core', 'phat-core-xtra-phat-ale-decal.png', ''],
-  ['Phatatron', 'Double IPA', 7.0, 70, 'limited', 'phat-limited-edition-phatatron-decal-2025.png', ''],
-  ['Yuzu WCIPA', 'West Coast IPA', 6.8, 55, 'limited', 'phat-limited-edition-yuzu-wcipa-decal2.png', ''],
-  ['Boat Party', 'Tropical Sour', 4.8, 10, 'limited', 'phat-limited-edition-boat-party-decal.png', ''],
-  ['All Gas No Brakes', 'Double IPA', 8.0, 80, 'limited', 'phat-all-gas-no-brakes-decal.png', ''],
-  ['Three Cheers', 'Birthday IPA', 6.5, 45, 'limited', 'phat-3rd-birthday-3cheers-decal.png', ''],
-  ['Muscle Beach', 'Hazy Pale', 5.2, 30, 'seasonal', 'phat-muscle-beach-decal.png', ''],
-  ['Pavalicious', 'Pastry Sour', 5.5, 12, 'seasonal', 'phat-pavalicious-decal.png', ''],
-  ['Brightside', 'Session Ale', 4.0, 22, 'seasonal', 'phat-brightside-decal-1.png', ''],
-  ['Passion', 'Fruited Sour', 5.0, 10, 'seasonal', 'phat-passion-decal-2.png', ''],
-  ['Grand Northern', 'Collab Lager', 4.6, 20, 'collab', 'phat-collab-mane-grand-northern-decal-2025.png', ''],
-  ['Plateful Pils', 'Collab Pilsner', 5.0, 30, 'collab', 'phat-collab-plateful-pils-decal-2025-1.png', ''],
+/**
+ * Name, style and ABV come from the can artwork; descriptions come from the
+ * brewery's own Untappd entries.
+ *
+ * They used to be guesses. The names were read off the decal filenames and the
+ * style, ABV and IBU were invented outright, which put wrong alcohol content on
+ * a live page: "Three Cheers" was listed as a 6.5% Birthday IPA when the can
+ * says 3 Cheers, TIPA, 10% ABV. "Brightside, Session Ale, 4%" is Mr Brightside,
+ * NZ Bright IPA, 6.5%. "Passion, Fruited Sour" is Phat Passion, and it is not a
+ * beer at all — it is a hard seltzer.
+ *
+ * IBU is gone. No source has ever carried it, so every figure on the site was
+ * fabricated. Blank is honest; a number is not.
+ *
+ * Where the two sources disagree the can wins, since it is what the drinker is
+ * holding. Untappd lists Hazy Mid at 3.8%; its can says 3.5%.
+ */
+export const BEERS: [string, string, number, number | null, string, string, string][] = [
+  ['West Is Best', 'Australian Lager', 4.2, null, 'core', 'phat-core-west-is-best-decal-2025.png', ''],
+  ['Culture of Good Times', 'Hazy IPA', 6.0, null, 'core', 'phat-core-culture-of-good-times-decal-2025.png', ''],
+  ['Risky Business', 'West Coast IPA', 7.0, null, 'core', 'phat-core-risky-business-decal-2025.png', ''],
+  ['OG Pale Ale', 'Pale Ale', 5.0, null, 'core', 'phat-core-og-pale-ale-decal-2025.png', ''],
+  ['Phubba Bubba', 'Bubblegum Sour', 5.5, null, 'core', 'phat-core-phubba-bubba-bubblegum-decal-2025.png', ''],
+  ['Hazy Mid', 'Mid Strength Hazy Pale', 3.5, null, 'core', 'phat-core-hazy-mid-decal.png',
+    'Pineapple and citrus notes deliver on the El Dorado and Galaxy Hop promise. Designed for day drinking, this one satisfy a thirst.'],
+  ['Xtra Phat Ale', 'Amber Ale', 5.0, null, 'core', 'phat-core-xtra-phat-ale-decal.png', ''],
+  ['Phatatron', 'Double IPA', 7.0, null, 'limited', 'phat-limited-edition-phatatron-decal-2025.png', ''],
+  ['Yuzu WCIPA', 'West Coast IPA', 6.7, null, 'limited', 'phat-limited-edition-yuzu-wcipa-decal2.png',
+    '6.7% West Coast IPA fruited with tonnes of Yuzu. Strong notes of citrus zest, with a hefty amount of bitterness'],
+  ['Boat Party', 'NZ Hazy IPA', 6.0, null, 'limited', 'phat-limited-edition-boat-party-decal.png',
+    'Tropical waves are rolling in, and they are carrying our brand-new Boat Party NZ Hazy IPA! Packed with Nelson, Citra & Bract hops, this juicy, hazy delight is as smooth as a sunset cruise and as lively as a deck party. Whether you are kicking back by the water or just dreaming of the open sea, crack a can and set sail on flavours of ripe pineapple, citrus zest & stone fruit goodness.'],
+  ['All Gas No Brakes', 'Terpene Hazy IPA', 7.2, null, 'limited', 'phat-all-gas-no-brakes-decal.png',
+    'Buckle up, this turbocharged, 7.2% Hazy IPA hits the ring with Galaxy, Strata and Mosaic hops, boosted by a tag team of guava and cosmic guava terpene. Making it dank, juicy and flavourful.'],
+  ['3 Cheers', 'TIPA', 10.0, null, 'limited', 'phat-3rd-birthday-3cheers-decal.png', ''],
+  ['Muscle Beach', 'Pale Ale', 4.5, null, 'seasonal', 'phat-muscle-beach-decal.png',
+    'For those who lift big & large - this 4.5% Cali Pale is fresh, bold, and built for strength, brewed with WA Strongman, because even the strongest need a proper refresher!'],
+  ['Pavalicious', 'Pavlova Sour', 6.0, null, 'seasonal', 'phat-pavalicious-decal.png',
+    "This one's a nod to the perfect pavlova - sweet, fruity, and full of that irresistible contrast. Kiwi, strawberry, and passionfruit combine in a tart juicy sour that captures all the magic of the dessert. It's the smooth, tangy goodness you love, no sporks needed - it's mum's pav ramped up to 100."],
+  ['Mr Brightside', 'NZ Bright IPA', 6.5, null, 'seasonal', 'phat-brightside-decal-1.png',
+    'This 6.5% NZ Bright IPA is juicy and tropical with NZ hops and a slightly bitter finish.'],
+  ['Phat Passion', 'Hard Seltzer', 4.0, null, 'seasonal', 'phat-passion-decal-2.png', ''],
+  ['Grand Northern', 'Northern IPA', 6.0, null, 'collab', 'phat-collab-mane-grand-northern-decal-2025.png',
+    'Brewed with our mates at Mane Liquor, this 6% Northern IPA packs a proper hop punch. Big tropical and citrus vibes, just like the bold North American brews that inspired it.'],
+  ['Plateful Pils', 'Mediterranean Pilsner', 4.6, null, 'collab', 'phat-collab-plateful-pils-decal-2025-1.png',
+    "Crisp, clean and beautifully balanced - this bright 4.6% pilsner was originally crafted for Perth's Plateful celebration of food and flavour. It's the ultimate go to pairing with good food and great company."],
 ]
 
 /**
