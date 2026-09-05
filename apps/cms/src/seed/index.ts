@@ -16,6 +16,27 @@ const IMG = path.resolve(dirname, '../../../../mocks/img')
 const ADMIN_EMAIL = process.env.SEED_ADMIN_EMAIL ?? 'admin@phatbrewclub.local'
 const ADMIN_PASSWORD = process.env.SEED_ADMIN_PASSWORD ?? 'phatbrew-local-dev'
 
+/**
+ * These defaults are fine on a laptop and dangerous anywhere else.
+ *
+ * The first production seed created admin@phatbrewclub.local with the password
+ * below on an internet-facing admin panel, because neither variable was set on
+ * the Cloud Run job. Refuse to do that again: outside local development the
+ * credentials must be supplied explicitly.
+ */
+const usingDefaults = !process.env.SEED_ADMIN_EMAIL || !process.env.SEED_ADMIN_PASSWORD
+const isLocal =
+  (process.env.DATABASE_URL ?? '').includes('localhost') &&
+  !(process.env.DATABASE_URL ?? '').includes('/cloudsql/')
+
+if (usingDefaults && !isLocal) {
+  console.error(
+    'Refusing to seed a default admin outside local development. ' +
+      'Set SEED_ADMIN_EMAIL and SEED_ADMIN_PASSWORD, or create the user by hand.',
+  )
+  process.exit(1)
+}
+
 const run = async () => {
   const payload = await getPayload({ config })
 
