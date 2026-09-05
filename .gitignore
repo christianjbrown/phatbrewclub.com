@@ -1,0 +1,7 @@
+node_modules/
+.kube/
+.env
+.env.local
+assets/original/
+mocks/shots/
+.DS_Store

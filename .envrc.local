@@ -1,0 +1,6 @@
+# Source this before touching kubectl in this project.
+# Keeps the project pinned to the local kind cluster so no command can
+# reach gke_backgammon-42_europe-west1-b_backgammon by accident.
+export PATH="/opt/homebrew/bin:$HOME/.docker/bin:$PATH"
+export KUBECONFIG="$(cd "$(dirname "${BASH_SOURCE[0]:-$0}")" && pwd)/.kube/config"
+export KIND_CLUSTER=phatbrew
