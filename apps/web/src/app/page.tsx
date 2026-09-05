@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import { Footer, Header } from '@/components/Chrome'
 import { HeroVideo } from '@/components/HeroVideo'
+import { InstagramFeed } from '@/components/InstagramFeed'
 import { BeerCard, EventCard, OpenBadge, TapRows } from '@/components/Bits'
 import { JsonLd, organisationSchema, venueSchema } from '@/lib/jsonld'
 import { getBeers, getEvents, getSettings, getTapList, getVenues, mediaSize, mediaSrcSet } from '@/lib/payload'
@@ -121,6 +122,7 @@ export default async function Home() {
           </div>
         </section>
       </main>
+      <InstagramFeed handle={settings.instagram} />
       <Footer venues={venues} />
     </>
   )
