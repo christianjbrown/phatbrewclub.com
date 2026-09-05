@@ -125,6 +125,16 @@ footer a{color:var(--muted);font-size:15px;line-height:2}
 footer a:hover{color:#fff;text-decoration:underline}
 .legal{border-top:1px solid #191919;margin-top:32px;padding-top:22px;color:#9a9a9a;font-size:14px}
 
+/* Newsletter signup. Hidden entirely when no provider is configured, so the
+   footer closes up rather than leaving a gap. */
+footer .news-signup{display:flex;gap:8px;flex-wrap:wrap;max-width:420px}
+footer .news-signup input[type=email]{flex:1 1 220px;min-width:0;background:#111;border:1px solid #2a2a2a;color:#fff;border-radius:6px;padding:11px 12px;font:400 15px Rubik}
+footer .news-signup input[type=email]::placeholder{color:#6f6f6f}
+footer .news-signup input[type=email]:focus-visible{outline:2px solid var(--orange);outline-offset:1px;border-color:var(--orange)}
+footer .news-signup button{background:var(--orange);color:#111;border:0;border-radius:6px;padding:11px 20px;font:700 14px Rubik;letter-spacing:.06em;cursor:pointer}
+footer .news-signup button:hover{filter:brightness(1.08)}
+
+
 .hero{position:relative;min-height:520px;display:flex;align-items:flex-end;background-size:cover;background-position:center}
 .hero::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.15) 0%,rgba(0,0,0,.35) 45%,rgba(0,0,0,.88) 100%)}
 /* Text sits in the darkest part at the bottom, so the photograph stays visible

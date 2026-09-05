@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import { Newsletter } from './Newsletter'
 import type { Venue } from '@/lib/types'
 
 const NAV: [string, string, [string, string][]?][] = [
@@ -83,6 +84,7 @@ export const Footer = ({ venues }: { venues: Venue[] }) => (
           <Link href="/homebrew-comp">Homebrew comp</Link>
         </div>
       </div>
+      <Newsletter />
       <p className="legal">Phat Brew Club · Independent brewery, Western Australia</p>
     </div>
   </footer>
