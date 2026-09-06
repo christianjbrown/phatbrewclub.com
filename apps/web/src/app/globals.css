@@ -47,7 +47,9 @@ header{background:var(--orange);position:sticky;top:0;z-index:50;overflow:visibl
 .announce>*{display:block;max-width:var(--max);margin:0 auto;padding:9px 24px}
 .announce a{color:var(--orange);text-decoration:underline;text-underline-offset:3px}
 .announce a:hover{color:var(--paper)}
-.hd{display:flex;align-items:center;gap:28px;padding:10px 0;max-width:var(--max);margin:0 auto;padding-left:24px;padding-right:24px}
+/* 24px, not 28: at 28 the header's own content came to 1182px inside a 1180px
+   wrap, so it was squeezed by two pixels at every width. */
+.hd{display:flex;align-items:center;gap:24px;padding:10px 0;max-width:var(--max);margin:0 auto;padding-left:24px;padding-right:24px}
 /* The mark hangs below the orange bar rather than sitting inside it: the bar
    keeps the height it had, and the logo is drawn twice the size out of a fixed
    box so it overlaps whatever is underneath. Absolute positioning is what keeps
@@ -201,7 +203,26 @@ footer .news-signup button:hover{filter:brightness(1.08)}
 .note{background:#111;border-left:3px solid var(--orange);padding:14px 18px;margin:0 0 26px;font-size:14px;color:#bbb;border-radius:0 8px 8px 0}
 .note b{color:var(--orange)}
 
-@media(max-width:860px){
+/*
+   The menu breakpoint is 1100px, not 860.
+   
+   The desktop header needs about 1230px to lay out: the logo, nine nav items,
+   the search box and the Book button. Between 861 and 1230 it did not fit and
+   did not wrap either, so the search box and the Book button were pushed off
+   the right-hand edge and the page scrolled sideways — 297px of it at 900px
+   wide, which is an iPad in landscape or a half-screen laptop window.
+   
+   So the menu covers everything up to 1100, and the band above it is tightened
+   until the full header fits.
+*/
+@media(min-width:1101px) and (max-width:1320px){
+  .hd{gap:18px}
+  nav ul{gap:14px}
+  nav a{font-size:14px}
+  .hd-search input{width:120px}
+  .book{padding:13px 16px;font-size:14px}
+}
+@media(max-width:1100px){
   .hd{flex-wrap:wrap;gap:10px;padding-top:8px;padding-bottom:8px}
   /* Smaller mark, still overhanging the bar. */
   .hd .brand{width:76px;height:46px}
@@ -234,7 +255,8 @@ footer .news-signup button:hover{filter:brightness(1.08)}
   nav a:hover,nav a:focus,nav a[aria-current=page]{border-bottom-color:#000}
   .hd-search{margin:12px 0 4px;width:100%}
   .hd-search input{width:100%}
-
+}
+@media(max-width:860px){
   .hero{min-height:420px}
   section{padding:40px 0}
 }
@@ -246,7 +268,7 @@ footer .news-signup button:hover{filter:brightness(1.08)}
 .sub a{padding:12px 20px;border:0;white-space:nowrap;min-height:44px;display:flex;align-items:center}
 .sub a:hover,.sub a:focus{background:#000;color:var(--orange)}
 .has-sub:hover>.sub,.has-sub:focus-within>.sub{display:block}
-@media(max-width:860px){
+@media(max-width:1100px){
   .sub{position:static;display:block;box-shadow:none;border-top:0;padding:0;min-width:0;background:transparent}
   .sub a{padding:11px 0 11px 18px;font-size:14px;opacity:.85;min-height:44px;
     border-bottom:1px solid rgba(0,0,0,.14)}
@@ -363,11 +385,6 @@ a.card-link:focus-visible{outline:3px solid var(--orange);outline-offset:2px}
 .hd-search input{width:150px;background:rgba(0,0,0,.16);border:1px solid rgba(0,0,0,.28);color:#111;border-radius:8px;padding:10px 12px;font:500 14px Rubik;min-height:40px}
 .hd-search input::placeholder{color:rgba(0,0,0,.55)}
 .hd-search input:focus-visible{outline:2px solid #000;outline-offset:1px;background:#fff}
-@media(max-width:860px){
-  .hd-search{margin-left:0;order:2;flex:1 1 140px}
-  .hd-search input{width:100%}
-  .hd-search + .book{margin-left:0}
-}
 
 /* Instagram grid. Square crops are the one place the site crops deliberately:
    it is a contact sheet, and Instagram's own grid is square. */
@@ -392,11 +409,6 @@ a.card-link:focus-visible{outline:3px solid var(--orange);outline-offset:2px}
 .faq dd{margin:0;color:#d8d8d8}
 .faq dd p:last-child{margin-bottom:0}
 
-/* Instagram in the header bar. */
-.hd-ig{margin-left:auto;display:inline-flex;align-items:center;justify-content:center;width:40px;height:40px;border-radius:9px;color:#111;background:rgba(0,0,0,.14)}
-.hd-ig:hover{background:#111;color:var(--orange)}
-.hd-ig + .hd-search{margin-left:10px}
-@media(max-width:860px){.hd-ig{margin-left:0;order:1}.hd-ig + .hd-search{margin-left:8px}}
 
 /* Sold-out merch is marked on the card, not discovered on the checkout. */
 .sold-out{display:inline-block;margin-left:8px;vertical-align:middle;background:#2a2a2a;color:#bdbdbd;font:700 11px Rubik;letter-spacing:.08em;text-transform:uppercase;padding:4px 8px;border-radius:999px}
