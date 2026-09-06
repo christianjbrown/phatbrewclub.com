@@ -1491,27 +1491,69 @@ export interface PayloadMigrationsSelect<T extends boolean = true> {
  */
 export interface Setting {
   id: number;
+  /**
+   * e.g. "Closed Monday for a private function."
+   */
   announcement?: string | null;
+  /**
+   * Optional. Makes the whole bar a link.
+   */
   announcementUrl?: string | null;
   /**
    * It disappears on its own after this date.
    */
   announcementUntil?: string | null;
+  /**
+   * Drag to reorder. The order here is the order on the site.
+   */
   mainNav?:
     | {
         label: string;
         url: string;
+        /**
+         * Optional. Adds a drop-down under this link.
+         */
+        children?:
+          | {
+              label: string;
+              url: string;
+              id?: string | null;
+            }[]
+          | null;
         id?: string | null;
       }[]
     | null;
+  /**
+   * The button at the right-hand end of the header.
+   */
   bookingLabel?: string | null;
-  instagram?: string | null;
+  /**
+   * Full URL. Blank hides the link in the footer.
+   */
   facebook?: string | null;
+  /**
+   * Full URL.
+   */
   tiktok?: string | null;
+  /**
+   * Full URL.
+   */
   youtube?: string | null;
+  /**
+   * Full URL.
+   */
   untappd?: string | null;
+  /**
+   * The browser tab title on the home page.
+   */
   defaultTitle?: string | null;
+  /**
+   * The sentence under the link in Google results.
+   */
   defaultDescription?: string | null;
+  /**
+   * The picture shown when a link to the site is shared. Landscape, at least 1200px wide.
+   */
   defaultImage?: (number | null) | Media;
   updatedAt?: string | null;
   createdAt?: string | null;
@@ -1529,10 +1571,16 @@ export interface SettingsSelect<T extends boolean = true> {
     | {
         label?: T;
         url?: T;
+        children?:
+          | T
+          | {
+              label?: T;
+              url?: T;
+              id?: T;
+            };
         id?: T;
       };
   bookingLabel?: T;
-  instagram?: T;
   facebook?: T;
   tiktok?: T;
   youtube?: T;

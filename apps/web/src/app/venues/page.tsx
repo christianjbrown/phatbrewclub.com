@@ -7,12 +7,13 @@ import { OpenBadge } from '@/components/Bits'
 import { JsonLd, venueSchema } from '@/lib/jsonld'
 import { getVenues, mediaSize, mediaSrcSet } from '@/lib/payload'
 
-export const metadata: Metadata = pageMeta({
-  title: 'Our venues',
-  description:
-    'Phat Brew Club has two venues: Phat HQ in West Perth and The Trophy Room at Hillarys Boat Harbour.',
-  path: '/venues',
-})
+export const generateMetadata = (): Promise<Metadata> =>
+  pageMeta({
+    title: 'Our venues',
+    description:
+      'Phat Brew Club has two venues: Phat HQ in West Perth and The Trophy Room at Hillarys Boat Harbour.',
+    path: '/venues',
+  })
 
 export default async function VenuesPage() {
   const venues = await getVenues()

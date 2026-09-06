@@ -164,10 +164,24 @@ export type Merch = {
   images?: Media[] | null
 }
 
+export type NavLink = {
+  label: string
+  url: string
+  children?: { label: string; url: string }[] | null
+}
+
 export type Settings = {
-  instagram?: string | null
+  announcement?: string | null
+  announcementUrl?: string | null
+  announcementUntil?: string | null
+  mainNav?: NavLink[] | null
+  bookingLabel?: string | null
+  /** Instagram is per venue, not here — the two accounts are separate. */
   facebook?: string | null
   tiktok?: string | null
   youtube?: string | null
   untappd?: string | null
+  defaultTitle?: string | null
+  defaultDescription?: string | null
+  defaultImage?: Media | null
 }

@@ -4,12 +4,13 @@ import { pageMeta } from '@/lib/seo'
 import { VenueMap } from '@/components/VenueMap'
 import { getVenues } from '@/lib/payload'
 
-export const metadata: Metadata = pageMeta({
-  title: 'Contact',
-  description:
-    'Contact Phat Brew Club: bookings, functions, wholesale and general enquiries.',
-  path: '/contact',
-})
+export const generateMetadata = (): Promise<Metadata> =>
+  pageMeta({
+    title: 'Contact',
+    description:
+      'Contact Phat Brew Club: bookings, functions, wholesale and general enquiries.',
+    path: '/contact',
+  })
 
 export default async function ContactPage() {
   const venues = await getVenues()

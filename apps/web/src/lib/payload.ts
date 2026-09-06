@@ -101,7 +101,7 @@ export const getPost = (slug: string) =>
  */
 export const getSettings = async (): Promise<Settings> => {
   try {
-    return await api<Settings>('globals/settings', { depth: 0 }, ['settings'])
+    return await api<Settings>('globals/settings', { depth: 1 }, ['settings'])
   } catch {
     return {}
   }

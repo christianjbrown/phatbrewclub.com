@@ -40,6 +40,13 @@ a{color:inherit;text-decoration:none}
 .skip:focus{left:0}
 
 header{background:var(--orange);position:sticky;top:0;z-index:50;overflow:visible}
+/* The announcement bar. Black on the orange header so it reads as a notice
+   rather than another row of navigation, and full-bleed so it cannot be
+   mistaken for page content. */
+.announce{background:var(--black);color:var(--paper);font:600 14px/1.4 Rubik;text-align:center}
+.announce>*{display:block;max-width:var(--max);margin:0 auto;padding:9px 24px}
+.announce a{color:var(--orange);text-decoration:underline;text-underline-offset:3px}
+.announce a:hover{color:var(--paper)}
 .hd{display:flex;align-items:center;gap:28px;padding:10px 0;max-width:var(--max);margin:0 auto;padding-left:24px;padding-right:24px}
 /* The mark hangs below the orange bar rather than sitting inside it: the bar
    keeps the height it had, and the logo is drawn twice the size out of a fixed

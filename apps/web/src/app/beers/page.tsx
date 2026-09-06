@@ -4,12 +4,13 @@ import { pageMeta } from '@/lib/seo'
 import { BeerCard } from '@/components/Bits'
 import { getBeers, getVenues } from '@/lib/payload'
 
-export const metadata: Metadata = pageMeta({
-  title: 'Our beers',
-  description:
-    'The full Phat Brew Club range: core beers, seasonals, limited releases and collaborations, with style and ABV.',
-  path: '/beers',
-})
+export const generateMetadata = (): Promise<Metadata> =>
+  pageMeta({
+    title: 'Our beers',
+    description:
+      'The full Phat Brew Club range: core beers, seasonals, limited releases and collaborations, with style and ABV.',
+    path: '/beers',
+  })
 
 const GROUPS: [string, string][] = [
   ['core', 'Core range'],

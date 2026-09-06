@@ -2,29 +2,79 @@ import Link from 'next/link'
 import { Newsletter } from './Newsletter'
 import { getSettings } from '@/lib/payload'
 import { FacebookIcon, InstagramIcon, TikTokIcon, UntappdIcon, YouTubeIcon } from './SocialIcons'
-import type { Venue } from '@/lib/types'
-
-const NAV: [string, string, [string, string][]?][] = [
-  ['Venues', '/venues', [['West Perth', '/venues/west-perth'], ['Hillarys', '/venues/hillarys']]],
-  ['Beers', '/beers'],
-  ["What's on", '/whats-on'],
-  ['News', '/news'],
-  ['Functions', '/functions', [['West Perth', '/functions/west-perth'], ['Hillarys', '/functions/hillarys']]],
-  ['Shop', '/shop'],
-  ['Homebrew comp', '/homebrew-comp'],
-  ['About', '/about'],
-  ['Contact', '/contact'],
-]
+import type { NavLink, Settings, Venue } from '@/lib/types'
 
 /**
- * The homebrew comp sits in the footer, not the primary nav. On the old site it
- * held a top-level slot on every page for four months after it finished; it
- * belongs in the nav while it is running and nowhere else, which is a content
- * decision the CMS can now make rather than a deploy.
+ * The menu the site falls back to when Site settings has no links in it.
+ *
+ * It is a fallback, not the source of truth: the nav is editable in the CMS,
+ * and this is what gets used before anyone has touched it, or if the list is
+ * emptied by accident. A brewery should not need a deploy to add a page to its
+ * own menu, and should not be able to leave itself with no menu at all.
  */
+const DEFAULT_NAV: NavLink[] = [
+  { label: 'Venues', url: '/venues', children: [
+    { label: 'West Perth', url: '/venues/west-perth' },
+    { label: 'Hillarys', url: '/venues/hillarys' },
+  ] },
+  { label: 'Beers', url: '/beers' },
+  { label: "What's on", url: '/whats-on' },
+  { label: 'News', url: '/news' },
+  { label: 'Functions', url: '/functions', children: [
+    { label: 'West Perth', url: '/functions/west-perth' },
+    { label: 'Hillarys', url: '/functions/hillarys' },
+  ] },
+  { label: 'Shop', url: '/shop' },
+  { label: 'Homebrew comp', url: '/homebrew-comp' },
+  { label: 'About', url: '/about' },
+  { label: 'Contact', url: '/contact' },
+]
 
-export const Header = ({ current }: { current?: string }) => (
+/** The calendar date an instant falls on in Perth, as YYYY-MM-DD. */
+const perthDate = (d: Date) =>
+  new Intl.DateTimeFormat('en-CA', { timeZone: 'Australia/Perth' }).format(d)
+
+/**
+ * The announcement bar, which is off unless there is something to say.
+ *
+ * The end date is checked here rather than left to whoever wrote the notice:
+ * the failure mode of a bar like this is a "closed Monday" still sitting on the
+ * site in March, so it takes itself down. "Until the 8th" means the whole of
+ * the 8th in Perth, so it is still up on the evening of the last day.
+ *
+ * Comparing Perth calendar dates rather than doing arithmetic on the stored
+ * instant is deliberate. Payload records what the picker produced, and that is
+ * midnight UTC or midnight Perth depending on the editor's browser — two
+ * instants sixteen hours apart that mean the same day. Both land on the 8th in
+ * Perth, so both behave the same. An offset added by hand only works for one of
+ * them, which is how the first version of this took the bar down at eight in
+ * the morning on the last day it was meant to run.
+ */
+const Announcement = ({ settings }: { settings: Settings }) => {
+  const message = settings.announcement?.trim()
+  if (!message) return null
+
+  if (settings.announcementUntil) {
+    const until = new Date(settings.announcementUntil)
+    if (!Number.isNaN(until.getTime()) && perthDate(new Date()) > perthDate(until)) return null
+  }
+
+  const url = settings.announcementUrl?.trim()
+  return (
+    <div className="announce">
+      {url ? <Link href={url}>{message}</Link> : <span>{message}</span>}
+    </div>
+  )
+}
+
+export const Header = async ({ current }: { current?: string }) => {
+  const settings = await getSettings()
+  const nav = settings.mainNav?.length ? settings.mainNav : DEFAULT_NAV
+  const bookingLabel = settings.bookingLabel?.trim() || 'Book'
+
+  return (
   <header>
+    <Announcement settings={settings} />
     <div className="hd">
       <Link className="brand" href="/" aria-label="Phat Brew Club home">
         {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -38,22 +88,22 @@ export const Header = ({ current }: { current?: string }) => (
       </Link>
       <nav aria-label="Main">
         <ul>
-          {NAV.map(([label, href, sub]) =>
-            sub ? (
-              <li className="has-sub" key={href}>
-                <Link href={href} aria-haspopup="true" {...(current === href ? { 'aria-current': 'page' as const } : {})}>
+          {nav.map(({ label, url, children }) =>
+            children?.length ? (
+              <li className="has-sub" key={url}>
+                <Link href={url} aria-haspopup="true" {...(current === url ? { 'aria-current': 'page' as const } : {})}>
                   {label}
                   <span className="caret" aria-hidden="true">▾</span>
                 </Link>
                 <ul className="sub">
-                  {sub.map(([sl, sh]) => (
-                    <li key={sh}><Link href={sh}>{sl}</Link></li>
+                  {children.map((c) => (
+                    <li key={c.url}><Link href={c.url}>{c.label}</Link></li>
                   ))}
                 </ul>
               </li>
             ) : (
-              <li key={href}>
-                <Link href={href} {...(current === href ? { 'aria-current': 'page' as const } : {})}>{label}</Link>
+              <li key={url}>
+                <Link href={url} {...(current === url ? { 'aria-current': 'page' as const } : {})}>{label}</Link>
               </li>
             ),
           )}
@@ -65,10 +115,11 @@ export const Header = ({ current }: { current?: string }) => (
         <label className="sr-only" htmlFor="hd-q">Search</label>
         <input id="hd-q" name="q" type="search" placeholder="Search" autoComplete="off" />
       </form>
-      <Link className="book" href="/venues">Book</Link>
+      <Link className="book" href="/venues">{bookingLabel}</Link>
     </div>
   </header>
-)
+  )
+}
 
 export const Footer = async ({ venues }: { venues: Venue[] }) => {
   const settings = await getSettings()

@@ -8,11 +8,11 @@ import { JsonLd, organisationSchema, venueSchema } from '@/lib/jsonld'
 import { pageMeta } from '@/lib/seo'
 import { getBeers, getEvents, getSettings, getTapList, getVenues, mediaDims, mediaSize, mediaSrcSet } from '@/lib/payload'
 
-export const metadata: Metadata = pageMeta({
-  path: '/',
-  description:
-    'Independent Perth brewery with two venues: Phat HQ in West Perth and The Trophy Room at Hillarys Boat Harbour. Twenty taps, brewed on site.',
-})
+export const generateMetadata = (): Promise<Metadata> =>
+  // No description here on purpose: the home page is exactly the page the SEO
+  // defaults in Site settings are for, so hard-coding one would make that field
+  // the one place editing it changed nothing.
+  pageMeta({ path: '/' })
 
 export default async function Home() {
   const venues = await getVenues()
@@ -30,7 +30,8 @@ export default async function Home() {
           data={organisationSchema(
             venues,
             [
-              settings.instagram,
+              // Instagram is per venue, so both accounts belong in sameAs.
+              ...venues.map((v) => v.instagram),
               settings.facebook,
               settings.tiktok,
               settings.youtube,
@@ -140,7 +141,9 @@ export default async function Home() {
           </div>
         </section>
       </main>
-      <InstagramFeed handle={settings.instagram} />
+      {/* The brand account is the first venue's — West Perth — rather than a
+          separate site-wide handle, because there is no such account. */}
+      <InstagramFeed handle={venues.find((v) => v.instagram)?.instagram} />
       <Footer venues={venues} />
     </>
   )

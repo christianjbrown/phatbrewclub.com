@@ -3,12 +3,13 @@ import { Footer, Header } from '@/components/Chrome'
 import { pageMeta } from '@/lib/seo'
 import { getMerch, getVenues, mediaDims, mediaSize, mediaSrcSet } from '@/lib/payload'
 
-export const metadata: Metadata = pageMeta({
-  title: 'Shop',
-  description:
-    'Phat Brew Club merch: beanies, caps, hoodies, glassware and the West is Best footy jumper.',
-  path: '/shop',
-})
+export const generateMetadata = (): Promise<Metadata> =>
+  pageMeta({
+    title: 'Shop',
+    description:
+      'Phat Brew Club merch: beanies, caps, hoodies, glassware and the West is Best footy jumper.',
+    path: '/shop',
+  })
 
 const money = new Intl.NumberFormat('en-AU', {
   style: 'currency',

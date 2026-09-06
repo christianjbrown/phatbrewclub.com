@@ -1,5 +1,5 @@
 import type { Metadata } from 'next'
-import { mediaSize } from './payload'
+import { getSettings, mediaSize } from './payload'
 
 /**
  * Open Graph and canonical URLs, in one place.
@@ -15,8 +15,22 @@ import { mediaSize } from './payload'
 const SITE = (process.env.NEXT_PUBLIC_SITE_URL ?? 'http://localhost:3000').replace(/\/$/, '')
 
 /** The hero video's poster frame. 1280x720, which is close enough to the 1.91:1
- *  cards want that neither Facebook nor Twitter crops anything important. */
-const FALLBACK = { url: `${SITE}/video/hero-poster-1280.jpg`, width: 1280, height: 720 }
+ *  cards want that neither Facebook nor Twitter crops anything important.
+ *
+ *  Only reached when Site settings has no default image: the CMS one wins, so
+ *  the picture on a shared link is a choice somebody made rather than whatever
+ *  frame the homepage video happens to start on. */
+const BUILT_IN_FALLBACK = { url: `${SITE}/video/hero-poster-1280.jpg`, width: 1280, height: 720 }
+
+/** The SEO defaults tab in Site settings, in the shape this file wants. */
+const defaults = async () => {
+  const settings = await getSettings()
+  const url = mediaSize(settings.defaultImage, 'hero')
+  return {
+    description: settings.defaultDescription?.trim() || undefined,
+    image: url ? { url, alt: settings.defaultImage?.alt } : null,
+  }
+}
 
 type Sized = Parameters<typeof mediaSize>[0]
 
@@ -26,7 +40,7 @@ export const ogImage = (m: Sized, alt?: string) => {
   return url ? { url, alt: alt ?? undefined } : null
 }
 
-export const pageMeta = ({
+export const pageMeta = async ({
   title,
   description,
   path,
@@ -39,17 +53,27 @@ export const pageMeta = ({
   path: string
   image?: { url: string; alt?: string } | null
   type?: 'website' | 'article'
-}): Metadata => {
+}): Promise<Metadata> => {
   const url = `${SITE}${path === '/' ? '' : path}`
-  const images = [image ?? FALLBACK]
+  const site = await defaults()
+  const images = [image ?? site.image ?? BUILT_IN_FALLBACK]
+  /**
+   * A page's own description wins; the CMS default fills in behind it.
+   *
+   * The fallback has to be applied here rather than left to Next, because
+   * metadata merges shallowly: any page that sets an openGraph block at all
+   * replaces the layout's entirely, so an og:description inherited from the
+   * layout would silently disappear from every page this function touches.
+   */
+  const desc = description ?? site.description
 
   return {
+    ...(desc ? { description: desc } : {}),
     ...(title ? { title } : {}),
-    ...(description ? { description } : {}),
     alternates: { canonical: url },
     openGraph: {
       ...(title ? { title } : {}),
-      ...(description ? { description } : {}),
+      ...(desc ? { description: desc } : {}),
       url,
       type,
       images,

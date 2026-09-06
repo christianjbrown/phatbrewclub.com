@@ -577,27 +577,57 @@ const run = async () => {
   await payload.updateGlobal({
     slug: 'settings',
     data: {
-      bookingLabel: 'Book a table',
+      bookingLabel: 'Book',
+      /**
+       * The nav the site actually ships, drop-downs included.
+       *
+       * This list used to be a shorter, staler version of the hard-coded menu,
+       * which did not matter while nothing read it. Now that the header does,
+       * seeding the old list would quietly delete News and the homebrew comp
+       * from the menu, so the two have to agree: this is DEFAULT_NAV in
+       * apps/web/src/components/Chrome.tsx.
+       */
       mainNav: [
-        { label: 'Venues', url: '/venues' },
+        {
+          label: 'Venues',
+          url: '/venues',
+          children: [
+            { label: 'West Perth', url: '/venues/west-perth' },
+            { label: 'Hillarys', url: '/venues/hillarys' },
+          ],
+        },
         { label: 'Beers', url: '/beers' },
         { label: "What's on", url: '/whats-on' },
-        { label: 'Functions', url: '/functions' },
+        { label: 'News', url: '/news' },
+        {
+          label: 'Functions',
+          url: '/functions',
+          children: [
+            { label: 'West Perth', url: '/functions/west-perth' },
+            { label: 'Hillarys', url: '/functions/hillarys' },
+          ],
+        },
         { label: 'Shop', url: '/shop' },
+        { label: 'Homebrew comp', url: '/homebrew-comp' },
         { label: 'About', url: '/about' },
         { label: 'Contact', url: '/contact' },
       ],
-      // The four the brewery actually uses. Instagram and Facebook came from
-      // the sameAs block; TikTok is only in the rendered footer, so it needed
-      // the page running to find. No Untappd: it has beer pages there but no
-      // brewery page, and a guessed URL is worse than none.
-      instagram: 'https://www.instagram.com/phatbrewclub',
+      // Instagram is not here: the venues run separate accounts, so it is
+      // seeded onto each venue instead. Facebook came from the sameAs block;
+      // TikTok is only in the rendered footer, so it needed the page running to
+      // find. No Untappd: it has beer pages there but no brewery page, and a
+      // guessed URL is worse than none.
       facebook: 'https://www.facebook.com/phatbrewclub',
       tiktok: 'https://www.tiktok.com/@phatbrewclubbrewery',
       youtube: 'https://www.youtube.com/@PhatBrewClub',
-      defaultTitle: 'Phat Brew Club',
+      defaultTitle: 'Phat Brew Club — craft brewery in West Perth and Hillarys',
       defaultDescription:
         'Independent Perth brewery with two venues: Phat HQ in West Perth and The Trophy Room at Hillarys.',
+      // No defaultImage. Every photograph the brewery has supplied so far is
+      // square, and a square image in a 1.91:1 social card gets cropped to a
+      // strip. Left blank, the fallback is the hero video's poster frame, which
+      // is already landscape — so seeding one of theirs would make shared links
+      // worse, not better. The field is there for a proper landscape card.
     },
   })
   console.log('  settings  saved')

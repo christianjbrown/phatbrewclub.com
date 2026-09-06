@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import './globals.css'
 import { LiveChat } from '@/components/LiveChat'
+import { getSettings, mediaSize } from '@/lib/payload'
 
 const SITE = process.env.NEXT_PUBLIC_SITE_URL ?? 'http://localhost:3000'
 
@@ -16,28 +17,52 @@ const SITE = process.env.NEXT_PUBLIC_SITE_URL ?? 'http://localhost:3000'
  */
 export const dynamic = 'force-dynamic'
 
-export const metadata: Metadata = {
-  metadataBase: new URL(SITE),
-  title: {
-    default: 'Phat Brew Club — craft brewery in West Perth and Hillarys',
-    template: '%s | Phat Brew Club',
-  },
-  description:
-    'Independent Perth brewery with two venues: Phat HQ in West Perth and The Trophy Room at Hillarys Boat Harbour. Twenty taps, brewed on site.',
-  openGraph: { type: 'website', locale: 'en_AU', siteName: 'Phat Brew Club' },
-  twitter: { card: 'summary_large_image' },
-  // The brand's own icons, at the sizes each surface actually asks for.
-  icons: {
-    icon: [
-      { url: '/icon-32.png', sizes: '32x32', type: 'image/png' },
-      { url: '/favicon.png', sizes: '64x64', type: 'image/png' },
-      { url: '/icon-192.png', sizes: '192x192', type: 'image/png' },
-      { url: '/icon-512.png', sizes: '512x512', type: 'image/png' },
-    ],
-    apple: [{ url: '/apple-touch-icon.png', sizes: '180x180', type: 'image/png' }],
-  },
-  manifest: '/manifest.webmanifest',
-  appleWebApp: { title: 'Phat Brew Club', statusBarStyle: 'black-translucent' },
+/**
+ * The site-wide title, description and social image come from Site settings.
+ *
+ * They were hard-coded here, which meant the one line the brewery is most
+ * likely to want to change — the sentence Google prints under their name — was
+ * the one line they could not. The values below are the fallback for an empty
+ * CMS, not the source of truth.
+ */
+export async function generateMetadata(): Promise<Metadata> {
+  const settings = await getSettings()
+  const title =
+    settings.defaultTitle?.trim() || 'Phat Brew Club — craft brewery in West Perth and Hillarys'
+  const description =
+    settings.defaultDescription?.trim() ||
+    'Independent Perth brewery with two venues: Phat HQ in West Perth and The Trophy Room at Hillarys Boat Harbour. Twenty taps, brewed on site.'
+  const image = mediaSize(settings.defaultImage, 'hero')
+
+  return {
+    metadataBase: new URL(SITE),
+    title: { default: title, template: '%s | Phat Brew Club' },
+    description,
+    openGraph: {
+      type: 'website',
+      locale: 'en_AU',
+      siteName: 'Phat Brew Club',
+      title,
+      description,
+      ...(image ? { images: [{ url: image, alt: settings.defaultImage?.alt }] } : {}),
+    },
+    twitter: {
+      card: 'summary_large_image',
+      ...(image ? { images: [{ url: image, alt: settings.defaultImage?.alt }] } : {}),
+    },
+    // The brand's own icons, at the sizes each surface actually asks for.
+    icons: {
+      icon: [
+        { url: '/icon-32.png', sizes: '32x32', type: 'image/png' },
+        { url: '/favicon.png', sizes: '64x64', type: 'image/png' },
+        { url: '/icon-192.png', sizes: '192x192', type: 'image/png' },
+        { url: '/icon-512.png', sizes: '512x512', type: 'image/png' },
+      ],
+      apple: [{ url: '/apple-touch-icon.png', sizes: '180x180', type: 'image/png' }],
+    },
+    manifest: '/manifest.webmanifest',
+    appleWebApp: { title: 'Phat Brew Club', statusBarStyle: 'black-translucent' },
+  }
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

@@ -4,11 +4,12 @@ import { pageMeta } from '@/lib/seo'
 import { EventCard } from '@/components/Bits'
 import { getEvents, getVenues } from '@/lib/payload'
 
-export const metadata: Metadata = pageMeta({
-  description:
-    'Events, weekly specials, quiz nights and live music at Phat Brew Club in West Perth and Hillarys.',
-  path: '/whats-on',
-})
+export const generateMetadata = (): Promise<Metadata> =>
+  pageMeta({
+    description:
+      'Events, weekly specials, quiz nights and live music at Phat Brew Club in West Perth and Hillarys.',
+    path: '/whats-on',
+  })
 
 export default async function WhatsOnPage() {
   const [events, venues] = await Promise.all([getEvents(100), getVenues()])
