@@ -1,13 +1,16 @@
 import Link from 'next/link'
 import type { Metadata } from 'next'
 import { Footer, Header } from '@/components/Chrome'
+import { pageMeta } from '@/lib/seo'
 import { getPosts, getVenues, mediaDims, mediaSize, mediaSrcSet } from '@/lib/payload'
 import { formatDate } from '@/lib/time'
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMeta({
   title: 'News',
-  description: 'News and announcements from Phat Brew Club in West Perth and Hillarys.',
-}
+  description:
+    'News and announcements from Phat Brew Club in West Perth and Hillarys.',
+  path: '/news',
+})
 
 export default async function NewsPage() {
   const [posts, venues] = await Promise.all([getPosts(), getVenues()])

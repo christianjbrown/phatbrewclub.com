@@ -1,6 +1,7 @@
 import { notFound } from 'next/navigation'
 import type { Metadata } from 'next'
 import { Footer, Header } from '@/components/Chrome'
+import { ogImage, pageMeta } from '@/lib/seo'
 import { JsonLd, eventSchema } from '@/lib/jsonld'
 import { getEvent, getEvents, getVenues, mediaDims, mediaSize, mediaSrcSet } from '@/lib/payload'
 import { eventTime, eventWeekday, formatDate } from '@/lib/time'
@@ -9,10 +10,13 @@ export const generateMetadata = async ({ params }: { params: Promise<{ slug: str
   const { slug } = await params
   const e = await getEvent(slug)
   if (!e) return {}
-  return {
+  return pageMeta({
     title: e.title,
     description: `${e.title} at Phat Brew Club, ${formatDate(e.startsAt, { dateStyle: 'full' })}.`,
-  }
+    path: `/whats-on/${e.slug}`,
+    image: ogImage(e.heroImage, `${e.title} poster`),
+    type: 'article',
+  })
 }
 
 const RECUR: Record<string, string> = {

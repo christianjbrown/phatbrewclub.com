@@ -1,6 +1,7 @@
 import { notFound } from 'next/navigation'
 import type { Metadata } from 'next'
 import { Footer, Header } from '@/components/Chrome'
+import { ogImage, pageMeta } from '@/lib/seo'
 import { RichText } from '@/components/RichText'
 import { getPost, getVenues, mediaDims, mediaSize, mediaSrcSet } from '@/lib/payload'
 import { formatDate } from '@/lib/time'
@@ -9,7 +10,13 @@ export const generateMetadata = async ({ params }: { params: Promise<{ slug: str
   const { slug } = await params
   const post = await getPost(slug)
   if (!post) return {}
-  return { title: post.title, description: post.excerpt ?? undefined }
+  return pageMeta({
+    title: post.title,
+    description: post.excerpt ?? undefined,
+    path: `/news/${post.slug}`,
+    image: ogImage(post.heroImage, post.title),
+    type: 'article',
+  })
 }
 
 export default async function PostPage({ params }: { params: Promise<{ slug: string }> }) {

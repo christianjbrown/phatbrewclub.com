@@ -1,6 +1,7 @@
 import { notFound } from 'next/navigation'
 import type { Metadata } from 'next'
 import { Footer, Header } from '@/components/Chrome'
+import { ogImage, pageMeta } from '@/lib/seo'
 import { BeerCard, EventCard, OpenBadge, TapRows } from '@/components/Bits'
 import { RichText } from '@/components/RichText'
 import {
@@ -12,10 +13,18 @@ export const generateMetadata = async ({ params }: { params: Promise<{ slug: str
   const { slug } = await params
   const page = await getPage(slug)
   if (!page) return {}
-  return {
+  // A CMS page's own SEO image if set, else the first image in its layout —
+  // usually the hero block, which is the picture the page leads with.
+  // The first image in the page's layout — usually the hero block, which is
+  // the picture the page leads with.
+  const firstImage =
+    (page.layout ?? []).map((b) => ('image' in b ? b.image : null)).find(Boolean) ?? null
+  return pageMeta({
     title: page.seo?.title || page.title,
     description: page.seo?.description || undefined,
-  }
+    path: `/${page.slug}`,
+    image: ogImage(firstImage, page.title),
+  })
 }
 
 const renderBlock = async (block: Block, key: string) => {

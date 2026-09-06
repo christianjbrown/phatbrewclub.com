@@ -2,6 +2,7 @@ import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import type { Metadata } from 'next'
 import { Footer, Header } from '@/components/Chrome'
+import { ogImage, pageMeta } from '@/lib/seo'
 import { VideoEmbed } from '@/components/VideoEmbed'
 import { JsonLd, beerSchema } from '@/lib/jsonld'
 import { Lightbox } from '@/components/Lightbox'
@@ -12,7 +13,12 @@ export const generateMetadata = async ({ params }: { params: Promise<{ slug: str
   const { slug } = await params
   const b = await getBeer(slug)
   if (!b) return {}
-  return { title: b.name, description: `${b.name} — ${b.style}, ${b.abv}% ABV. ${b.description ?? ''}`.trim() }
+  return pageMeta({
+    title: b.name,
+    description: `${b.name} — ${b.style}, ${b.abv}% ABV. ${b.description ?? ''}`.trim(),
+    path: `/beers/${b.slug}`,
+    image: ogImage(b.canArtwork, `${b.name} can artwork`),
+  })
 }
 
 const LABEL: Record<string, string> = {

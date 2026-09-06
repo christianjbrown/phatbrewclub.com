@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import { Footer, Header } from '@/components/Chrome'
+import { ogImage, pageMeta } from '@/lib/seo'
 import { DietaryTags } from '@/components/DietaryTags'
 import { MenuPhoto } from '@/components/MenuPhoto'
 import {
@@ -31,10 +32,12 @@ export async function generateMetadata({ params }: Params): Promise<Metadata> {
   const { slug } = await params
   const venue = await getVenue(slug)
   if (!venue) return {}
-  return {
+  return pageMeta({
     title: `${venue.name} menu`,
     description: `Food and drinks at ${venue.name}, ${venue.address.suburb}.`,
-  }
+    path: `/venues/${venue.slug}/menu`,
+    image: ogImage(venue.heroImage, venue.name),
+  })
 }
 
 export default async function VenueMenuPage({ params }: Params) {

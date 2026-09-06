@@ -6,16 +6,19 @@ import { AmenityIcon } from '@/components/AmenityIcon'
 import { EventCard, HoursTable, OpenBadge, TapRows } from '@/components/Bits'
 import { VenueMap } from '@/components/VenueMap'
 import { JsonLd, faqSchema, tapMenuSchema, venueSchema } from '@/lib/jsonld'
+import { ogImage, pageMeta } from '@/lib/seo'
 import { getEvents, getMenus, getTapList, getVenue, getVenues, mediaSize, mediaSrcSet } from '@/lib/payload'
 
 export const generateMetadata = async ({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> => {
   const { slug } = await params
   const v = await getVenue(slug)
   if (!v) return {}
-  return {
+  return pageMeta({
     title: v.name,
     description: `${v.name}, ${v.address.street}, ${v.address.suburb}. Opening hours, tap list, menus and bookings.`,
-  }
+    path: `/venues/${v.slug}`,
+    image: ogImage(v.heroImage, v.name),
+  })
 }
 
 export default async function VenuePage({ params }: { params: Promise<{ slug: string }> }) {

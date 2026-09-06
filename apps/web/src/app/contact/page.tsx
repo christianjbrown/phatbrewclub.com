@@ -1,12 +1,15 @@
 import type { Metadata } from 'next'
 import { Footer, Header } from '@/components/Chrome'
+import { pageMeta } from '@/lib/seo'
 import { VenueMap } from '@/components/VenueMap'
 import { getVenues } from '@/lib/payload'
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMeta({
   title: 'Contact',
-  description: 'Contact Phat Brew Club: bookings, functions, wholesale and general enquiries.',
-}
+  description:
+    'Contact Phat Brew Club: bookings, functions, wholesale and general enquiries.',
+  path: '/contact',
+})
 
 export default async function ContactPage() {
   const venues = await getVenues()

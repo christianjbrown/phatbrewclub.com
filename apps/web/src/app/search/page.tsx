@@ -1,11 +1,15 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import { Footer, Header } from '@/components/Chrome'
+import { pageMeta } from '@/lib/seo'
 import { getVenues, search } from '@/lib/payload'
 
 export const metadata: Metadata = {
-  title: 'Search',
-  description: 'Search the beers, events, news and pages on the Phat Brew Club site.',
+  ...pageMeta({
+    title: 'Search',
+    description: 'Search the beers, events, news and pages on the Phat Brew Club site.',
+    path: '/search',
+  }),
   // A results page is not something a search engine should index.
   robots: { index: false, follow: true },
 }

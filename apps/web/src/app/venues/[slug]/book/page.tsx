@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import { Footer, Header } from '@/components/Chrome'
+import { ogImage, pageMeta } from '@/lib/seo'
 import { getVenue, getVenues, safeList } from '@/lib/payload'
 
 /**
@@ -27,10 +28,12 @@ export async function generateMetadata({ params }: Params): Promise<Metadata> {
   const { slug } = await params
   const venue = await getVenue(slug)
   if (!venue) return {}
-  return {
+  return pageMeta({
     title: `Book a table at ${venue.shortName}`,
     description: `Reserve a table at ${venue.name}, ${venue.address.suburb}.`,
-  }
+    path: `/venues/${venue.slug}/book`,
+    image: ogImage(venue.heroImage, venue.name),
+  })
 }
 
 export default async function BookPage({ params }: Params) {

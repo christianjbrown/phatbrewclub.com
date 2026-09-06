@@ -1,10 +1,18 @@
+import type { Metadata } from 'next'
 import Link from 'next/link'
 import { Footer, Header } from '@/components/Chrome'
 import { HeroVideo } from '@/components/HeroVideo'
 import { InstagramFeed } from '@/components/InstagramFeed'
 import { BeerCard, EventCard, OpenBadge, TapRows } from '@/components/Bits'
 import { JsonLd, organisationSchema, venueSchema } from '@/lib/jsonld'
+import { pageMeta } from '@/lib/seo'
 import { getBeers, getEvents, getSettings, getTapList, getVenues, mediaDims, mediaSize, mediaSrcSet } from '@/lib/payload'
+
+export const metadata: Metadata = pageMeta({
+  path: '/',
+  description:
+    'Independent Perth brewery with two venues: Phat HQ in West Perth and The Trophy Room at Hillarys Boat Harbour. Twenty taps, brewed on site.',
+})
 
 export default async function Home() {
   const venues = await getVenues()

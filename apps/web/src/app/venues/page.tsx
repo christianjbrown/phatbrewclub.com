@@ -1,15 +1,18 @@
 import Link from 'next/link'
 import type { Metadata } from 'next'
 import { Footer, Header } from '@/components/Chrome'
+import { pageMeta } from '@/lib/seo'
 import { AmenityIcon } from '@/components/AmenityIcon'
 import { OpenBadge } from '@/components/Bits'
 import { JsonLd, venueSchema } from '@/lib/jsonld'
 import { getVenues, mediaSize, mediaSrcSet } from '@/lib/payload'
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMeta({
   title: 'Our venues',
-  description: 'Phat Brew Club has two venues: Phat HQ in West Perth and The Trophy Room at Hillarys Boat Harbour.',
-}
+  description:
+    'Phat Brew Club has two venues: Phat HQ in West Perth and The Trophy Room at Hillarys Boat Harbour.',
+  path: '/venues',
+})
 
 export default async function VenuesPage() {
   const venues = await getVenues()

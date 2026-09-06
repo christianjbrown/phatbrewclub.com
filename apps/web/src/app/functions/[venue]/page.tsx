@@ -2,13 +2,19 @@ import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import type { Metadata } from 'next'
 import { Footer, Header } from '@/components/Chrome'
+import { ogImage, pageMeta } from '@/lib/seo'
 import { getVenue, getVenues, mediaDims, mediaSize, mediaSrcSet, mediaUrl } from '@/lib/payload'
 
 export const generateMetadata = async ({ params }: { params: Promise<{ venue: string }> }): Promise<Metadata> => {
   const { venue } = await params
   const v = await getVenue(venue)
   if (!v) return {}
-  return { title: `Functions at ${v.shortName}`, description: `Private hire and function enquiries at ${v.name}.` }
+  return pageMeta({
+    title: `Functions at ${v.shortName}`,
+    description: `Private hire and function enquiries at ${v.name}.`,
+    path: `/functions/${v.slug}`,
+    image: ogImage(v.heroImage, v.name),
+  })
 }
 
 /**

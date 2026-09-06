@@ -47,7 +47,23 @@ export const Media: CollectionConfig = {
       { name: 'card', width: 800, formatOptions: { format: 'webp', options: { quality: 80 } } },
       { name: 'hero', width: 1600, formatOptions: { format: 'webp', options: { quality: 78 } } },
     ],
-    adminThumbnail: 'thumbnail',
+    /**
+     * Point the admin at the stored file, not at Payload's own file route.
+     *
+     * `disablePayloadAccessControl` makes the storage plugin hand out direct
+     * bucket URLs, which is what keeps public images on GCS with a year-long
+     * cache. The side effect is that /api/media/file/:name is left on Payload's
+     * default handler, which looks for the file on local disk — and in a
+     * container there is no local disk, so every thumbnail in the admin was a
+     * 500 and the media library rendered empty boxes.
+     *
+     * Naming a size here ("thumbnail") makes the admin build that route URL.
+     * Returning the size's own URL sends it to the bucket instead.
+     */
+    adminThumbnail: ({ doc }) => {
+      const sizes = doc?.sizes as Record<string, { url?: string }> | undefined
+      return sizes?.thumbnail?.url ?? sizes?.micro?.url ?? (doc?.url as string) ?? null
+    },
     mimeTypes: ['image/*', 'application/pdf'],
     focalPoint: true,
   },
