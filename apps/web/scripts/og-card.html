@@ -1,0 +1,37 @@
+<!doctype html><meta charset="utf-8">
+<style>
+@font-face{font-family:'Rubik';font-style:normal;font-weight:300 900;
+  src:url('../public/fonts/rubik-latin.woff2') format('woff2')}
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{width:1200px;height:630px;overflow:hidden}
+.card{position:relative;width:1200px;height:630px;display:flex;background:#000;
+  font-family:Rubik,system-ui,sans-serif}
+
+/* No logo in the panel. The mural on their own wall is the mark, and a second
+   copy of the same character 200px away read as a mistake rather than as
+   branding. The panel carries the orange-bar-and-black-type identity from the
+   site header instead. */
+.photo{position:absolute;inset:0 0 0 430px;overflow:hidden}
+.photo img{width:100%;height:100%;object-fit:cover;object-position:52% 44%}
+/* Softens the join so the panel edge does not cut a hard line across the sky. */
+.photo::after{content:'';position:absolute;inset:0;
+  background:linear-gradient(90deg,rgba(0,0,0,.42) 0,rgba(0,0,0,0) 150px)}
+
+.panel{position:relative;z-index:2;width:430px;height:100%;background:#FF6F20;
+  padding:56px 40px 48px 58px;display:flex;flex-direction:column;justify-content:center}
+
+.name{font-weight:900;font-size:72px;line-height:.92;letter-spacing:-.02em;color:#000}
+.rule{width:78px;height:8px;background:#000;margin:26px 0 22px;border-radius:4px}
+.where{font-weight:700;font-size:20px;letter-spacing:.1em;color:#000;
+  text-transform:uppercase;white-space:nowrap}
+.foot{font-weight:500;font-size:17px;line-height:1.45;color:rgba(0,0,0,.6);margin-top:14px}
+</style>
+<div class="card">
+  <div class="photo"><img src="../public/video/hero-poster.jpg" alt=""></div>
+  <div class="panel">
+    <div class="name">Phat<br>Brew<br>Club</div>
+    <div class="rule"></div>
+    <div class="where">West Perth &middot; Hillarys</div>
+    <div class="foot">Independent brewery,<br>Western Australia</div>
+  </div>
+</div>

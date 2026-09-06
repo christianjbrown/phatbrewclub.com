@@ -14,13 +14,18 @@ import { getSettings, mediaSize } from './payload'
  */
 const SITE = (process.env.NEXT_PUBLIC_SITE_URL ?? 'http://localhost:3000').replace(/\/$/, '')
 
-/** The hero video's poster frame. 1280x720, which is close enough to the 1.91:1
- *  cards want that neither Facebook nor Twitter crops anything important.
+/** A made social card: 1200x630, the size Facebook, LinkedIn and Slack all
+ *  crop to, so nothing important is cut off.
  *
- *  Only reached when Site settings has no default image: the CMS one wins, so
- *  the picture on a shared link is a choice somebody made rather than whatever
- *  frame the homepage video happens to start on. */
-const BUILT_IN_FALLBACK = { url: `${SITE}/video/hero-poster-1280.jpg`, width: 1280, height: 720 }
+ *  It was the hero video's poster frame, which is 16:9 and has no words on it —
+ *  a shared link showed a brick wall and nothing saying whose it was. This puts
+ *  the name and both suburbs on the card, in the site's own orange and Rubik,
+ *  over their own building. Built from assets already in the repo; no stock
+ *  imagery and no claim that can go out of date.
+ *
+ *  Still only the fallback: Site settings' default image wins when one is set,
+ *  so the brewery can replace it without a deploy. */
+const BUILT_IN_FALLBACK = { url: `${SITE}/og-default.jpg`, width: 1200, height: 630 }
 
 /** The SEO defaults tab in Site settings, in the shape this file wants. */
 const defaults = async () => {
