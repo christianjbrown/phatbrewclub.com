@@ -33,6 +33,21 @@ export default buildConfig({
       titleSuffix: '— Phat Brew Club',
     },
   },
+  /**
+   * The admin panel is the whole of this service, so it lives at the root.
+   *
+   * This subdomain serves nothing else — the only thing that used to be at /
+   * was a redirect to /admin, which is a round trip to reach the one page
+   * anybody comes here for. Payload's formatAdminURL treats '/' as a special
+   * case and drops it from generated links, so every internal admin URL still
+   * comes out right.
+   *
+   * The App Router folder has to move with it: the import map is resolved from
+   * app/(payload)<adminRoute>, so the route group itself is now where
+   * app/(payload)/admin used to be. Old /admin links are redirected in
+   * next.config.ts rather than left to 404.
+   */
+  routes: { admin: '/' },
   collections: [Venues, Beers, TapLists, Events, Menus, FunctionPackages, Pages, Posts, Merch, Media, Users],
   globals: [Settings],
   editor: lexicalEditor(),

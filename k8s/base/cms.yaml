@@ -44,7 +44,7 @@ spec:
             - secretRef: { name: phatbrew-secrets }
           ports: [{ containerPort: 3000 }]
           readinessProbe:
-            httpGet: { path: /admin/login, port: 3000 }
+            httpGet: { path: /login, port: 3000 }
             initialDelaySeconds: 15
             periodSeconds: 10
             failureThreshold: 12
