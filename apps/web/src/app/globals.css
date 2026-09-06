@@ -219,7 +219,7 @@ footer .news-signup button:hover{filter:brightness(1.08)}
   .hd{gap:18px}
   nav ul{gap:14px}
   nav a{font-size:14px}
-  .hd-search input{width:120px}
+  .hd-panel .hd-search input{width:120px}
   .book{padding:13px 16px;font-size:14px}
 }
 @media(max-width:1100px){
@@ -253,8 +253,12 @@ footer .news-signup button:hover{filter:brightness(1.08)}
   nav a{padding:12px 0;min-height:44px;display:flex;align-items:center;
     border-bottom:1px solid rgba(0,0,0,.14)}
   nav a:hover,nav a:focus,nav a[aria-current=page]{border-bottom-color:#000}
-  .hd-search{margin:12px 0 4px;width:100%}
-  .hd-search input{width:100%}
+  /* Scoped to the panel so it beats the base .hd-search rules, which are
+     declared further down the file and would otherwise win on source order —
+     which is exactly what pinned the search box to 150px inside a full-width
+     menu. */
+  .hd-panel .hd-search{margin:12px 0 4px;width:100%}
+  .hd-panel .hd-search input{width:100%}
 }
 @media(max-width:860px){
   .hero{min-height:420px}
