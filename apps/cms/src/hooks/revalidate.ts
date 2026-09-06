@@ -19,16 +19,43 @@ const ping = async (collection: string): Promise<void> => {
 
   if (!base || !secret) return
 
-  try {
-    const res = await fetch(`${base.replace(/\/$/, '')}/api/revalidate`, {
+  const url = `${base.replace(/\/$/, '')}/api/revalidate`
+  const send = async (timeout: number): Promise<Response> =>
+    fetch(url, {
       method: 'POST',
       headers: { 'content-type': 'application/json', 'x-revalidate-secret': secret },
       body: JSON.stringify({ collection }),
-      // The editor is waiting on this save. Do not let a slow website hold it.
-      signal: AbortSignal.timeout(2000),
+      signal: AbortSignal.timeout(timeout),
     })
 
-    if (!res.ok) console.warn(`revalidate ${collection}: ${res.status}`)
+  /**
+   * Two attempts, because the website scales to zero.
+   *
+   * A single 2-second budget looked like a kindness to whoever was waiting on
+   * the save, and was actually a bug: a cold front end takes about 3.6 seconds
+   * to answer, so the very first revalidation after any quiet period always
+   * timed out — which is precisely when the cache most needed clearing. It
+   * showed up in the hourly sync's logs as "operation was aborted due to
+   * timeout", every time the site had been idle.
+   *
+   * The first attempt is short because a warm instance answers in under half a
+   * second, and that is the common case. When it does time out, that request
+   * has already started the container, so the second attempt lands on an
+   * instance that is on its way up rather than paying the cold start again.
+   * Worst case is a little over six seconds, and only when nobody has visited
+   * the site recently.
+   */
+  try {
+    const first = await send(2000)
+    if (!first.ok) console.warn(`revalidate ${collection}: ${first.status}`)
+    return
+  } catch {
+    // Fall through to the retry.
+  }
+
+  try {
+    const second = await send(4000)
+    if (!second.ok) console.warn(`revalidate ${collection}: ${second.status} on retry`)
   } catch (err) {
     console.warn(`revalidate ${collection}:`, err instanceof Error ? err.message : err)
   }
