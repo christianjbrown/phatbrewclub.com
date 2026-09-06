@@ -29,36 +29,46 @@ async function api<T>(path: string, query: Query = {}, tags: string[] = []): Pro
   const res = await fetch(url, { next: { revalidate: TTL, tags } })
 
   // A 404 is a real answer for a by-slug lookup — the page does not exist —
-  // rather than a failure, so it is left to the caller to turn into null.
+  // rather than a failure, so it becomes null rather than an error.
   if (!res.ok && res.status !== 404) throw new Error(`WP ${res.status} for ${path}`)
 
   return (res.status === 404 ? null : await res.json()) as T
 }
 
-export const getVenues = () => api<Venue[]>('venues', {}, ['venues'])
+/**
+ * A list endpoint that 404s has no items; it does not have null items.
+ *
+ * Without this the first deploy rendered a 500 on every page: WordPress
+ * installs with plain permalinks so /wp-json did not resolve, every list came
+ * back null, and the homepage called .find on it. A missing collection should
+ * degrade to an empty page, the way the Payload adapter's safeList does.
+ */
+const list = async <T>(p: Promise<T[] | null>): Promise<T[]> => (await p) ?? []
+
+export const getVenues = () => list(api<Venue[] | null>('venues', {}, ['venues']))
 export const getVenue = (slug: string) => api<Venue | null>(`venues/${slug}`, {}, ['venues'])
 
-export const getBeers = (category?: string) => api<Beer[]>('beers', { category }, ['beers'])
+export const getBeers = (category?: string) => list(api<Beer[] | null>('beers', { category }, ['beers']))
 export const getBeer = (slug: string) => api<Beer | null>(`beers/${slug}`, {}, ['beers'])
 
 export const getTapList = (venueId: number | string) =>
   api<TapList | null>('tap-list', { venue: String(venueId) }, ['tap-lists'])
 
-export const getEvents = (limit = 50) => api<PhatEvent[]>('events', { limit }, ['events'])
+export const getEvents = (limit = 50) => list(api<PhatEvent[] | null>('events', { limit }, ['events']))
 export const getEvent = (slug: string) => api<PhatEvent | null>(`events/${slug}`, {}, ['events'])
 
 export const getPage = (slug: string) => api<Page | null>(`pages/${slug}`, {}, ['pages'])
 
-export const getPosts = () => api<Post[]>('posts', {}, ['posts'])
+export const getPosts = () => list(api<Post[] | null>('posts', {}, ['posts']))
 export const getPost = (slug: string) => api<Post | null>(`posts/${slug}`, {}, ['posts'])
 
 export const getMenus = (venueId: number | string) =>
-  api<Menu[]>('menus', { venue: String(venueId) }, ['menus'])
+  list(api<Menu[] | null>('menus', { venue: String(venueId) }, ['menus']))
 
-export const getMerch = () => api<Merch[]>('merch', {}, ['merch'])
+export const getMerch = () => list(api<Merch[] | null>('merch', {}, ['merch']))
 
 export const getFunctionPackages = (venueId: number | string) =>
-  api<FunctionPackage[]>('function-packages', { venue: String(venueId) }, ['function-packages'])
+  list(api<FunctionPackage[] | null>('function-packages', { venue: String(venueId) }, ['function-packages']))
 
 /**
  * Failing soft, exactly as the Payload adapter does: the footer's social links
@@ -77,7 +87,7 @@ export const search = async (q: string): Promise<SearchHit[]> => {
   if (term.length < 2) return []
 
   try {
-    return await api<SearchHit[]>('search', { q: term }, ['beers', 'events', 'posts', 'pages'])
+    return (await api<SearchHit[] | null>('search', { q: term }, ['beers', 'events', 'posts', 'pages'])) ?? []
   } catch {
     return []
   }
