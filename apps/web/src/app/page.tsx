@@ -16,7 +16,15 @@ export const generateMetadata = (): Promise<Metadata> =>
 
 export default async function Home() {
   const venues = await getVenues()
-  const [beers, events, settings] = await Promise.all([getBeers('core'), getEvents(20), getSettings()])
+  // The whole range as well as the core four, because the button below the
+  // grid names a number. It used to say "All 18 beers" as a literal, which was
+  // right on the day it was written and wrong the moment a beer was added.
+  const [beers, allBeers, events, settings] = await Promise.all([
+    getBeers('core'),
+    getBeers(),
+    getEvents(20),
+    getSettings(),
+  ])
   const wp = venues.find((v) => v.slug === 'west-perth')
   const tapList = wp ? await getTapList(wp.id) : null
   const hero = mediaSize(venues.find((v) => v.slug === 'hillarys')?.heroImage, 'hero')
@@ -136,7 +144,7 @@ export default async function Home() {
               {beers.slice(0, 4).map((b) => <BeerCard beer={b} key={b.id} />)}
             </div>
             <p style={{ marginTop: 24 }}>
-              <Link className="btn btn-o" href="/beers">All 18 beers</Link>
+              <Link className="btn btn-o" href="/beers">All {allBeers.length} beers</Link>
             </p>
           </div>
         </section>

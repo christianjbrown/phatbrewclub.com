@@ -25,7 +25,11 @@ export default async function VenuesPage() {
         <section>
           <div className="wrap">
             <h1>Two venues, one club</h1>
-            <p className="lede">Both brewing, both pouring, both open seven days.</p>
+            {/* No claim about trading days here. It said "both open seven
+                days", which the opening hours in the CMS can contradict the
+                moment either venue takes a day off, and the hours are printed
+                further down the same page. */}
+            <p className="lede">Both brewing, both pouring.</p>
             {venues.map((v) => {
               // The image column is roughly 1/2.4 of the container, about
               // 470px, so 'small' at 2x is the honest rung and the srcset lets
