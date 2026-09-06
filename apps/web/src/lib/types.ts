@@ -164,6 +164,19 @@ export type Merch = {
   images?: Media[] | null
 }
 
+export type FunctionPackage = {
+  id: number | string
+  name: string
+  slug: string
+  capacity?: number | null
+  seating?: 'standing' | 'seated' | 'mixed' | null
+  priceGuide?: string | null
+  image?: Media | null
+  description?: unknown
+  inclusions?: { item: string }[] | null
+  brochure?: { url?: string } | null
+}
+
 export type NavLink = {
   label: string
   url: string

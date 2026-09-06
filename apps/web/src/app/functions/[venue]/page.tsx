@@ -3,7 +3,8 @@ import { notFound } from 'next/navigation'
 import type { Metadata } from 'next'
 import { Footer, Header } from '@/components/Chrome'
 import { ogImage, pageMeta } from '@/lib/seo'
-import { getVenue, getVenues, mediaDims, mediaSize, mediaSrcSet, mediaUrl } from '@/lib/payload'
+import { getFunctionPackages, getVenue, getVenues, mediaDims, mediaSize, mediaSrcSet, mediaUrl } from '@/lib/payload'
+import { RichText } from '@/components/RichText'
 
 export const generateMetadata = async ({ params }: { params: Promise<{ venue: string }> }): Promise<Metadata> => {
   const { venue } = await params
@@ -28,12 +29,18 @@ export const generateMetadata = async ({ params }: { params: Promise<{ venue: st
  *
  * So: the brochure where there is one, an enquiry form, and nothing invented.
  * The form is a mechanism rather than a claim, which is why it stays.
+ *
+ * The Function spaces collection now feeds this page. It always could have —
+ * it has name, capacity, seating, a price guide, a photograph and inclusions —
+ * but nothing read it, so anything typed in there went nowhere. It stays empty
+ * until the brewery fills it in, and an empty list renders nothing rather than
+ * a placeholder, which is the same rule as before: their words or none.
  */
 export default async function FunctionsPage({ params }: { params: Promise<{ venue: string }> }) {
   const { venue: slug } = await params
   const venue = await getVenue(slug)
   if (!venue) notFound()
-  const venues = await getVenues()
+  const [venues, packages] = await Promise.all([getVenues(), getFunctionPackages(venue.id)])
   const hero = mediaSize(venue.heroImage, 'card')
   const heroDims = mediaDims(venue.heroImage, 'card')
   const pack = mediaUrl(venue.functionsPack)
@@ -79,7 +86,7 @@ export default async function FunctionsPage({ params }: { params: Promise<{ venu
                       Download the functions pack
                     </a>
                   </p>
-                ) : (
+                ) : packages.length ? null : (
                   <p className="note" style={{ marginTop: 18 }}>
                     Function details for {venue.shortName} are coming soon. Send an enquiry and the
                     team will come back to you.
@@ -104,6 +111,63 @@ export default async function FunctionsPage({ params }: { params: Promise<{ venu
                 </div>
               </div>
             </div>
+
+            {packages.length ? (
+              <div style={{ marginTop: 40 }}>
+                <h2>Spaces at {venue.shortName}</h2>
+                <div className="grid g2">
+                  {packages.map((pkg) => {
+                    const img = mediaSize(pkg.image, 'small')
+                    const dims = mediaDims(pkg.image, 'small')
+                    const brochure = mediaUrl(pkg.brochure)
+                    /* Capacity, seating and the price guide are optional in the
+                       CMS, so the line is built from whichever were filled in
+                       rather than printed with gaps. */
+                    const specs = [
+                      pkg.capacity ? `Up to ${pkg.capacity}` : null,
+                      pkg.seating,
+                      pkg.priceGuide,
+                    ].filter(Boolean)
+                    return (
+                      <div className="card" key={pkg.id}>
+                        {img ? (
+                          // eslint-disable-next-line @next/next/no-img-element
+                          <img
+                            src={img}
+                            srcSet={mediaSrcSet(pkg.image, ['thumbnail', 'small', 'card'])}
+                            sizes="(min-width: 900px) 520px, 100vw"
+                            alt={pkg.image?.alt ?? pkg.name}
+                            loading="lazy"
+                            width={dims?.width}
+                            height={dims?.height}
+                            style={{ width: '100%', height: 'auto' }}
+                          />
+                        ) : null}
+                        <div className="pad">
+                          <h3 style={{ margin: '0 0 8px' }}>{pkg.name}</h3>
+                          {specs.length ? <p className="note">{specs.join(' · ')}</p> : null}
+                          <RichText value={pkg.description} />
+                          {pkg.inclusions?.length ? (
+                            <ul>
+                              {pkg.inclusions.map((i) => (
+                                <li key={i.item}>{i.item}</li>
+                              ))}
+                            </ul>
+                          ) : null}
+                          {brochure ? (
+                            <p>
+                              <a href={brochure} target="_blank" rel="noopener noreferrer">
+                                Download the {pkg.name} pack
+                              </a>
+                            </p>
+                          ) : null}
+                        </div>
+                      </div>
+                    )
+                  })}
+                </div>
+              </div>
+            ) : null}
           </div>
         </section>
       </main>

@@ -1,4 +1,4 @@
-import type { Beer, Menu, Merch, Page, Paginated, PhatEvent, Post, TapList, Venue, Settings } from './types'
+import type { Beer, FunctionPackage, Menu, Merch, Page, Paginated, PhatEvent, Post, TapList, Venue, Settings } from './types'
 
 /**
  * Two different addresses for the same service, deliberately.
@@ -106,6 +106,21 @@ export const getSettings = async (): Promise<Settings> => {
     return {}
   }
 }
+
+/**
+ * The function spaces for one venue.
+ *
+ * The collection has existed since the start and nothing read it, so anything
+ * entered here went nowhere — the same trap as the settings fields that edited
+ * nothing. Empty is the honest default: the brewery publishes no space or price
+ * detail today, so the page says so until they put some in here.
+ */
+export const getFunctionPackages = (venueId: number | string) =>
+  api<Paginated<FunctionPackage>>(
+    'function-packages',
+    { depth: 1, limit: 20, sort: 'name', 'where[venue][equals]': String(venueId) },
+    ['function-packages'],
+  ).then((r) => r.docs)
 
 export const getMerch = () =>
   api<Paginated<Merch>>('merch', { depth: 1, limit: 50, sort: 'title' }, ['merch']).then((r) => r.docs)
