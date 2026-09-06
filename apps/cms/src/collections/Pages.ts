@@ -1,6 +1,7 @@
 import type { Block, CollectionConfig } from 'payload'
 import { canManage, publishedOrSignedIn } from '../access'
 import { seo, slugField } from '../fields/openingHours'
+import { revalidateCollection } from '../hooks/revalidate'
 
 const Hero: Block = {
   slug: 'hero',
@@ -144,6 +145,7 @@ const Quote: Block = {
 
 export const Pages: CollectionConfig = {
   slug: 'pages',
+  hooks: revalidateCollection('pages'),
   labels: { singular: 'Page', plural: 'Pages' },
   admin: {
     useAsTitle: 'title',

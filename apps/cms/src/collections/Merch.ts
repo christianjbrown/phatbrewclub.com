@@ -1,6 +1,7 @@
 import type { CollectionConfig } from 'payload'
 import { canManage, publishedOrSignedIn } from '../access'
 import { slugField } from '../fields/openingHours'
+import { revalidateCollection } from '../hooks/revalidate'
 
 /**
  * Merchandise, kept apart from beer.
@@ -14,6 +15,7 @@ import { slugField } from '../fields/openingHours'
  */
 export const Merch: CollectionConfig = {
   slug: 'merch',
+  hooks: revalidateCollection('merch'),
   labels: { singular: 'Merch item', plural: 'Merch' },
   admin: {
     useAsTitle: 'title',

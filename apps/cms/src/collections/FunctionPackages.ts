@@ -1,9 +1,11 @@
 import type { CollectionConfig } from 'payload'
 import { canManage, publishedOrSignedIn } from '../access'
 import { slugField } from '../fields/openingHours'
+import { revalidateCollection } from '../hooks/revalidate'
 
 export const FunctionPackages: CollectionConfig = {
   slug: 'function-packages',
+  hooks: revalidateCollection('function-packages'),
   labels: { singular: 'Function space', plural: 'Function spaces' },
   admin: {
     useAsTitle: 'name',

@@ -1,5 +1,6 @@
 import type { CollectionConfig } from 'payload'
 import { anyone, canManageOperational } from '../access'
+import { revalidateCollection } from '../hooks/revalidate'
 
 /**
  * What is actually pouring, right now, per venue. Staff can edit this even
@@ -7,6 +8,7 @@ import { anyone, canManageOperational } from '../access'
  */
 export const TapLists: CollectionConfig = {
   slug: 'tap-lists',
+  hooks: revalidateCollection('tap-lists'),
   labels: { singular: 'Tap list', plural: 'Tap lists' },
   admin: {
     useAsTitle: 'title',

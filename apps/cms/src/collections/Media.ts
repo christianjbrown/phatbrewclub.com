@@ -1,11 +1,12 @@
 import type { CollectionConfig } from 'payload'
 import { anyone, canManageOperational } from '../access'
 import { setCacheControl } from '../hooks/cacheControl'
+import { revalidateMedia } from '../hooks/revalidate'
 
 export const Media: CollectionConfig = {
   slug: 'media',
   admin: { group: 'Content' },
-  hooks: { afterChange: [setCacheControl] },
+  hooks: { afterChange: [setCacheControl, revalidateMedia] },
   access: { read: anyone, create: canManageOperational, update: canManageOperational, delete: canManageOperational },
   upload: {
     /**

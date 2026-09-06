@@ -1,5 +1,6 @@
 import type { GlobalConfig } from 'payload'
 import { anyone, canManage } from '../access'
+import { revalidateGlobal } from '../hooks/revalidate'
 
 /**
  * Everything here is read by the website.
@@ -14,6 +15,7 @@ import { anyone, canManage } from '../access'
 export const Settings: GlobalConfig = {
   slug: 'settings',
   label: 'Site settings',
+  hooks: { afterChange: [revalidateGlobal('settings')] },
   admin: { group: 'Settings' },
   access: { read: anyone, update: canManage },
   fields: [

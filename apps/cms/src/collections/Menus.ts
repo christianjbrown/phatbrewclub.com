@@ -1,5 +1,6 @@
 import type { CollectionConfig } from 'payload'
 import { anyone, isAdmin } from '../access'
+import { revalidateCollection } from '../hooks/revalidate'
 
 /**
  * Mirrored from me&u so menus are on the site and indexable, while staff
@@ -8,6 +9,7 @@ import { anyone, isAdmin } from '../access'
  */
 export const Menus: CollectionConfig = {
   slug: 'menus',
+  hooks: revalidateCollection('menus'),
   labels: { singular: 'Menu', plural: 'Menus' },
   admin: {
     useAsTitle: 'name',

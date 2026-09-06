@@ -1,6 +1,7 @@
 import type { CollectionConfig } from 'payload'
 import { canManageOperational, publishedOrSignedIn } from '../access'
 import { seo, slugField } from '../fields/openingHours'
+import { revalidateCollection } from '../hooks/revalidate'
 
 /**
  * Real start and end dates are the whole point: they are what let past
@@ -8,6 +9,7 @@ import { seo, slugField } from '../fields/openingHours'
  */
 export const Events: CollectionConfig = {
   slug: 'events',
+  hooks: revalidateCollection('events'),
   labels: { singular: 'Event', plural: 'Events' },
   admin: {
     useAsTitle: 'title',

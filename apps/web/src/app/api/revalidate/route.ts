@@ -1,11 +1,31 @@
 import { revalidateTag } from 'next/cache'
 import { NextResponse } from 'next/server'
 
-const TAGS = ['venues', 'beers', 'tap-lists', 'events', 'menus', 'pages'] as const
+/**
+ * Every tag lib/payload.ts attaches to a read, so a publish can clear the one
+ * it affects.
+ *
+ * Four were missing — posts, merch, function-packages and settings — which
+ * meant publishing a news post or changing a social link did not match any
+ * known tag and fell through to "clear everything". Harmless while nothing
+ * called this endpoint, and wasteful the moment something does.
+ */
+const TAGS = [
+  'venues',
+  'beers',
+  'tap-lists',
+  'events',
+  'menus',
+  'pages',
+  'posts',
+  'merch',
+  'function-packages',
+  'settings',
+] as const
 
 /**
- * Called by Payload after a publish so the static pages refresh immediately
- * rather than waiting out the revalidate window.
+ * Called by the CMS after a publish so pages refresh immediately rather than
+ * waiting out the 300-second revalidate window.
  */
 export async function POST(req: Request) {
   const secret = req.headers.get('x-revalidate-secret')

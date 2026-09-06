@@ -1,9 +1,11 @@
 import type { CollectionConfig } from 'payload'
 import { canManage, publishedOrSignedIn } from '../access'
 import { seo, slugField } from '../fields/openingHours'
+import { revalidateCollection } from '../hooks/revalidate'
 
 export const Beers: CollectionConfig = {
   slug: 'beers',
+  hooks: revalidateCollection('beers'),
   labels: { singular: 'Beer', plural: 'Beers' },
   admin: {
     useAsTitle: 'name',
