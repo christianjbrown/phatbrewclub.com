@@ -50,6 +50,39 @@ Lesson for any future audit here: scroll and extract the whole page before
 concluding something is absent. `innerText` on a partially-rendered
 JavaScript page is not evidence of absence.
 
+### Two more, found later
+
+The same mistake was made twice more when summarising what the rebuild
+improved, and both were caught by the client rather than by us.
+
+| Claimed | Actually |
+|---|---|
+| "The brewery couldn't change much themselves" | The old site is Square Online, a full site builder. They could edit everything on it. On editability the rebuild is currently **behind**, not ahead — see the list of things the CMS cannot reach |
+| "Photos had no descriptions" | 62 of the 63 images on their rendered homepage carry real alt text, one is `alt=""` and none is missing the attribute |
+
+The caching claim was overstated too. The HTML is served `cache-control:
+no-cache, private`, so a browser will not reuse it, but `cdn-cache-control:
+public, max-age=30` means Cloudflare does cache it briefly. "Nothing was
+cached" was wrong; "the page itself is not cached in the browser" is right.
+
+### What does hold up, measured rather than asserted
+
+Run against both homepages with axe-core 4.10.2, WCAG 2 A and AA:
+
+| | Old | New |
+|---|---|---|
+| Violations | 6 | 0 |
+| Critical | 1 — `meta-viewport`, pinch-zoom disabled | 0 |
+| Serious | 5 — frame titles, colour contrast, unlabelled links, list structure, `lang` | 0 |
+
+Plus the directly measured figures above: CLS 0.539 to 0.000, 227 requests to
+34, 2.34 MB to 0.57 MB.
+
+**The standing rule: do not describe a shortcoming of the old site without
+having just measured it.** Five claims about it have now been wrong, every one
+of them an assertion from a code comment or a memory rather than a check
+against the live page, which is still up and takes a minute to test.
+
 ## Timezone: resolved
 
 Payload stores dates as UTC and the business is in Perth (AWST, UTC+8, no DST).
