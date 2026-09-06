@@ -49,7 +49,11 @@ export default async function BeerPage({ params }: { params: Promise<{ slug: str
         <JsonLd data={beerSchema(beer)} />
         <section>
           <div className="wrap">
-            <div className="grid" style={{ gridTemplateColumns: 'minmax(0,320px) minmax(0,1fr)', gap: 44 }}>
+            {/* A class rather than an inline style, because the columns have to
+                collapse on a phone and a media query cannot reach a style
+                attribute. As an inline rule this laid a 320px column beside the
+                text on a 327px screen and the whole page scrolled sideways. */}
+            <div className="beer-detail">
               {art ? (
                 // eslint-disable-next-line @next/next/no-img-element
                 <img

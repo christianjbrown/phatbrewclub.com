@@ -59,7 +59,15 @@ header{background:var(--orange);position:sticky;top:0;z-index:50;overflow:visibl
 nav ul{display:flex;gap:22px;list-style:none;margin:0;padding:0}
 nav a{color:#000;font:500 15px Rubik;padding:10px 2px;display:block;border-bottom:2px solid transparent}
 nav a:hover,nav a:focus,nav a[aria-current=page]{border-bottom-color:#000}
-.book{margin-left:auto;background:#000;color:var(--orange);font:700 15px Rubik;padding:13px 22px;border-radius:8px;min-height:44px;display:inline-flex;align-items:center}
+/* The wrapper the mobile menu collapses. Above the breakpoint it is not a box
+   at all, so nav and the search form remain direct flex children of .hd and the
+   desktop header is laid out exactly as it was. */
+.hd-panel{display:contents}
+/* Hidden above the breakpoint. The checkbox is only display:none here — on
+   mobile it goes back to being an off-screen but focusable control, because a
+   display:none input can be clicked through its label but never tabbed to. */
+.nav-toggle,.burger{display:none}
+.book{margin-left:12px;background:#000;color:var(--orange);font:700 15px Rubik;padding:13px 22px;border-radius:8px;min-height:44px;display:inline-flex;align-items:center}
 .book:hover{background:#1a1a1a}
 
 h1{font:800 clamp(34px,5.5vw,60px)/1.03 Rubik;letter-spacing:-.025em;margin:0 0 18px}
@@ -99,7 +107,17 @@ section{padding:56px 0;border-top:1px solid #171717}
 .card img{width:100%;height:auto;display:block}
 
 .beer img{aspect-ratio:4/5;object-fit:contain;background:#0a0a0a;padding:14px}
-.spec{display:flex;gap:8px;margin-top:12px}
+/* Beer detail: can artwork beside the copy, stacked on a phone. */
+.beer-detail{display:grid;grid-template-columns:minmax(0,320px) minmax(0,1fr);gap:44px}
+@media(max-width:860px){
+  .beer-detail{grid-template-columns:1fr;gap:22px}
+  .beer-detail>img{max-width:280px}
+}
+/* Venue cards on the index: photograph beside the detail, stacked on a phone.
+   Two columns at 327px gave the picture 136px and the text 191px. */
+.venue-row{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.4fr)}
+@media(max-width:700px){.venue-row{grid-template-columns:1fr}}
+.spec{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
 .spec div{flex:1;background:#1d1d1d;border-radius:8px;padding:9px 6px;text-align:center}
 .spec b{display:block;font:800 17px Rubik;color:var(--orange)}
 .spec span{font:500 11px Rubik;color:#999;letter-spacing:.05em}
@@ -119,6 +137,22 @@ table.hours{width:100%;border-collapse:collapse;max-width:380px}
 .tap.out strong{color:#8f8f8f;font-weight:500}
 .tap.out .st,.tap.out .ab{color:#8f8f8f}
 .tap.out .tapn{background:#4a4a4a;color:#e0e0e0}
+/* The tap list is five columns — number, name, style, ABV, price — which is
+   fine at 760px and not at 327. Squeezed onto one line the style column was
+   given 16px for 80px of text, so every beer's style was clipped to nothing.
+   Two rows on a phone, with the style and ABV indented under the name. */
+@media(max-width:700px){
+  .tap{display:grid;grid-template-columns:30px minmax(0,1fr) auto;
+    grid-template-areas:'num name price' '. style abv';gap:2px 12px;align-items:center}
+  .tapn{grid-area:num}
+  .tap-name{grid-area:name}
+  .tap .ab{grid-area:price;min-width:0}
+  .tap .st{grid-area:style}
+  .tap .abv{grid-area:abv;margin-left:0}
+  /* The beer name is the target, and at 21px it was under even the 24px
+     minimum. Padding the link rather than the row keeps the list compact. */
+  .tap-name a{display:inline-block;padding:6px 0}
+}
 
 .ev{display:flex;gap:20px;align-items:center;padding:18px;background:var(--card);border:1px solid var(--line);border-radius:14px}
 .dt{background:var(--orange);color:#000;border-radius:10px;width:66px;padding:10px 0;text-align:center;flex-shrink:0}
@@ -168,15 +202,39 @@ footer .news-signup button:hover{filter:brightness(1.08)}
 .note b{color:var(--orange)}
 
 @media(max-width:860px){
-  .hd{flex-wrap:wrap;gap:14px;padding-top:12px;padding-bottom:12px}
-  /* The nav wraps to its own row here, so a full-size overhang would
-     cover it. Smaller mark, still overhanging. */
-  .hd .brand{width:88px;height:52px}
-  .hd .brand picture{top:-4px}
-  .hd .brand img{width:88px;height:88px}
-  nav{order:3;width:100%;overflow-x:auto}
-  nav ul{gap:18px}
-  .book{margin-left:0}
+  .hd{flex-wrap:wrap;gap:10px;padding-top:8px;padding-bottom:8px}
+  /* Smaller mark, still overhanging the bar. */
+  .hd .brand{width:76px;height:46px}
+  .hd .brand picture{top:-3px}
+  .hd .brand img{width:76px;height:76px}
+  .book{margin-left:auto;padding:11px 16px;font-size:14px}
+
+  /* The burger. 44px square because that is the smallest target a thumb hits
+     reliably, and it is the control the whole menu hangs off. */
+  .burger{display:flex;flex-direction:column;justify-content:center;gap:5px;
+    width:44px;height:44px;padding:0 9px;border-radius:9px;background:rgba(0,0,0,.14);
+    cursor:pointer;flex:0 0 auto}
+  .burger span{display:block;height:2px;background:#000;border-radius:2px}
+  .burger:hover{background:rgba(0,0,0,.24)}
+  /* The input is off-screen, so the focus ring has to be drawn on the burger
+     or a keyboard user cannot see where they are. */
+  .nav-toggle{display:block}
+  .nav-toggle:focus-visible ~ .burger{outline:2px solid #000;outline-offset:2px}
+
+  /* Collapsed by default; the checkbox opens it. */
+  .hd-panel{display:none;order:9;width:100%}
+  .nav-toggle:checked ~ .hd-panel{display:block}
+  .burger{order:8}
+
+  /* A list down the page rather than a row that scrolls sideways. Every link is
+     full width and 44px tall, so the whole row is the target. */
+  nav ul{flex-direction:column;gap:0;align-items:stretch}
+  nav a{padding:12px 0;min-height:44px;display:flex;align-items:center;
+    border-bottom:1px solid rgba(0,0,0,.14)}
+  nav a:hover,nav a:focus,nav a[aria-current=page]{border-bottom-color:#000}
+  .hd-search{margin:12px 0 4px;width:100%}
+  .hd-search input{width:100%}
+
   .hero{min-height:420px}
   section{padding:40px 0}
 }
@@ -190,7 +248,8 @@ footer .news-signup button:hover{filter:brightness(1.08)}
 .has-sub:hover>.sub,.has-sub:focus-within>.sub{display:block}
 @media(max-width:860px){
   .sub{position:static;display:block;box-shadow:none;border-top:0;padding:0;min-width:0;background:transparent}
-  .sub a{padding:10px 0 10px 16px;font-size:14px;opacity:.85}
+  .sub a{padding:11px 0 11px 18px;font-size:14px;opacity:.85;min-height:44px;
+    border-bottom:1px solid rgba(0,0,0,.14)}
   .caret{display:none}
 }
 .hero-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0}
@@ -304,7 +363,6 @@ a.card-link:focus-visible{outline:3px solid var(--orange);outline-offset:2px}
 .hd-search input{width:150px;background:rgba(0,0,0,.16);border:1px solid rgba(0,0,0,.28);color:#111;border-radius:8px;padding:10px 12px;font:500 14px Rubik;min-height:40px}
 .hd-search input::placeholder{color:rgba(0,0,0,.55)}
 .hd-search input:focus-visible{outline:2px solid #000;outline-offset:1px;background:#fff}
-.hd-search + .book{margin-left:12px}
 @media(max-width:860px){
   .hd-search{margin-left:0;order:2;flex:1 1 140px}
   .hd-search input{width:100%}

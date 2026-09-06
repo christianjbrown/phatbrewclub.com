@@ -76,6 +76,22 @@ export const Header = async ({ current }: { current?: string }) => {
   <header>
     <Announcement settings={settings} />
     <div className="hd">
+      {/*
+        The mobile menu is a checkbox, not a script.
+        
+        Below 860px the nav and the search box move into a panel this toggles,
+        because inline they made the header 218px tall — a quarter of a phone
+        screen, on every page, and sticky, so it stayed there. The nav itself
+        was a horizontal scroller that cut off the last three links.
+        
+        A checkbox rather than a client component keeps the header a server
+        component and keeps the menu working before, or without, JavaScript —
+        the same reason the search box is a plain GET form. The input is the
+        focusable control and carries the label; the burger beside it is what
+        gets drawn, and the desktop layout is untouched because both are
+        display:none above the breakpoint.
+      */}
+      <input className="nav-toggle sr-only" type="checkbox" id="nav-open" aria-label="Show menu" />
       <Link className="brand" href="/" aria-label="Phat Brew Club home">
         {/* eslint-disable-next-line @next/next/no-img-element */}
         {/* 240px source for a 120px slot, so it stays sharp on dense screens.
@@ -86,6 +102,7 @@ export const Header = async ({ current }: { current?: string }) => {
           <img src="/logo.png" alt="Phat Brew Club" width={120} height={120} />
         </picture>
       </Link>
+      <div className="hd-panel">
       <nav aria-label="Main">
         <ul>
           {nav.map(({ label, url, children }) =>
@@ -115,7 +132,13 @@ export const Header = async ({ current }: { current?: string }) => {
         <label className="sr-only" htmlFor="hd-q">Search</label>
         <input id="hd-q" name="q" type="search" placeholder="Search" autoComplete="off" />
       </form>
+      </div>
       <Link className="book" href="/venues">{bookingLabel}</Link>
+      <label className="burger" htmlFor="nav-open">
+        <span aria-hidden="true" />
+        <span aria-hidden="true" />
+        <span aria-hidden="true" />
+      </label>
     </div>
   </header>
   )

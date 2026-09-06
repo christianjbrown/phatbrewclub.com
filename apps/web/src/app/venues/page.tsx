@@ -37,7 +37,9 @@ export default async function VenuesPage() {
               const img = mediaSize(v.heroImage, 'small')
               return (
                 <article className="card" style={{ marginBottom: 22 }} key={v.id}>
-                  <div className="grid" style={{ gridTemplateColumns: 'minmax(0,1fr) minmax(0,1.4fr)', gap: 0 }}>
+                  {/* Same reason as the beer page: it has to stack on a phone,
+                      and an inline style cannot be overridden by a media query. */}
+                  <div className="venue-row">
                     {img ? (
                       // eslint-disable-next-line @next/next/no-img-element
                       <img
