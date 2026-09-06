@@ -1,19 +1,20 @@
 import React from 'react'
-import './styles.css'
 
+/**
+ * Wraps the CMS root, which does nothing but redirect to /admin. The scaffold
+ * version carried Payload's own stylesheet and the metadata title "Payload
+ * Blank Template", which is what the browser tab said on a live domain.
+ */
 export const metadata = {
-  description: 'A blank template using Payload in a Next.js app.',
-  title: 'Payload Blank Template',
+  title: 'Phat Brew Club CMS',
+  description: 'Content management for phatbrewclub.com.',
+  robots: { index: false, follow: false },
 }
 
-export default async function RootLayout(props: { children: React.ReactNode }) {
-  const { children } = props
-
+export default async function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
-      <body>
-        <main>{children}</main>
-      </body>
+      <body>{children}</body>
     </html>
   )
 }

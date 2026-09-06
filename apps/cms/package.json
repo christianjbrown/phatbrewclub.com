@@ -4,7 +4,7 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "build": "cross-env NODE_OPTIONS=\"--no-deprecation --max-old-space-size=4000\" next build",
+    "build": "cross-env NODE_OPTIONS=\"--no-deprecation --max-old-space-size=4000\" next build --webpack",
     "dev": "cross-env NODE_OPTIONS=--no-deprecation next dev -p 3011",
     "devsafe": "rm -rf .next && cross-env NODE_OPTIONS=--no-deprecation next dev -p 3011",
     "start": "cross-env NODE_OPTIONS=--no-deprecation next start -p 3011",
