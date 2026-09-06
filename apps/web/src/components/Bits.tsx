@@ -1,6 +1,6 @@
 import Link from 'next/link'
 import type { Beer, PhatEvent, TapList, Venue } from '@/lib/types'
-import { mediaDims, mediaSize, mediaSrcSet } from '@/lib/payload'
+import { mediaDims, mediaSize, mediaSrcSet } from '@/lib/cms'
 import { DAY_LABEL, eventDay, eventMonth, eventTime, formatHuman, openState } from '@/lib/time'
 
 export const OpenBadge = ({ venue }: { venue: Venue }) => {

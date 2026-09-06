@@ -1,5 +1,5 @@
 import type { MetadataRoute } from 'next'
-import { getBeers, getEvents, getVenues, safeList } from '@/lib/payload'
+import { getBeers, getEvents, getVenues, safeList } from '@/lib/cms'
 
 const SITE = process.env.NEXT_PUBLIC_SITE_URL ?? 'http://localhost:3000'
 

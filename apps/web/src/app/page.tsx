@@ -6,7 +6,7 @@ import { InstagramFeed } from '@/components/InstagramFeed'
 import { BeerCard, EventCard, OpenBadge, TapRows } from '@/components/Bits'
 import { JsonLd, organisationSchema, venueSchema } from '@/lib/jsonld'
 import { pageMeta } from '@/lib/seo'
-import { getBeers, getEvents, getSettings, getTapList, getVenues, mediaDims, mediaSize, mediaSrcSet } from '@/lib/payload'
+import { getBeers, getEvents, getSettings, getTapList, getVenues, mediaDims, mediaSize, mediaSrcSet } from '@/lib/cms'
 
 export const generateMetadata = (): Promise<Metadata> =>
   // No description here on purpose: the home page is exactly the page the SEO

@@ -6,7 +6,7 @@ import { BeerCard, EventCard, OpenBadge, TapRows } from '@/components/Bits'
 import { RichText } from '@/components/RichText'
 import {
   getBeers, getEvents, getPage, getTapList, getVenues, mediaDims, mediaSize, mediaSrcSet,
-} from '@/lib/payload'
+} from '@/lib/cms'
 import type { Block } from '@/lib/types'
 
 export const generateMetadata = async ({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> => {

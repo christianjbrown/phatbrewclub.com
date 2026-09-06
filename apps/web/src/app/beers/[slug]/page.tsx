@@ -7,7 +7,7 @@ import { VideoEmbed } from '@/components/VideoEmbed'
 import { JsonLd, beerSchema } from '@/lib/jsonld'
 import { Lightbox } from '@/components/Lightbox'
 import { toShots } from '@/lib/shots'
-import { getBeer, getBeers, getTapList, getVenues, mediaDims, mediaSize, mediaSrcSet } from '@/lib/payload'
+import { getBeer, getBeers, getTapList, getVenues, mediaDims, mediaSize, mediaSrcSet } from '@/lib/cms'
 
 export const generateMetadata = async ({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> => {
   const { slug } = await params

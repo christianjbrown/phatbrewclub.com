@@ -13,7 +13,7 @@ import {
   mediaSize,
   mediaSrcSet,
   safeList,
-} from '@/lib/payload'
+} from '@/lib/cms'
 
 /**
  * The menu on its own page, rather than a section near the bottom of the venue.

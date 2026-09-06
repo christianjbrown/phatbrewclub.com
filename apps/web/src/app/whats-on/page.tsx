@@ -2,7 +2,7 @@ import type { Metadata } from 'next'
 import { Footer, Header } from '@/components/Chrome'
 import { pageMeta } from '@/lib/seo'
 import { EventCard } from '@/components/Bits'
-import { getEvents, getVenues } from '@/lib/payload'
+import { getEvents, getVenues } from '@/lib/cms'
 
 export const generateMetadata = (): Promise<Metadata> =>
   pageMeta({

@@ -1,6 +1,6 @@
 import type { Beer, PhatEvent, TapList, Venue } from './types'
 import { SCHEMA_DAY, toPerthIso } from './time'
-import { mediaUrl } from './payload'
+import { mediaUrl } from './cms'
 
 const SITE = process.env.NEXT_PUBLIC_SITE_URL ?? 'http://localhost:3000'
 

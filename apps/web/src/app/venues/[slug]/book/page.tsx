@@ -3,7 +3,7 @@ import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import { Footer, Header } from '@/components/Chrome'
 import { ogImage, pageMeta } from '@/lib/seo'
-import { getVenue, getVenues, safeList } from '@/lib/payload'
+import { getVenue, getVenues, safeList } from '@/lib/cms'
 
 /**
  * The booking form on our own page instead of a link off the site.

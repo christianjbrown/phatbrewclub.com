@@ -1,5 +1,5 @@
 import type { Metadata } from 'next'
-import { getSettings, mediaSize } from './payload'
+import { getSettings, mediaSize } from './cms'
 
 /**
  * Open Graph and canonical URLs, in one place.

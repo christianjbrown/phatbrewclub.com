@@ -2,7 +2,7 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 import { Footer, Header } from '@/components/Chrome'
 import { pageMeta } from '@/lib/seo'
-import { getVenues, search } from '@/lib/payload'
+import { getVenues, search } from '@/lib/cms'
 
 export const metadata: Metadata = {
   ...pageMeta({

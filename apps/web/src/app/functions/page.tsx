@@ -1,5 +1,5 @@
 import { redirect } from 'next/navigation'
-import { getVenues } from '@/lib/payload'
+import { getVenues } from '@/lib/cms'
 
 export default async function FunctionsIndex() {
   const venues = await getVenues()

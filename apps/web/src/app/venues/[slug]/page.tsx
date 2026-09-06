@@ -7,7 +7,7 @@ import { EventCard, HoursTable, OpenBadge, TapRows } from '@/components/Bits'
 import { VenueMap } from '@/components/VenueMap'
 import { JsonLd, faqSchema, tapMenuSchema, venueSchema } from '@/lib/jsonld'
 import { ogImage, pageMeta } from '@/lib/seo'
-import { getEvents, getMenus, getTapList, getVenue, getVenues, mediaSize, mediaSrcSet } from '@/lib/payload'
+import { getEvents, getMenus, getTapList, getVenue, getVenues, mediaSize, mediaSrcSet } from '@/lib/cms'
 
 export const generateMetadata = async ({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> => {
   const { slug } = await params

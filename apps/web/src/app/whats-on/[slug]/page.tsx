@@ -3,7 +3,7 @@ import type { Metadata } from 'next'
 import { Footer, Header } from '@/components/Chrome'
 import { ogImage, pageMeta } from '@/lib/seo'
 import { JsonLd, eventSchema } from '@/lib/jsonld'
-import { getEvent, getEvents, getVenues, mediaDims, mediaSize, mediaSrcSet } from '@/lib/payload'
+import { getEvent, getEvents, getVenues, mediaDims, mediaSize, mediaSrcSet } from '@/lib/cms'
 import { eventTime, eventWeekday, formatDate } from '@/lib/time'
 
 export const generateMetadata = async ({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> => {

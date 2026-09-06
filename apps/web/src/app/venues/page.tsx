@@ -5,7 +5,7 @@ import { pageMeta } from '@/lib/seo'
 import { AmenityIcon } from '@/components/AmenityIcon'
 import { OpenBadge } from '@/components/Bits'
 import { JsonLd, venueSchema } from '@/lib/jsonld'
-import { getVenues, mediaSize, mediaSrcSet } from '@/lib/payload'
+import { getVenues, mediaSize, mediaSrcSet } from '@/lib/cms'
 
 export const generateMetadata = (): Promise<Metadata> =>
   pageMeta({

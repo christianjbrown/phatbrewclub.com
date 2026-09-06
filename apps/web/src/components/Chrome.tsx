@@ -1,6 +1,6 @@
 import Link from 'next/link'
 import { Newsletter } from './Newsletter'
-import { getSettings } from '@/lib/payload'
+import { getSettings } from '@/lib/cms'
 import { FacebookIcon, InstagramIcon, TikTokIcon, UntappdIcon, YouTubeIcon } from './SocialIcons'
 import type { NavLink, Settings, Venue } from '@/lib/types'
 

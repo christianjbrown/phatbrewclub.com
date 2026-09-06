@@ -2,7 +2,7 @@ import Link from 'next/link'
 import type { Metadata } from 'next'
 import { Footer, Header } from '@/components/Chrome'
 import { pageMeta } from '@/lib/seo'
-import { getPosts, getVenues, mediaDims, mediaSize, mediaSrcSet } from '@/lib/payload'
+import { getPosts, getVenues, mediaDims, mediaSize, mediaSrcSet } from '@/lib/cms'
 import { formatDate } from '@/lib/time'
 
 export const generateMetadata = (): Promise<Metadata> =>

@@ -3,7 +3,7 @@ import { notFound } from 'next/navigation'
 import type { Metadata } from 'next'
 import { Footer, Header } from '@/components/Chrome'
 import { ogImage, pageMeta } from '@/lib/seo'
-import { getFunctionPackages, getVenue, getVenues, mediaDims, mediaSize, mediaSrcSet, mediaUrl } from '@/lib/payload'
+import { getFunctionPackages, getVenue, getVenues, mediaDims, mediaSize, mediaSrcSet, mediaUrl } from '@/lib/cms'
 import { RichText } from '@/components/RichText'
 
 export const generateMetadata = async ({ params }: { params: Promise<{ venue: string }> }): Promise<Metadata> => {
