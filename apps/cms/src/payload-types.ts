@@ -205,21 +205,10 @@ export interface Venue {
     | null;
   heroImage?: (number | null) | Media;
   gallery?: (number | Media)[] | null;
-  intro?: {
-    root: {
-      type: string;
-      children: {
-        type: any;
-        version: number;
-        [k: string]: unknown;
-      }[];
-      direction: ('ltr' | 'rtl') | null;
-      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-      indent: number;
-      version: number;
-    };
-    [k: string]: unknown;
-  } | null;
+  /**
+   * One short paragraph under the venue name. Plain text — it is shown as a single lead paragraph.
+   */
+  intro?: string | null;
   amenities?:
     | (
         | 'Beer garden'
@@ -249,6 +238,14 @@ export interface Venue {
         id?: string | null;
       }[]
     | null;
+  /**
+   * Optional. The exact place name to search on Google Maps. Leave blank to use the venue name and address.
+   */
+  mapsQuery?: string | null;
+  /**
+   * Full URL to this venue's Instagram.
+   */
+  instagram?: string | null;
   functionsPack?: (number | null) | Media;
   /**
    * nowbookit booking URL. Opened in a modal on the site.
@@ -398,6 +395,10 @@ export interface Beer {
    */
   availableAt?: (number | Venue)[] | null;
   /**
+   * Just the id, e.g. TBpZtuEvC_4. Embedded on the beer page.
+   */
+  videoId?: string | null;
+  /**
    * Who grew and malted it. Shown on the beer page.
    */
   ingredients?:
@@ -494,8 +495,15 @@ export interface Event {
     [k: string]: unknown;
   } | null;
   isFree?: boolean | null;
+  /**
+   * Only what it costs to get in. Leave blank for a free-entry event.
+   */
   price?: string | null;
   bookingUrl?: string | null;
+  /**
+   * The deal, in the venue's own words. Shown instead of an entry price. Leave blank if there is nothing to pay beyond admission.
+   */
+  priceNote?: string | null;
   /**
    * Leave blank to fall back to the title and intro above.
    */
@@ -1013,6 +1021,8 @@ export interface VenuesSelect<T extends boolean = true> {
         answer?: T;
         id?: T;
       };
+  mapsQuery?: T;
+  instagram?: T;
   functionsPack?: T;
   bookingUrl?: T;
   meanduSlug?: T;
@@ -1048,6 +1058,7 @@ export interface BeersSelect<T extends boolean = true> {
   packSize?: T;
   shopUrl?: T;
   availableAt?: T;
+  videoId?: T;
   ingredients?:
     | T
     | {
@@ -1108,6 +1119,7 @@ export interface EventsSelect<T extends boolean = true> {
   isFree?: T;
   price?: T;
   bookingUrl?: T;
+  priceNote?: T;
   seo?:
     | T
     | {
@@ -1495,6 +1507,8 @@ export interface Setting {
   bookingLabel?: string | null;
   instagram?: string | null;
   facebook?: string | null;
+  tiktok?: string | null;
+  youtube?: string | null;
   untappd?: string | null;
   defaultTitle?: string | null;
   defaultDescription?: string | null;
@@ -1520,6 +1534,8 @@ export interface SettingsSelect<T extends boolean = true> {
   bookingLabel?: T;
   instagram?: T;
   facebook?: T;
+  tiktok?: T;
+  youtube?: T;
   untappd?: T;
   defaultTitle?: T;
   defaultDescription?: T;

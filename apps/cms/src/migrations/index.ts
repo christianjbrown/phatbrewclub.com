@@ -12,6 +12,7 @@ import * as migration_20260906_090000_social_links from './20260906_090000_socia
 import * as migration_20260906_100000_maps_query from './20260906_100000_maps_query';
 import * as migration_20260906_110000_event_price_note from './20260906_110000_event_price_note';
 import * as migration_20260906_120000_venue_instagram_beer_video from './20260906_120000_venue_instagram_beer_video';
+import * as migration_20260906_130000_venue_intro_plain_text from './20260906_130000_venue_intro_plain_text'
 
 export const migrations = [
   {
@@ -83,5 +84,10 @@ export const migrations = [
     up: migration_20260906_120000_venue_instagram_beer_video.up,
     down: migration_20260906_120000_venue_instagram_beer_video.down,
     name: '20260906_120000_venue_instagram_beer_video',
+  },
+  {
+    up: migration_20260906_130000_venue_intro_plain_text.up,
+    down: migration_20260906_130000_venue_intro_plain_text.down,
+    name: '20260906_130000_venue_intro_plain_text',
   },
 ];

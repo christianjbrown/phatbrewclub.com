@@ -81,7 +81,27 @@ export const Venues: CollectionConfig = {
           fields: [
             { name: 'heroImage', type: 'upload', relationTo: 'media' },
             { name: 'gallery', type: 'upload', relationTo: 'media', hasMany: true },
-            { name: 'intro', type: 'richText' },
+            /**
+             * Plain text, not rich text.
+             *
+             * This was a Lexical field, and the seed wrote a plain string into
+             * it. Lexical wants a node tree, so it refused the value and the
+             * whole venue edit screen came up with the field in an error state
+             * saying to delete the data and start again.
+             *
+             * A textarea is what the field actually is: the venue page renders
+             * it as one <p class="lede">, with nowhere for a heading, a list or
+             * a link to go. Matching the field to the rendering is the fix that
+             * cannot come apart again.
+             */
+            {
+              name: 'intro',
+              type: 'textarea',
+              admin: {
+                description:
+                  'One short paragraph under the venue name. Plain text — it is shown as a single lead paragraph.',
+              },
+            },
             {
               name: 'amenities',
               type: 'select',
