@@ -90,6 +90,15 @@ jobs:
       # reported but not gated on: their certificates take 15-30 minutes to
       # provision on first setup, and a deploy should not be marked failed
       # because DNS has not caught up yet.
+      # The same image tag, deliberately. The comparison between the two sites
+      # is only honest while both front ends are the identical build; deploying
+      # web-wp from anything but $GITHUB_SHA would make every measurement a
+      # statement about the image rather than the CMS.
+      - name: Deploy web-wp
+        run: |
+          gcloud run deploy web-wp \
+            --image "$REGISTRY/web:$GITHUB_SHA" --region "$REGION" --project "$PROJECT" --quiet
+
       - name: Smoke check
         run: |
           for SVC in web cms; do
