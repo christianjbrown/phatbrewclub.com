@@ -16,8 +16,22 @@ ENV NEXT_TELEMETRY_DISABLED=1
 # Payload wants these present at build. They are throwaway values scoped to a
 # single RUN rather than baked into an image layer, so nothing secret-shaped is
 # persisted in the image history.
+# Payload resolves admin components through a generated importMap, and which
+# storage adapter appears in it depends on the environment at generation time.
+# The committed map is the local one, with the S3/MinIO handler. This image runs
+# against GCS, so it is regenerated here with GCS_BUCKET set — without this the
+# admin panel serves a complete page, loads every asset, and renders nothing,
+# because GcsClientUploadHandler is missing from the map.
 RUN DATABASE_URL=postgres://build:build@localhost:5432/build \
     PAYLOAD_SECRET=build-only-not-a-real-secret \
+    GCS_BUCKET=build-placeholder \
+    GCS_PROJECT_ID=build-placeholder \
+    npm run generate:importmap
+
+RUN DATABASE_URL=postgres://build:build@localhost:5432/build \
+    PAYLOAD_SECRET=build-only-not-a-real-secret \
+    GCS_BUCKET=build-placeholder \
+    GCS_PROJECT_ID=build-placeholder \
     npm run build
 
 FROM node:22-alpine AS runner
