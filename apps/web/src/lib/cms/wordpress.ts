@@ -22,9 +22,18 @@ const WP_INTERNAL =
 type Query = Record<string, string | number | undefined>
 
 async function api<T>(path: string, query: Query = {}, tags: string[] = []): Promise<T> {
-  const qs = new URLSearchParams()
+  /**
+   * ?rest_route= rather than /wp-json/.
+   *
+   * The two are equivalent, but /wp-json only resolves through WordPress's
+   * rewrite rules, and pretty permalinks are one `wp rewrite flush` away from
+   * being off — which is exactly how the first deploy 404d every endpoint while
+   * the admin looked perfectly healthy. This form goes straight to index.php and
+   * works on any WordPress, however its permalinks are configured.
+   */
+  const qs = new URLSearchParams({ rest_route: `/phat/v1/${path}` })
   for (const [k, v] of Object.entries(query)) if (v !== undefined) qs.set(k, String(v))
-  const url = `${WP_INTERNAL}/wp-json/phat/v1/${path}${qs.size ? `?${qs}` : ''}`
+  const url = `${WP_INTERNAL}/?${qs}`
 
   const res = await fetch(url, { next: { revalidate: TTL, tags } })
 
