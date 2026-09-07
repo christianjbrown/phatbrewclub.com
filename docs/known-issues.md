@@ -298,3 +298,47 @@ WA Cellars.
 Their shop copy ends with a parenthetical ABV, and the site renders ABV as its
 own field. Printing both puts two numbers side by side that disagree whenever a
 listing is stale, so the suffix is stripped and the sentence kept.
+
+## Payload and WordPress parity: the two differences that remain
+
+Checked on 7 September 2026 across all 57 routes — every page, every beer,
+event and news post, both venues, plus search, sitemap and robots. Status
+codes, rendered text, tag structure and every image URL match. Both sites
+score zero axe violations on 16 pages. The scripts are ad-hoc rather than
+committed, which is the real gap here: nothing stops this drifting again.
+
+Two differences survive, and neither is visible to a reader.
+
+**React stream ordering.** The `self.__next_f.push` chunks that carry the
+server render can be flushed in a different order on the two sites, because
+the metadata chunk lands wherever the CMS finished answering. The rendered
+`<head>` is identical either way. This is timing, not content, and it varies
+between two requests to the *same* site.
+
+**Apostrophe encoding.** React writes `&#x27;`, WordPress writes `&#039;`.
+Same character, same rendering, different numeric entity. Normalising it
+would mean post-processing the HTML of one site to look like the other's,
+which is worth less than the difference costs.
+
+### Checking this again
+
+Comparing once proves nothing. Next.js serves stale-while-revalidate, so the
+first request after any content change returns the *previous* page and
+regenerates behind it — a single pass will report differences that are
+already fixed, which is exactly how an hour went on 7 September. Fetch every
+route twice and compare the second pass.
+
+### What the comparison found
+
+Five defects, all invisible on the page and all fixed:
+
+- the WordPress `thumbnail` rung advertised the 400px file as `150w`, so
+  browsers skipped it for a larger one — `thumbnail` is a core WordPress size
+  whose dimensions come from options, not from `add_image_size`
+- WordPress skipped a derivative whose width exactly equalled the source, so a
+  1600x900 hero had no hero rung and its social card fell back to 800px
+- beers sorted differently on the two sites because Postgres and MySQL
+  disagree about whether a space outranks a letter
+- the Lexical renderer wrapped every text node in a `span` that nothing styled
+- structured data pointed at the master upload, which WordPress stores as WebP
+  and Payload as the original JPEG
