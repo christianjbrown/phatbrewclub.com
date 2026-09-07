@@ -12,7 +12,7 @@ const CMS_INTERNAL =
   process.env.CMS_INTERNAL_URL ?? process.env.NEXT_PUBLIC_CMS_URL ?? 'http://localhost:3011'
 const CMS_PUBLIC = process.env.NEXT_PUBLIC_CMS_URL ?? 'http://localhost:3011'
 
-import { TTL } from './contract'
+import { TTL, sortByText } from './contract'
 import type { SearchHit } from './contract'
 
 type Query = Record<string, string | number | undefined>
@@ -28,7 +28,8 @@ async function api<T>(path: string, query: Query = {}, tags: string[] = []): Pro
 }
 
 export const getVenues = () =>
-  api<Paginated<Venue>>('venues', { depth: 1, limit: 10, sort: 'name' }, ['venues']).then((r) => r.docs)
+  api<Paginated<Venue>>('venues', { depth: 1, limit: 10, sort: 'name' }, ['venues'])
+    .then((r) => sortByText(r.docs, (v) => v.name))
 
 export const getVenue = (slug: string) =>
   api<Paginated<Venue>>('venues', { depth: 1, limit: 1, 'where[slug][equals]': slug }, ['venues'])
@@ -39,7 +40,7 @@ export const getBeers = (category?: string) =>
     'beers',
     { depth: 1, limit: 100, sort: 'name', ...(category ? { 'where[category][equals]': category } : {}) },
     ['beers'],
-  ).then((r) => r.docs)
+  ).then((r) => sortByText(r.docs, (b) => b.name))
 
 export const getBeer = (slug: string) =>
   api<Paginated<Beer>>('beers', { depth: 2, limit: 1, 'where[slug][equals]': slug }, ['beers'])
@@ -119,10 +120,11 @@ export const getFunctionPackages = (venueId: number | string) =>
     'function-packages',
     { depth: 1, limit: 20, sort: 'name', 'where[venue][equals]': String(venueId) },
     ['function-packages'],
-  ).then((r) => r.docs)
+  ).then((r) => sortByText(r.docs, (f) => f.name))
 
 export const getMerch = () =>
-  api<Paginated<Merch>>('merch', { depth: 1, limit: 50, sort: 'title' }, ['merch']).then((r) => r.docs)
+  api<Paginated<Merch>>('merch', { depth: 1, limit: 50, sort: 'title' }, ['merch'])
+    .then((r) => sortByText(r.docs, (m) => m.title))
 
 
 export const search = async (q: string): Promise<SearchHit[]> => {

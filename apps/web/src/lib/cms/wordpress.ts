@@ -1,7 +1,7 @@
 import type {
   Beer, FunctionPackage, Menu, Merch, Page, PhatEvent, Post, Settings, TapList, Venue,
 } from '../types'
-import { TTL } from './contract'
+import { TTL, sortByText } from './contract'
 import type { SearchHit } from './contract'
 
 /**
@@ -54,10 +54,11 @@ async function api<T>(path: string, query: Query = {}, tags: string[] = []): Pro
  */
 const list = async <T>(p: Promise<T[] | null>): Promise<T[]> => (await p) ?? []
 
-export const getVenues = () => list(api<Venue[] | null>('venues', {}, ['venues']))
+export const getVenues = async () => sortByText(await list(api<Venue[] | null>('venues', {}, ['venues'])), (v) => v.name)
 export const getVenue = (slug: string) => api<Venue | null>(`venues/${slug}`, {}, ['venues'])
 
-export const getBeers = (category?: string) => list(api<Beer[] | null>('beers', { category }, ['beers']))
+export const getBeers = async (category?: string) =>
+  sortByText(await list(api<Beer[] | null>('beers', { category }, ['beers'])), (b) => b.name)
 export const getBeer = (slug: string) => api<Beer | null>(`beers/${slug}`, {}, ['beers'])
 
 export const getTapList = (venueId: number | string) =>
@@ -74,10 +75,13 @@ export const getPost = (slug: string) => api<Post | null>(`posts/${slug}`, {}, [
 export const getMenus = (venueId: number | string) =>
   list(api<Menu[] | null>('menus', { venue: String(venueId) }, ['menus']))
 
-export const getMerch = () => list(api<Merch[] | null>('merch', {}, ['merch']))
+export const getMerch = async () => sortByText(await list(api<Merch[] | null>('merch', {}, ['merch'])), (m) => m.title)
 
-export const getFunctionPackages = (venueId: number | string) =>
-  list(api<FunctionPackage[] | null>('function-packages', { venue: String(venueId) }, ['function-packages']))
+export const getFunctionPackages = async (venueId: number | string) =>
+  sortByText(
+    await list(api<FunctionPackage[] | null>('function-packages', { venue: String(venueId) }, ['function-packages'])),
+    (f) => f.name,
+  )
 
 /**
  * Failing soft, exactly as the Payload adapter does: the footer's social links
