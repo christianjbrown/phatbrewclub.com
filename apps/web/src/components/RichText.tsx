@@ -19,12 +19,22 @@ const renderNodes = (nodes: Node[] | undefined, keyPrefix = ''): React.ReactNode
   return nodes.map((node, i) => {
     const key = `${keyPrefix}${i}`
     if (node.type === 'text') {
-      let el: React.ReactNode = node.text ?? ''
       const f = node.format ?? 0
+      /**
+       * Unformatted text is returned bare rather than wrapped in a span.
+       *
+       * Wrapping every text node put a span around plain words that nothing
+       * styled and nothing read, and it was the single largest difference
+       * between this site's markup and the WordPress one's — 32 spans against
+       * 5 on one news page, for identical words. React needs no key on a
+       * string in an array, so there is nothing to hang one on either.
+       */
+      if (f === 0) return node.text ?? ''
+      let el: React.ReactNode = node.text ?? ''
       if (f & 1) el = <strong key={key}>{el}</strong>
       if (f & 2) el = <em key={key}>{el}</em>
       if (f & 8) el = <u key={key}>{el}</u>
-      return <span key={key}>{el}</span>
+      return el
     }
     const kids = renderNodes(node.children, `${key}-`)
     switch (node.type) {
@@ -100,5 +110,10 @@ export const RichText = ({ value }: { value: unknown }) => {
 
   const root = (value as { root?: Node } | null)?.root
   if (!root) return null
-  return <>{renderNodes(root.children)}</>
+
+  // The same wrapper as the HTML branch above. dangerouslySetInnerHTML needs an
+  // element to hang the markup on, so that branch cannot avoid one; emitting a
+  // fragment here instead left the two sites one div apart on every page that
+  // renders rich text, for no reason a reader could see.
+  return <div>{renderNodes(root.children)}</div>
 }
