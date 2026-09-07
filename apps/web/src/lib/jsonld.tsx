@@ -1,7 +1,20 @@
 import type { Beer, PhatEvent, TapList, Venue } from './types'
 import { SCHEMA_DAY, toPerthIso } from './time'
-import { mediaUrl } from './cms'
+import { mediaSize } from './cms'
 
+/**
+ * Structured data points at the largest generated derivative, not the master.
+ *
+ * The master is whatever was uploaded — an unbounded multi-megabyte JPEG in
+ * some cases — and it is the one file on the site nothing else ever serves.
+ * mediaSize walks down the ladder and only falls back to the master when a
+ * picture was too small to generate any rung at all.
+ *
+ * It also settles a difference between the two sites. WordPress converts the
+ * full-size image to WebP on upload, so the master it reported was a .webp
+ * where Payload's was the original .jpg, and every page carrying structured
+ * data differed on that one URL. Both now name the same derivative.
+ */
 const SITE = process.env.NEXT_PUBLIC_SITE_URL ?? 'http://localhost:3000'
 
 /**
@@ -18,7 +31,7 @@ export const venueSchema = (v: Venue) => ({
   url: `${SITE}/venues/${v.slug}`,
   ...(v.phone ? { telephone: v.phone } : {}),
   ...(v.email ? { email: v.email } : {}),
-  ...(mediaUrl(v.heroImage) ? { image: mediaUrl(v.heroImage) } : {}),
+  ...(mediaSize(v.heroImage, 'hero') ? { image: mediaSize(v.heroImage, 'hero') } : {}),
   address: {
     '@type': 'PostalAddress',
     streetAddress: v.address.street,
@@ -58,7 +71,7 @@ export const beerSchema = (b: Beer) => ({
   url: `${SITE}/beers/${b.slug}`,
   category: b.style,
   ...(b.description ? { description: b.description } : {}),
-  ...(mediaUrl(b.canArtwork) ? { image: mediaUrl(b.canArtwork) } : {}),
+  ...(mediaSize(b.canArtwork, 'hero') ? { image: mediaSize(b.canArtwork, 'hero') } : {}),
   brand: { '@type': 'Brand', name: 'Phat Brew Club' },
   additionalProperty: [
     { '@type': 'PropertyValue', name: 'ABV', value: `${b.abv}%` },
@@ -78,7 +91,7 @@ export const eventSchema = (e: PhatEvent) => ({
   ...(e.endsAt ? { endDate: toPerthIso(e.endsAt) } : {}),
   eventStatus: 'https://schema.org/EventScheduled',
   eventAttendanceMode: 'https://schema.org/OfflineEventAttendanceMode',
-  ...(mediaUrl(e.heroImage) ? { image: mediaUrl(e.heroImage) } : {}),
+  ...(mediaSize(e.heroImage, 'hero') ? { image: mediaSize(e.heroImage, 'hero') } : {}),
   location: (e.venues ?? []).map((v) => ({
     '@type': 'BarOrPub',
     name: v.name,
